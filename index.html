@@ -112,8 +112,7 @@
 <div class="form-container">
   <div class="header">
     <div class="logo-container">
-      <!-- Si tu imagen es JPG cambia .png por .jpg -->
-      <img src="https://i.imgur.com/aMUwRaL.png" alt="Logo Complejo Educativo Cantón San Isidro">
+      <img src="https://i.supaimg.com/4ec4df8b-0ff4-4974-a45c-df59d61c1dcb.jpg" alt="Logo Complejo Educativo Cantón San Isidro" crossorigin="anonymous">
     </div>
     <h1>PREMATRÍCULA</h1>
     <h2>COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO</h2>
@@ -362,34 +361,28 @@ function checkFormValidity(){
   inp.addEventListener('blur',()=>validateField(inp));
 });
 
-// ======== LOGO: Base64 directo / PNG directo / JPG directo / fallback vector ========
-const LOGO_BASE64 = ''; // Pega aquí tu dataURL (data:image/png;base64,AAA...) para evitar CORS y garantizar el logo
+// ======== LOGO: Base64 directo / URL directa / fallback vector ========
+const LOGO_BASE64 = ''; // Pega aquí tu dataURL (data:image/jpeg;base64,...) para garantizar el logo en PDF
 
 async function loadLogoDataURL() {
   if (LOGO_BASE64 && LOGO_BASE64.startsWith('data:image/')) return LOGO_BASE64;
 
-  // 1) Intentar PNG directo de Imgur
-  const pngUrl = 'https://i.imgur.com/aMUwRaL.png';
-  // 2) Si falla, probar JPG
-  const jpgUrl = 'https://i.imgur.com/aMUwRaL.jpg';
+  // URL que nos diste
+  const directUrl = 'https://i.supaimg.com/4ec4df8b-0ff4-4974-a45c-df59d61c1dcb.jpg';
 
-  for (const url of [pngUrl, jpgUrl]) {
-    try {
-      const res = await fetch(url, { mode: 'cors' });
-      if (!res.ok) throw new Error('HTTP '+res.status);
-      const blob = await res.blob();
-      const dataUrl = await new Promise((resolve) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result);
-        fr.readAsDataURL(blob);
-      });
-      return dataUrl;
-    } catch (e) {
-      // intenta siguiente formato
-    }
+  try {
+    const res = await fetch(directUrl, { mode: 'cors' });
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const blob = await res.blob();
+    const dataUrl = await new Promise((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.readAsDataURL(blob);
+    });
+    return dataUrl;
+  } catch (e) {
+    return '';
   }
-  // 3) Si nada funcionó (CORS u otro), devolver vacío para usar fallback vectorial
-  return '';
 }
 
 function drawVectorLogoFallback(doc, x, y, size){
@@ -430,7 +423,7 @@ async function generatePDF(){
     doc.setFontSize(14);
     doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y+45);
 
-    // LOGO (intenta PNG->JPG->fallback)
+    // LOGO (usa la URL dada o fallback)
     const logoX = 612 - margin - 60, logoY = 10, logoW = 60, logoH = 60;
     const dataUrl = await loadLogoDataURL();
     if (dataUrl) {
@@ -475,13 +468,13 @@ async function generatePDF(){
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('RESERVA CUPO 2026', margin, y); y += 20;
 
-    // Datos académicos (reserva)
+    // Datos de reserva
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`Grado: ${grado}`, margin, y); y+=18;
     doc.text(`Turno: ${turno}`, margin, y); y+=18;
     doc.text(`Sección: ${seccion}`, margin, y); y+=30;
 
-    // Declaración jurada (se mantiene)
+    // Declaración jurada
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('DECLARACIÓN JURADA', margin, y); y+=20;
 
