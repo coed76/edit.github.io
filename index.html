@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Formulario de Prematrícula 2026</title>
 <style>
 /* === RESETEO GENERAL === */
@@ -36,14 +36,14 @@ body {
 @keyframes slideIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
 
 /* === CABECERA === */
-.header { text-align:center; margin-bottom:40px; }
+.header { text-align:center; margin-bottom: 40px; }
 .logo-container {
-  width:130px; height:130px; margin:0 auto 15px;
-  background:white; border-radius:50%; padding:5px;
-  box-shadow:0 8px 25px rgba(40,167,69,0.3);
-  animation:pulse 2s ease-in-out infinite;
+  width: 130px; height: 130px; margin: 0 auto 15px;
+  background: white; border-radius: 50%; padding: 5px;
+  box-shadow: 0 8px 25px rgba(40,167,69,0.3);
+  animation: pulse 2s ease-in-out infinite;
 }
-.logo-container img { width:100%; height:100%; border-radius:50%; }
+.logo-container img { width: 100%; height: 100%; border-radius: 50%; }
 @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
 h1 { color:#2d3748; font-size:2.1em; font-weight:700; }
 h2 { color:#667eea; font-size:1.1em; font-weight:500; margin-top:6px; }
@@ -173,9 +173,14 @@ input.error, select.error { border-color:#e53e3e; }
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="seccion">Sección</label>
-        <input type="text" id="seccion" placeholder="Ej: A">
+      <div class="form-group select-arrow">
+        <label for="seccion">Sección *</label>
+        <select id="seccion">
+          <option value="" disabled selected>Seleccione una opción</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="Jornada">Jornada</option>
+        </select>
       </div>
     </div>
 
@@ -214,83 +219,59 @@ const canvas = document.getElementById('particles-canvas');
 const ctx = canvas.getContext('2d');
 function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
 resize(); addEventListener('resize', resize);
-
 const particles = [], count = innerWidth < 768 ? 25 : 50;
-class Particle {
-  constructor(){ this.reset(); this.y = Math.random() * canvas.height; }
-  reset(){ this.x = Math.random() * canvas.width; this.y = -10; this.speed = Math.random() + .3; this.r = Math.random()*2 + 1; this.op = Math.random()*.5 + .2; }
-  update(){ this.y += this.speed; if(this.y > canvas.height) this.reset(); }
-  draw(){ ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, 2*Math.PI); ctx.fillStyle = `rgba(255,255,255,${this.op})`; ctx.fill(); }
-}
-for(let i=0;i<count;i++) particles.push(new Particle());
-(function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); })();
+class Particle{constructor(){this.reset();this.y=Math.random()*canvas.height;}reset(){this.x=Math.random()*canvas.width;this.y=-10;this.speed=Math.random()+.3;this.r=Math.random()*2+1;this.op=Math.random()*.5+.2;}update(){this.y+=this.speed;if(this.y>canvas.height)this.reset();}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,2*Math.PI);ctx.fillStyle=`rgba(255,255,255,${this.op})`;ctx.fill();}}
+for(let i=0;i<count;i++)particles.push(new Particle());
+(function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);})();
 
 // === Checkbox WhatsApp ===
-let whatsappChecked = false;
-document.getElementById('whatsapp-box').addEventListener('click', ()=>{
-  whatsappChecked = !whatsappChecked;
-  document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
+let whatsappChecked=false;
+document.getElementById('whatsapp-box').addEventListener('click',()=>{
+  whatsappChecked=!whatsappChecked;
+  document.getElementById('whatsapp-checkbox').classList.toggle('checked',whatsappChecked);
 });
 
-// === Turno: valor sugerido según grado (editable) ===
-const gradoSelect = document.getElementById('reserva-matricula');
-const turnoSelect = document.getElementById('turno');
-
-gradoSelect.addEventListener('change', function(){
-  const g = this.value;
-  let sugerido = '';
-  if (
-    g.includes('Parvularia') || g.includes('Primer Grado') || g.includes('Segundo Grado') ||
-    g.includes('Tercer Grado') || g.includes('Cuarto Grado') || g.includes('Quinto Grado') ||
-    g.includes('Sexto Grado') || g.includes('Año') // Bachillerato
-  ) { sugerido = 'Matutino'; }
-  else if (g.includes('Séptimo') || g.includes('Octavo') || g.includes('Noveno')) { sugerido = 'Vespertino'; }
-
-  // Solo sugerimos si no había elección previa o si estaba en el placeholder
-  if (!turnoSelect.value || turnoSelect.value === '') {
-    turnoSelect.value = sugerido || '';
-  }
+// === Sugerencia automática de turno según grado ===
+const gradoSelect=document.getElementById('reserva-matricula');
+const turnoSelect=document.getElementById('turno');
+gradoSelect.addEventListener('change',function(){
+  const g=this.value; let sugerido='';
+  if(g.includes('Parvularia')||g.includes('Primer Grado')||g.includes('Segundo Grado')||
+     g.includes('Tercer Grado')||g.includes('Cuarto Grado')||g.includes('Quinto Grado')||
+     g.includes('Sexto Grado')||g.includes('Año')){sugerido='Matutino';}
+  else if(g.includes('Séptimo')||g.includes('Octavo')||g.includes('Noveno')){sugerido='Vespertino';}
+  turnoSelect.value=sugerido||'';
 });
 
-// === Formato teléfono ####-#### ===
-document.getElementById('numero-contacto').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,8);
-  if(v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
-  this.value = v;
+// === Formato de teléfono ####-#### ===
+document.getElementById('numero-contacto').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,8);
+  if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4);
+  this.value=v;
 });
 
-// === Envío a WhatsApp ===
-document.getElementById('btn-enviar').addEventListener('click', ()=>{
-  const requiredIds = ['nie','nombre-completo','nombre-responsable','reserva-matricula','turno','numero-contacto'];
-  let valid = true;
-
-  requiredIds.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el.value.trim()){ el.classList.add('error'); valid = false; }
+// === Envío por WhatsApp ===
+document.getElementById('btn-enviar').addEventListener('click',()=>{
+  const required=['nie','nombre-completo','nombre-responsable','reserva-matricula','turno','seccion','numero-contacto'];
+  let valid=true;
+  required.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el.value.trim()){el.classList.add('error');valid=false;}
     else el.classList.remove('error');
   });
+  const tel=document.getElementById('numero-contacto');
+  if(tel.value&&!/^\d{4}-\d{4}$/.test(tel.value)){alert('⚠️ El número debe tener el formato ####-####');tel.classList.add('error');return;}
+  if(!valid){alert('⚠️ Complete todos los campos obligatorios');return;}
 
-  const tel = document.getElementById('numero-contacto');
-  if(tel.value && !/^\d{4}-\d{4}$/.test(tel.value)){
-    alert('⚠️ El número debe tener el formato ####-####');
-    tel.classList.add('error');
-    return;
-  }
-
-  if(!valid){
-    alert('⚠️ Complete todos los campos obligatorios');
-    return;
-  }
-
-  const data = {
-    nie: document.getElementById('nie').value.trim(),
-    nombre: document.getElementById('nombre-completo').value.trim(),
-    responsable: document.getElementById('nombre-responsable').value.trim(),
-    grado: gradoSelect.value,
-    turno: turnoSelect.value,
-    seccion: (document.getElementById('seccion').value.trim() || 'No asignada'),
-    contacto: tel.value.trim(),
-    whatsapp: whatsappChecked ? 'Sí' : 'No'
+  const data={
+    nie:document.getElementById('nie').value.trim(),
+    nombre:document.getElementById('nombre-completo').value.trim(),
+    responsable:document.getElementById('nombre-responsable').value.trim(),
+    grado:gradoSelect.value,
+    turno:turnoSelect.value,
+    seccion:document.getElementById('seccion').value,
+    contacto:tel.value.trim(),
+    whatsapp:whatsappChecked?'Sí':'No'
   };
 
   const mensaje =
@@ -313,12 +294,12 @@ document.getElementById('btn-enviar').addEventListener('click', ()=>{
 
 📅 Fecha: ${new Date().toLocaleDateString('es-ES')}`;
 
-  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, '_blank');
+  const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+  window.open(url,'_blank');
 
-  const msg = document.getElementById('success-message');
+  const msg=document.getElementById('success-message');
   msg.classList.add('show');
-  setTimeout(()=> msg.classList.remove('show'), 3000);
+  setTimeout(()=>msg.classList.remove('show'),3000);
 });
 </script>
 
