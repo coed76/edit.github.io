@@ -19,12 +19,7 @@ body {
 }
 
 /* === CANVAS === */
-#particles-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
+#particles-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
 /* === CONTENEDOR DEL FORMULARIO === */
 .form-container {
@@ -32,67 +27,44 @@ body {
   backdrop-filter: blur(10px);
   border-radius: 24px;
   padding: 45px;
-  width: 100%;
-  max-width: 700px;
+  width: 100%; max-width: 700px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   border: 1px solid rgba(255,255,255,0.3);
-  position: relative;
-  z-index: 10;
+  position: relative; z-index: 10;
   animation: slideIn .6s ease-out;
 }
-
-@keyframes slideIn {
-  from {opacity: 0; transform: translateY(30px);}
-  to {opacity: 1; transform: translateY(0);}
-}
+@keyframes slideIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
 
 /* === CABECERA === */
-.header { text-align: center; margin-bottom: 40px; }
+.header { text-align:center; margin-bottom:40px; }
 .logo-container {
-  width: 130px; height: 130px;
-  margin: 0 auto 15px;
-  background: white;
-  border-radius: 50%;
-  padding: 5px;
-  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-  animation: pulse 2s ease-in-out infinite;
+  width:130px; height:130px; margin:0 auto 15px;
+  background:white; border-radius:50%; padding:5px;
+  box-shadow:0 8px 25px rgba(40,167,69,0.3);
+  animation:pulse 2s ease-in-out infinite;
 }
-.logo-container img { width: 100%; height: 100%; border-radius: 50%; }
+.logo-container img { width:100%; height:100%; border-radius:50%; }
 @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
-
 h1 { color:#2d3748; font-size:2.1em; font-weight:700; }
 h2 { color:#667eea; font-size:1.1em; font-weight:500; margin-top:6px; }
 .year-badge {
-  display:inline-block;
-  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-  color:#fff; padding:6px 18px; border-radius:20px;
-  font-size:.9em; font-weight:600; margin-top:10px;
+  display:inline-block; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff; padding:6px 18px; border-radius:20px; font-size:.9em; font-weight:600; margin-top:10px;
 }
 
-/* === CAMPOS DEL FORMULARIO === */
-.form-group { margin-bottom: 22px; }
-label {
-  display:block; color:#4a5568; font-weight:600; margin-bottom:8px;
-  font-size:.95em; transition: color .3s ease;
-}
+/* === CAMPOS === */
+.form-group { margin-bottom:22px; }
+label { display:block; color:#4a5568; font-weight:600; margin-bottom:8px; font-size:.95em; transition:color .3s; }
 input[type="text"], select {
-  width:100%; padding:14px 16px;
-  border:2px solid #e2e8f0;
-  border-radius:12px; font-size:1em;
-  transition: all .3s ease;
-  background:white; color:#2d3748;
+  width:100%; padding:14px 16px; border:2px solid #e2e8f0; border-radius:12px;
+  font-size:1em; transition:all .3s; background:white; color:#2d3748; appearance:none;
 }
-input:focus, select:focus {
-  border-color:#667eea;
-  box-shadow:0 0 0 4px rgba(102,126,234,0.1);
-}
+input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
 input.error, select.error { border-color:#e53e3e; }
 
-.select-arrow { position: relative; }
+.select-arrow { position:relative; }
 .select-arrow::after {
-  content:'▼';
-  position:absolute;
-  right:15px; top:50%; transform:translateY(-50%);
+  content:'▼'; position:absolute; right:15px; top:50%; transform:translateY(-50%);
   color:#667eea; font-size:.75em; pointer-events:none;
 }
 
@@ -101,21 +73,14 @@ input.error, select.error { border-color:#e53e3e; }
 .contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
 
 /* === CHECKBOX === */
-.checkbox-group { display:flex; align-items:center; justify-content:flex-start; padding-top:30px; }
+.checkbox-group { display:flex; align-items:center; padding-top:30px; }
 .checkbox-wrapper { display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
 .custom-checkbox {
-  width:24px; height:24px;
-  border:2px solid #e2e8f0; border-radius:6px;
-  display:flex; align-items:center; justify-content:center;
-  transition: all .3s ease; background:white;
+  width:24px; height:24px; border:2px solid #e2e8f0; border-radius:6px;
+  display:flex; align-items:center; justify-content:center; transition:all .3s; background:white;
 }
-.custom-checkbox.checked {
-  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-  border-color:#667eea;
-}
-.custom-checkbox svg {
-  width:16px; height:16px; fill:white; opacity:0; transition:opacity .2s;
-}
+.custom-checkbox.checked { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); border-color:#667eea; }
+.custom-checkbox svg { width:16px; height:16px; fill:white; opacity:0; transition:opacity .2s; }
 .custom-checkbox.checked svg { opacity:1; }
 .checkbox-label { color:#4a5568; font-weight:500; }
 
@@ -124,46 +89,29 @@ input.error, select.error { border-color:#e53e3e; }
 .whatsapp-button {
   background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
   color:white; border:none; border-radius:14px;
-  padding:16px 40px; font-size:1.05em; font-weight:600;
-  cursor:pointer; display:inline-flex; align-items:center; gap:12px;
-  box-shadow:0 10px 30px rgba(37,211,102,.3);
-  transition:all .3s ease; animation:buttonPulse 2s ease-in-out infinite;
+  padding:16px 40px; font-size:1.05em; font-weight:600; cursor:pointer;
+  display:inline-flex; align-items:center; gap:12px;
+  box-shadow:0 10px 30px rgba(37,211,102,.3); transition:all .3s; animation:buttonPulse 2s ease-in-out infinite;
 }
-@keyframes buttonPulse {
-  0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);}
-  50%{box-shadow:0 10px 40px rgba(37,211,102,.5);}
-}
+@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{box-shadow:0 10px 40px rgba(37,211,102,.5);} }
 .whatsapp-button:hover { transform:translateY(-3px); }
 .whatsapp-button svg { width:24px; height:24px; fill:white; }
 
 /* === MENSAJE DE ÉXITO === */
 .success-message {
-  position:fixed; top:25px; right:25px;
-  background:white; padding:18px 25px;
+  position:fixed; top:25px; right:25px; background:white; padding:18px 25px;
   border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.2);
-  display:none; align-items:center; gap:12px;
-  z-index:1000; animation:slideInRight .5s ease-out;
+  display:none; align-items:center; gap:12px; z-index:1000; animation:slideInRight .5s ease-out;
 }
 @keyframes slideInRight { from{opacity:0;transform:translateX(100px);} to{opacity:1;transform:translateX(0);} }
 .success-message.show{display:flex;}
-.success-icon {
-  width:38px; height:38px;
-  background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
-  border-radius:50%; display:flex; align-items:center; justify-content:center;
-}
+.success-icon { width:38px; height:38px; background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .success-icon svg { width:20px; height:20px; fill:white; }
 .success-text { color:#2d3748; font-weight:600; }
 
 /* === RESPONSIVE === */
-@media(max-width:768px){
-  .inline-group, .contact-group{grid-template-columns:1fr;}
-  .form-container{padding:35px;}
-  .logo-container{width:100px; height:100px;}
-}
-@media(max-width:480px){
-  .form-container{padding:25px;}
-  .whatsapp-button{width:100%; justify-content:center;}
-}
+@media(max-width:768px){ .inline-group, .contact-group{grid-template-columns:1fr;} .form-container{padding:35px;} .logo-container{width:100px; height:100px;} }
+@media(max-width:480px){ .form-container{padding:25px;} .whatsapp-button{width:100%; justify-content:center;} }
 </style>
 </head>
 <body>
@@ -201,37 +149,28 @@ input.error, select.error { border-color:#e53e3e; }
         <label for="reserva-matricula">Reserva Matrícula en (Grado) *</label>
         <select id="reserva-matricula">
           <option value="" disabled selected>Seleccione el nivel</option>
-
           <optgroup label="Parvularia">
-            <option>Parvularia 4</option>
-            <option>Parvularia 5</option>
-            <option>Parvularia 6</option>
+            <option>Parvularia 4</option><option>Parvularia 5</option><option>Parvularia 6</option>
           </optgroup>
-
           <optgroup label="Educación Básica">
-            <option>Primer Grado</option>
-            <option>Segundo Grado</option>
-            <option>Tercer Grado</option>
-            <option>Cuarto Grado</option>
-            <option>Quinto Grado</option>
-            <option>Sexto Grado</option>
-            <option>Séptimo Grado</option>
-            <option>Octavo Grado</option>
-            <option>Noveno Grado</option>
+            <option>Primer Grado</option><option>Segundo Grado</option><option>Tercer Grado</option>
+            <option>Cuarto Grado</option><option>Quinto Grado</option><option>Sexto Grado</option>
+            <option>Séptimo Grado</option><option>Octavo Grado</option><option>Noveno Grado</option>
           </optgroup>
-
           <optgroup label="Bachillerato">
-            <option>Primer Año General</option>
-            <option>Primer Año Técnico</option>
-            <option>Segundo Año Técnico</option>
-            <option>Tercer Año Técnico</option>
+            <option>Primer Año General</option><option>Primer Año Técnico</option>
+            <option>Segundo Año Técnico</option><option>Tercer Año Técnico</option>
           </optgroup>
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="turno">Turno</label>
-        <input type="text" id="turno" placeholder="Se asigna automáticamente" readonly>
+      <div class="form-group select-arrow">
+        <label for="turno">Turno *</label>
+        <select id="turno">
+          <option value="" disabled selected>Seleccione el turno</option>
+          <option value="Matutino">Matutino</option>
+          <option value="Vespertino">Vespertino</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -293,30 +232,27 @@ document.getElementById('whatsapp-box').addEventListener('click', ()=>{
   document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
 });
 
-// === Ajuste automático del turno ===
-document.getElementById('reserva-matricula').addEventListener('change', function(){
-  const grado = this.value;
-  const turno = document.getElementById('turno');
+// === Turno: valor sugerido según grado (editable) ===
+const gradoSelect = document.getElementById('reserva-matricula');
+const turnoSelect = document.getElementById('turno');
 
+gradoSelect.addEventListener('change', function(){
+  const g = this.value;
+  let sugerido = '';
   if (
-    grado.includes('Parvularia') ||
-    grado.includes('Primer Grado') ||
-    grado.includes('Segundo Grado') ||
-    grado.includes('Tercer Grado') ||
-    grado.includes('Cuarto Grado') ||
-    grado.includes('Quinto Grado') ||
-    grado.includes('Sexto Grado') ||
-    grado.includes('Año') // Cubre Bachillerato General y Técnico
-  ) {
-    turno.value = 'Mañana';
-  } else if (grado.includes('Séptimo') || grado.includes('Octavo') || grado.includes('Noveno')) {
-    turno.value = 'Tarde';
-  } else {
-    turno.value = '';
+    g.includes('Parvularia') || g.includes('Primer Grado') || g.includes('Segundo Grado') ||
+    g.includes('Tercer Grado') || g.includes('Cuarto Grado') || g.includes('Quinto Grado') ||
+    g.includes('Sexto Grado') || g.includes('Año') // Bachillerato
+  ) { sugerido = 'Matutino'; }
+  else if (g.includes('Séptimo') || g.includes('Octavo') || g.includes('Noveno')) { sugerido = 'Vespertino'; }
+
+  // Solo sugerimos si no había elección previa o si estaba en el placeholder
+  if (!turnoSelect.value || turnoSelect.value === '') {
+    turnoSelect.value = sugerido || '';
   }
 });
 
-// === Formato rápido para teléfono ####-#### (opcional, amigable) ===
+// === Formato teléfono ####-#### ===
 document.getElementById('numero-contacto').addEventListener('input', function(){
   let v = this.value.replace(/\D/g,'').slice(0,8);
   if(v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
@@ -325,7 +261,7 @@ document.getElementById('numero-contacto').addEventListener('input', function(){
 
 // === Envío a WhatsApp ===
 document.getElementById('btn-enviar').addEventListener('click', ()=>{
-  const requiredIds = ['nie','nombre-completo','nombre-responsable','reserva-matricula','numero-contacto'];
+  const requiredIds = ['nie','nombre-completo','nombre-responsable','reserva-matricula','turno','numero-contacto'];
   let valid = true;
 
   requiredIds.forEach(id=>{
@@ -350,8 +286,8 @@ document.getElementById('btn-enviar').addEventListener('click', ()=>{
     nie: document.getElementById('nie').value.trim(),
     nombre: document.getElementById('nombre-completo').value.trim(),
     responsable: document.getElementById('nombre-responsable').value.trim(),
-    grado: document.getElementById('reserva-matricula').value,
-    turno: (document.getElementById('turno').value.trim() || 'No especificado'),
+    grado: gradoSelect.value,
+    turno: turnoSelect.value,
     seccion: (document.getElementById('seccion').value.trim() || 'No asignada'),
     contacto: tel.value.trim(),
     whatsapp: whatsappChecked ? 'Sí' : 'No'
