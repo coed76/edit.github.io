@@ -69,8 +69,10 @@ input[readonly] { background:#f7fafc; cursor: default; }
 input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
 input.error, select.error { border-color:#e53e3e; }
 
+/* === NUEVA FILA: NIE + FECHA + HORA === */
+.top-row { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; }
+
 .inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
-.meta-group  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; } /* Fecha, Hora, DUI */
 .contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
 
 .select-arrow { position:relative; }
@@ -128,6 +130,12 @@ input.error, select.error { border-color:#e53e3e; }
   background:#667eea; color:#fff; border:none; border-radius:10px;
   padding:10px 18px; font-weight:600; cursor:pointer;
 }
+
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .top-row { grid-template-columns: 1fr; }
+  .inline-group, .contact-group { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -145,9 +153,20 @@ input.error, select.error { border-color:#e53e3e; }
   </div>
 
   <form id="prematricula-form" autocomplete="off">
-    <div class="form-group">
-      <label for="nie">NIE del Estudiante *</label>
-      <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890">
+    <!-- 🔹 NIE + Fecha + Hora en la misma fila -->
+    <div class="top-row">
+      <div class="form-group">
+        <label for="nie">NIE del Estudiante *</label>
+        <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890">
+      </div>
+      <div class="form-group">
+        <label for="fecha-registro">Fecha</label>
+        <input type="text" id="fecha-registro" readonly>
+      </div>
+      <div class="form-group">
+        <label for="hora-registro">Hora</label>
+        <input type="text" id="hora-registro" readonly>
+      </div>
     </div>
 
     <div class="form-group">
@@ -160,20 +179,10 @@ input.error, select.error { border-color:#e53e3e; }
       <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
     </div>
 
-    <!-- 🔹 Fecha, Hora (auto) y DUI -->
-    <div class="meta-group">
-      <div class="form-group">
-        <label for="fecha-registro">Fecha</label>
-        <input type="text" id="fecha-registro" readonly>
-      </div>
-      <div class="form-group">
-        <label for="hora-registro">Hora</label>
-        <input type="text" id="hora-registro" readonly>
-      </div>
-      <div class="form-group">
-        <label for="dui">Número de Documento (DUI)</label>
-        <input type="text" id="dui" placeholder="########-#">
-      </div>
+    <!-- 🔹 DUI con más espacio (ancho completo) -->
+    <div class="form-group">
+      <label for="dui">Número de Documento (DUI)</label>
+      <input type="text" id="dui" placeholder="########-#">
     </div>
 
     <div class="inline-group">
@@ -342,18 +351,14 @@ function enableAllSecciones(){
 }
 function setSeccionAllowed(allowed){
   const allowedSet = new Set(allowed);
-  let changed = false;
   [...seccionSelect.options].forEach(o=>{
     if(!o.value) return;
     o.disabled = !allowedSet.has(o.value);
   });
   if(!allowedSet.has(seccionSelect.value)){
-    // elegir el primero permitido
     const first = [...seccionSelect.options].find(o=>allowedSet.has(o.value));
     seccionSelect.value = first ? first.value : '';
-    changed = true;
   }
-  return changed;
 }
 function setTurnoAllowed(allowed){
   const allowedSet = new Set(allowed);
@@ -365,10 +370,9 @@ function setTurnoAllowed(allowed){
     turnoSelect.value = allowed[0] || '';
   }
 }
-
 function normalize(str){
   return (str||'').toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // quita acentos
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // sin acentos
 }
 
 // === Reglas por grado ===
@@ -379,10 +383,8 @@ function applyGradeRules(){
 
   // Parvularia 4 y 5 → Vespertino + B
   if(g === 'parvularia 4' || g === 'parvularia 5'){
-    setTurnoAllowed(['Vespertino']);
-    turnoSelect.value = 'Vespertino';
-    setSeccionAllowed(['B']);
-    seccionSelect.value = 'B';
+    setTurnoAllowed(['Vespertino']); turnoSelect.value = 'Vespertino';
+    setSeccionAllowed(['B']);        seccionSelect.value = 'B';
     return;
   }
 
@@ -391,40 +393,31 @@ function applyGradeRules(){
      g === 'segundo ano general' || g === 'segundo ano tecnico'){
     turnoSelect.value = '';
     turnoSelect.disabled = true;      // deshabilitar turno
-    setSeccionAllowed(['Jornada']);
-    seccionSelect.value = 'Jornada';
+    setSeccionAllowed(['Jornada']);   seccionSelect.value = 'Jornada';
     seccionSelect.disabled = false;
     return;
   }
 
   // Tercer Año Técnico → solo Turno Matutino (secciones libres)
   if(g === 'tercer ano tecnico'){
-    setTurnoAllowed(['Matutino']);
-    turnoSelect.value = 'Matutino';
-    // secciones libres (A/B/Jornada)
+    setTurnoAllowed(['Matutino']); turnoSelect.value = 'Matutino';
     return;
   }
-
-  // 1° a 9° → ambos turnos; sección depende del turno elegido
-  // (no fijamos turno por defecto)
 }
 
+// Vincular Turno-Sección para 1°–9°
 function applyTurnoSeccionCoupling(){
   const g = normalize(gradoSelect.value);
   const t = turnoSelect.value;
-
-  // Para 1° a 9°: Matutino → A ; Vespertino → B
   const gradosBasicos = [
     'primer grado','segundo grado','tercer grado','cuarto grado',
     'quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'
   ];
   if(gradosBasicos.includes(g)){
     if(t === 'Matutino'){
-      setSeccionAllowed(['A']);
-      seccionSelect.value = 'A';
+      setSeccionAllowed(['A']); seccionSelect.value = 'A';
     } else if(t === 'Vespertino'){
       setSeccionAllowed(['B']);
-      // Mensaje especial si es primer grado y usuario intenta A en Vespertino
       if(g === 'primer grado' && seccionSelect.value === 'A'){
         showModal('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO');
         seccionSelect.value = 'B';
@@ -442,13 +435,9 @@ gradoSelect.addEventListener('change', ()=>{
   applyGradeRules();
   applyTurnoSeccionCoupling();
 });
-
-// Si cambia turno, ajustar secciones (A/B) para 1°–9°
 turnoSelect.addEventListener('change', ()=>{
   applyTurnoSeccionCoupling();
 });
-
-// Si cambia sección en Primer Grado + Vespertino y eligen A, mostrar modal y corregir a B
 seccionSelect.addEventListener('change', ()=>{
   const g = normalize(gradoSelect.value);
   const t = turnoSelect.value;
@@ -472,10 +461,9 @@ document.getElementById('btn-enviar').addEventListener('click', () => {
   const turno        = turnoSelect.value;
   const seccion      = seccionSelect.value;
   const contacto     = document.getElementById('numero-contacto').value.trim();
-  const fecha        = document.getElementById('fecha-registro').value;
-  const hora         = document.getElementById('hora-registro').value;
+  const fecha        = fechaEl.value;
+  const hora         = horaEl.value;
 
-  // Validaciones
   if(!nie || !nombre || !responsable || !grado || (!turno && !turnoSelect.disabled) || !seccion || !contacto || !fecha || !hora){
     alert('⚠️ Complete todos los campos obligatorios');
     return;
