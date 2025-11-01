@@ -362,14 +362,10 @@ function checkFormValidity(){
 });
 
 // ======== LOGO: 3 vías (Base64 directo / fetch / vector fallback) ========
-// 1) Si defines tu logo en BASE64 aquí, se usará SIEMPRE (sin CORS):
-//    - Reemplaza el valor por algo como: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...'
-const LOGO_BASE64 = ''; // <- pega aquí tu data URL para garantizar que aparezca
+const LOGO_BASE64 = ''; // Si pegas aquí tu dataURL (data:image/png;base64,AAA...), evita CORS y siempre sale el logo
 
 async function loadLogoDataURL() {
   if (LOGO_BASE64 && LOGO_BASE64.startsWith('data:image/')) return LOGO_BASE64;
-
-  // 2) Intento por fetch -> blob -> base64 (puede fallar por CORS según el host)
   const url = 'https://i.imgur.com/ugoJzRX.jpeg';
   try {
     const res = await fetch(url, { mode: 'cors' });
@@ -382,22 +378,16 @@ async function loadLogoDataURL() {
     });
     return dataUrl;
   } catch (e) {
-    // devolver cadena vacía para activar fallback vectorial
     return '';
   }
 }
-
-// 3) Fallback: “logo” vectorial (CECSI) si no hay imagen disponible
 function drawVectorLogoFallback(doc, x, y, size){
-  // círculo sólido
   doc.setFillColor(102,126,234);
   doc.circle(x + size/2, y + size/2, size/2, 'F');
-  // texto blanco centrado
   doc.setTextColor(255,255,255);
   doc.setFont('helvetica','bold');
   doc.setFontSize(14);
   doc.text('CECSI', x + size/2, y + size/2 + 5, { align: 'center' });
-  // restaurar negro
   doc.setTextColor(0,0,0);
 }
 
@@ -429,21 +419,19 @@ async function generatePDF(){
     doc.setFontSize(14);
     doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y+45);
 
-    // LOGO (derecha). Intentar BASE64/CORS y si no, fallback vectorial.
+    // LOGO
     const logoX = 612 - margin - 60, logoY = 10, logoW = 60, logoH = 60;
     const dataUrl = await loadLogoDataURL();
     if (dataUrl) {
-      // Detectar formato del dataURL para jsPDF
       const isPng = dataUrl.startsWith('data:image/png');
       const isJpeg = dataUrl.startsWith('data:image/jpeg') || dataUrl.startsWith('data:image/jpg');
       const fmt = isPng ? 'PNG' : (isJpeg ? 'JPEG' : 'JPEG');
       doc.addImage(dataUrl, fmt, logoX, logoY, logoW, logoH);
     } else {
-      // Fallback vectorial para evitar "logo invisible"
       drawVectorLogoFallback(doc, logoX, logoY, logoW);
     }
 
-    // Línea decorativa
+    // Línea
     y=110; doc.setTextColor(0,0,0);
     doc.setDrawColor(102,126,234); doc.setLineWidth(2);
     doc.line(margin,y,612-margin,y); y+=30;
@@ -472,17 +460,21 @@ async function generatePDF(){
     doc.text(`Teléfono: ${tel}`, margin, y); y+=18;
     doc.text(`WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}`, margin, y); y+=30;
 
-    // Académica
+    // Información Académica
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('INFORMACIÓN ACADÉMICA', margin, y); y+=20;
+
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`Grado: ${grado}`, margin, y); y+=18;
     doc.text(`Turno: ${turno}`, margin, y); y+=18;
     doc.text(`Sección: ${seccion}`, margin, y); y+=30;
 
-    // Declaración jurada
+    // ======= Título solicitado en el PDF (cambio aquí) =======
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
-    doc.text('DECLARACIÓN JURADA', margin, y); y+=20;
+    doc.text('Grado/Turno y sección donde reserva matrícula para 2026', margin, y);
+    y += 20;
+
+    // Mantengo la casilla y texto de aceptación como estaban (si deseas otra redacción, me dices)
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     const boxSize=10; doc.rect(margin, y-8, boxSize, boxSize);
     if(declaracionChecked){ doc.setFont('helvetica','bold'); doc.text('✓', margin+2.2, y); doc.setFont('helvetica','normal'); }
