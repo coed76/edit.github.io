@@ -1,181 +1,99 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Formulario de Prematrícula 2026 - Complejo Educativo Cantón San Isidro"/>
-    <title>Prematrícula 2026 - CECSI</title>
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-
-        :root{
-            --primary:#667eea;
-            --primary-dark:#764ba2;
-            --success:#25D366;
-            --success-dark:#128C7E;
-            --text-dark:#2d3748;
-            --text-medium:#4a5568;
-            --border:#e2e8f0;
-            --shadow:rgba(0,0,0,0.1);
-        }
-
-        body{
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            min-height:100vh; display:flex; justify-content:center; align-items:center;
-            padding:20px; position:relative; overflow-x:hidden;
-        }
-
-        #particles-canvas{ position:fixed; inset:0; width:100%; height:100%; z-index:1; pointer-events:none; }
-
-        .form-container{
-            max-width:800px; width:100%; background:rgba(255,255,255,0.97); backdrop-filter:blur(15px);
-            border-radius:24px; padding:45px; box-shadow:0 25px 70px rgba(0,0,0,0.3);
-            position:relative; z-index:10; animation:slideIn .6s cubic-bezier(.16,1,.3,1);
-            border:1px solid rgba(255,255,255,0.4);
-        }
-        @keyframes slideIn{ from{opacity:0; transform:translateY(40px) scale(.95);} to{opacity:1; transform:translateY(0) scale(1);} }
-
-        .header{ text-align:center; margin-bottom:35px; animation:fadeIn .8s ease-out .2s backwards; }
-        @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
-
-        .logo-container{
-            width:150px; height:150px; margin:0 auto 18px; background:#fff; border-radius:50%; padding:8px;
-            box-shadow:0 10px 30px rgba(40,167,69,.25); animation:logoAppear .8s cubic-bezier(.34,1.56,.64,1) .3s backwards; transition:transform .3s ease;
-        }
-        .logo-container:hover{ transform:scale(1.05) rotate(2deg); }
-        @keyframes logoAppear{ from{opacity:0; transform:scale(0) rotate(-180deg);} to{opacity:1; transform:scale(1) rotate(0);} }
-        .logo-container img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
-
-        h1{ color:var(--text-dark); font-size:2.3em; font-weight:700; margin-bottom:8px; letter-spacing:-.5px; }
-        h2{ color:var(--primary); font-size:1.1em; font-weight:500; margin-bottom:12px; }
-
-        .year-badge{
-            display:inline-block; background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color:#fff; padding:8px 24px; border-radius:25px; font-size:.95em; font-weight:700; margin-top:8px;
-            box-shadow:0 4px 15px rgba(102,126,234,.3); animation:badgePulse 2s ease-in-out infinite;
-        }
-        @keyframes badgePulse{ 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
-
-        .form-group{ margin-bottom:22px; animation:slideUp .5s ease-out backwards; }
-        @keyframes slideUp{ from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
-        .form-group:nth-child(1){animation-delay:.1s;}
-        .form-group:nth-child(2){animation-delay:.15s;}
-        .form-group:nth-child(3){animation-delay:.2s;}
-        .form-group:nth-child(4){animation-delay:.25s;}
-        .form-group:nth-child(5){animation-delay:.3s;}
-
-        label{ display:block; color:var(--text-medium); font-weight:600; margin-bottom:8px; font-size:.95em; }
-        label .required{ color:#e53e3e; margin-left:2px; }
-
-        input[type="text"], select{
-            width:100%; padding:14px 16px; border:2px solid var(--border); border-radius:12px; font-size:1rem;
-            transition:all .3s ease; background:#fff; color:var(--text-dark); font-family:inherit;
-        }
-        input[readonly]{ background:#f7fafc; color:#718096; cursor:not-allowed; }
-        input:focus, select:focus{ outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(102,126,234,.15); transform:translateY(-2px); }
-        input:hover:not([readonly]), select:hover{ border-color:#cbd5e0; }
-
-        input.error, select.error{ border-color:#fc8181; animation:shake .4s; }
-        @keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-8px);} 75%{transform:translateX(8px);} }
-
-        .error-message{ color:#e53e3e; font-size:.85em; margin-top:6px; display:none; animation:fadeIn .3s ease; }
-        .error-message.show{ display:block; }
-
-        .top-row{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; margin-bottom:22px; }
-        .inline-group{ display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
-        .contact-group{ display:grid; grid-template-columns:2fr 1fr; gap:15px; align-items:start; }
-
-        .checkbox-group{ display:flex; align-items:center; padding-top:32px; }
-        .checkbox-wrapper{ display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; padding:8px 12px; border-radius:8px; transition:background .2s ease; }
-        .checkbox-wrapper:hover{ background:rgba(102,126,234,.05); }
-        .custom-checkbox{ width:24px; height:24px; border:2px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; background:#fff; transition:all .3s cubic-bezier(.34,1.56,.64,1); flex-shrink:0; }
-        .custom-checkbox.checked{ background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-color:var(--primary); transform:scale(1.1); }
-        .custom-checkbox svg{ width:16px; height:16px; fill:#fff; opacity:0; transform:scale(0); transition:all .2s cubic-bezier(.34,1.56,.64,1); }
-        .custom-checkbox.checked svg{ opacity:1; transform:scale(1); }
-        .checkbox-label{ color:var(--text-medium); font-weight:500; font-size:.95em; }
-
-        .declaracion-box{ display:flex; gap:12px; align-items:flex-start; }
-        .declaracion-text{ color:var(--text-medium); font-size:.92em; line-height:1.35; }
-
-        .actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:35px; padding-top:25px; border-top:2px solid #f0f0f0; }
-        .btn{
-            border:none; color:#fff; border-radius:14px; padding:16px 32px; font-size:1.05em; font-weight:700; cursor:pointer;
-            display:inline-flex; align-items:center; gap:12px; box-shadow:0 10px 25px var(--shadow);
-            transition:all .3s cubic-bezier(.34,1.56,.64,1); position:relative; overflow:hidden; font-family:inherit;
-        }
-        .btn::before{ content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background:rgba(255,255,255,.3); transform:translate(-50%,-50%); transition:width .6s, height .6s; }
-        .btn:hover::before{ width:300px; height:300px; }
-        .btn:hover{ transform:translateY(-4px); box-shadow:0 15px 35px var(--shadow); }
-        .btn:active{ transform:translateY(-2px); }
-        .btn:disabled{ opacity:.5; cursor:not-allowed; transform:none!important; filter:grayscale(50%); }
-        .btn:disabled:hover::before{ width:0; height:0; }
-
-        .btn svg{ width:22px; height:22px; fill:#fff; position:relative; z-index:1; }
-        .btn span{ position:relative; z-index:1; }
-        .btn-pdf{ background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
-
-        .success-message{
-            position:fixed; top:24px; right:24px; background:#fff; padding:18px 28px; border-radius:14px;
-            box-shadow:0 12px 35px rgba(0,0,0,.25); display:none; align-items:center; gap:14px; z-index:1000;
-            animation:slideInRight .5s cubic-bezier(.34,1.56,.64,1); border-left:4px solid var(--success);
-        }
-        @keyframes slideInRight{ from{opacity:0; transform:translateX(100px);} to{opacity:1; transform:translateX(0);} }
-        .success-message.show{ display:flex; }
-        .success-icon{ width:42px; height:42px; background:linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .success-icon svg{ width:22px; height:22px; fill:#fff; }
-        .success-text{ color:var(--text-dark); font-weight:600; font-size:.95em; }
-
-        .loading-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:2000; backdrop-filter:blur(5px); }
-        .loading-overlay.show{ display:flex; }
-        .spinner{ width:60px; height:60px; border:5px solid rgba(255,255,255,.2); border-top-color:#fff; border-radius:50%; animation:spin .8s linear infinite; }
-        @keyframes spin{ to{ transform:rotate(360deg); } }
-
-        /* MODAL previo a descargar */
-        .modal-backdrop{
-            position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:2500;
-            backdrop-filter: blur(3px);
-        }
-        .modal-backdrop.show{ display:flex; }
-        .modal{
-            width:min(560px, 92vw); background:#fff; border-radius:18px; padding:24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35);
-            animation:fadeIn .2s ease-out;
-        }
-        .modal-title{ font-size:1.15rem; font-weight:800; color:var(--text-dark); margin-bottom:6px; }
-        .modal-body{ color:var(--text-medium); line-height:1.45; font-size:.98rem; margin-bottom:16px; }
-        .modal-actions{ display:flex; gap:10px; justify-content:flex-end; }
-        .btn-ghost{ background:#edf2f7; color:#2d3748; }
-        .btn-primary{ background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color:#fff; }
-        .btn-ghost, .btn-primary{ border:none; border-radius:12px; padding:12px 18px; font-weight:700; cursor:pointer; }
-
-        /* Responsive */
-        @media (max-width: 768px){
-            .form-container{ padding:35px 25px; border-radius:20px; }
-            .logo-container{ width:120px; height:120px; }
-            h1{ font-size:1.9em; } h2{ font-size:1em; }
-            .top-row, .inline-group, .contact-group{ grid-template-columns:1fr; gap:18px; }
-            .checkbox-group{ padding-top:0; }
-            .actions{ flex-direction:column; }
-            .btn{ width:100%; justify-content:center; padding:15px 28px; }
-            .success-message{ left:16px; right:16px; top:auto; bottom:16px; }
-        }
-        @media (max-width: 480px){
-            .form-container{ padding:28px 20px; }
-            .logo-container{ width:100px; height:100px; }
-            h1{ font-size:1.7em; } h2{ font-size:.95em; }
-            .year-badge{ font-size:.85em; padding:6px 18px; }
-            input[type="text"], select{ padding:12px 14px; font-size:.95em; }
-            .btn{ font-size:.95em; padding:14px 24px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Formulario de Prematrícula 2026 - Complejo Educativo Cantón San Isidro"/>
+  <title>Prematrícula 2026 - CECSI</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --primary:#667eea;--primary-dark:#764ba2;--success:#25D366;--success-dark:#128C7E;
+      --text-dark:#2d3748;--text-medium:#4a5568;--border:#e2e8f0;--shadow:rgba(0,0,0,.1)
+    }
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+      min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative;overflow-x:hidden}
+    #particles-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+    .form-container{max-width:800px;width:100%;background:rgba(255,255,255,.97);backdrop-filter:blur(15px);border-radius:24px;
+      padding:45px;box-shadow:0 25px 70px rgba(0,0,0,.3);position:relative;z-index:10;animation:slideIn .6s cubic-bezier(.16,1,.3,1);
+      border:1px solid rgba(255,255,255,.4)}
+    @keyframes slideIn{from{opacity:0;transform:translateY(40px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .header{text-align:center;margin-bottom:35px;animation:fadeIn .8s ease-out .2s backwards}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .logo-container{width:150px;height:150px;margin:0 auto 18px;background:#fff;border-radius:50%;padding:8px;
+      box-shadow:0 10px 30px rgba(40,167,69,.25);animation:logoAppear .8s cubic-bezier(.34,1.56,.64,1) .3s backwards;transition:transform .3s ease}
+    .logo-container:hover{transform:scale(1.05) rotate(2deg)}
+    @keyframes logoAppear{from{opacity:0;transform:scale(0) rotate(-180deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    .logo-container img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    h1{color:var(--text-dark);font-size:2.3em;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
+    h2{color:var(--primary);font-size:1.1em;font-weight:500;margin-bottom:12px}
+    .year-badge{display:inline-block;background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff;
+      padding:8px 24px;border-radius:25px;font-size:.95em;font-weight:700;margin-top:8px;box-shadow:0 4px 15px rgba(102,126,234,.3);
+      animation:badgePulse 2s ease-in-out infinite}
+    @keyframes badgePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    .form-group{margin-bottom:22px;animation:slideUp .5s ease-out backwards}
+    @keyframes slideUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+    label{display:block;color:var(--text-medium);font-weight:600;margin-bottom:8px;font-size:.95em}
+    label .required{color:#e53e3e;margin-left:2px}
+    input[type=text],select{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:12px;font-size:1rem;transition:.3s;
+      background:#fff;color:var(--text-dark);font-family:inherit}
+    input[readonly]{background:#f7fafc;color:#718096;cursor:not-allowed}
+    input:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(102,126,234,.15);transform:translateY(-2px)}
+    input:hover:not([readonly]),select:hover{border-color:#cbd5e0}
+    input.error,select.error{border-color:#fc8181;animation:shake .4s}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+    .error-message{color:#e53e3e;font-size:.85em;margin-top:6px;display:none;animation:fadeIn .3s ease}
+    .error-message.show{display:block}
+    .top-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:22px}
+    .inline-group{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px}
+    .contact-group{display:grid;grid-template-columns:2fr 1fr;gap:15px;align-items:start}
+    .checkbox-group{display:flex;align-items:center;padding-top:32px}
+    .checkbox-wrapper{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;padding:8px 12px;border-radius:8px;transition:background .2s ease}
+    .checkbox-wrapper:hover{background:rgba(102,126,234,.05)}
+    .custom-checkbox{width:24px;height:24px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;background:#fff;transition:.3s;flex-shrink:0}
+    .custom-checkbox.checked{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);border-color:var(--primary);transform:scale(1.1)}
+    .custom-checkbox svg{width:16px;height:16px;fill:#fff;opacity:0;transform:scale(0);transition:.2s}
+    .custom-checkbox.checked svg{opacity:1;transform:scale(1)}
+    .checkbox-label{color:var(--text-medium);font-weight:500;font-size:.95em}
+    .declaracion-box{display:flex;gap:12px;align-items:flex-start}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:35px;padding-top:25px;border-top:2px solid #f0f0f0}
+    .btn{border:none;color:#fff;border-radius:14px;padding:16px 32px;font-size:1.05em;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:12px;box-shadow:0 10px 25px var(--shadow);transition:.3s;position:relative;overflow:hidden;font-family:inherit}
+    .btn::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,.3);transform:translate(-50%,-50%);transition:width .6s,height .6s}
+    .btn:hover::before{width:300px;height:300px}
+    .btn:hover{transform:translateY(-4px);box-shadow:0 15px 35px var(--shadow)}
+    .btn:active{transform:translateY(-2px)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;filter:grayscale(50%)}
+    .btn:disabled:hover::before{width:0;height:0}
+    .btn svg{width:22px;height:22px;fill:#fff;position:relative;z-index:1}
+    .btn span{position:relative;z-index:1}
+    .btn-pdf{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%)}
+    .success-message{position:fixed;top:24px;right:24px;background:#fff;padding:18px 28px;border-radius:14px;box-shadow:0 12px 35px rgba(0,0,0,.25);display:none;align-items:center;gap:14px;z-index:1000;animation:slideInRight .5s cubic-bezier(.34,1.56,.64,1);border-left:4px solid var(--success)}
+    @keyframes slideInRight{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}
+    .success-message.show{display:flex}
+    .success-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--success) 0%,var(--success-dark) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .success-icon svg{width:22px;height:22px;fill:#fff}
+    .success-text{color:var(--text-dark);font-weight:600;font-size:.95em}
+    .loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:2000;backdrop-filter:blur(5px)}
+    .loading-overlay.show{display:flex}
+    .spinner{width:60px;height:60px;border:5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:2500;backdrop-filter:blur(3px)}
+    .modal-backdrop.show{display:flex}
+    .modal{width:min(560px,92vw);background:#fff;border-radius:18px;padding:24px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:fadeIn .2s ease-out}
+    .modal-title{font-size:1.15rem;font-weight:800;color:var(--text-dark);margin-bottom:6px}
+    .modal-body{color:var(--text-medium);line-height:1.45;font-size:.98rem;margin-bottom:16px}
+    .modal-actions{display:flex;gap:10px;justify-content:flex-end}
+    .btn-ghost{background:#edf2f7;color:#2d3748}
+    .btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);color:#fff}
+    .btn-ghost,.btn-primary{border:none;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer}
+    @media (max-width:768px){.form-container{padding:35px 25px;border-radius:20px}.logo-container{width:120px;height:120px}h1{font-size:1.9em}h2{font-size:1em}.top-row,.inline-group,.contact-group{grid-template-columns:1fr;gap:18px}.checkbox-group{padding-top:0}.actions{flex-direction:column}.btn{width:100%;justify-content:center;padding:15px 28px}.success-message{left:16px;right:16px;top:auto;bottom:16px}}
+    @media (max-width:480px){.form-container{padding:28px 20px}.logo-container{width:100px;height:100px}h1{font-size:1.7em}h2{font-size:.95em}.year-badge{font-size:.85em;padding:6px 18px}input[type=text],select{padding:12px 14px;font-size:.95em}.btn{font-size:.95em;padding:14px 24px}}
+  </style>
 </head>
 <body>
-
 <canvas id="particles-canvas"></canvas>
 
-<div class="loading-overlay" id="loading-overlay">
-    <div class="spinner"></div>
-</div>
+<div class="loading-overlay" id="loading-overlay"><div class="spinner"></div></div>
 
 <!-- MODAL previo a descargar -->
 <div class="modal-backdrop" id="prepdf-modal">
@@ -192,301 +110,240 @@
 </div>
 
 <div class="form-container">
-    <div class="header">
-        <div class="logo-container">
-            <img src="https://i.imgur.com/ugoJzRX.jpeg" alt="Logo Complejo Educativo Cantón San Isidro">
-        </div>
-        <h1>PREMATRÍCULA</h1>
-        <h2>COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO</h2>
-        <span class="year-badge">AÑO 2026</span>
+  <div class="header">
+    <div class="logo-container">
+      <img src="https://i.imgur.com/ugoJzRX.jpeg" alt="Logo Complejo Educativo Cantón San Isidro">
+    </div>
+    <h1>PREMATRÍCULA</h1>
+    <h2>COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO</h2>
+    <span class="year-badge">AÑO 2026</span>
+  </div>
+
+  <form id="prematricula-form" autocomplete="off" novalidate>
+    <div class="top-row">
+      <div class="form-group">
+        <label for="nie">NIE del Estudiante <span class="required">*</span></label>
+        <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890" required>
+        <div class="error-message" id="nie-error">El NIE debe tener 8-10 dígitos</div>
+      </div>
+      <div class="form-group">
+        <label for="fecha-registro">Fecha</label>
+        <input type="text" id="fecha-registro" readonly>
+      </div>
+      <div class="form-group">
+        <label for="hora-registro">Hora</label>
+        <input type="text" id="hora-registro" readonly>
+      </div>
     </div>
 
-    <form id="prematricula-form" autocomplete="off" novalidate>
-        <div class="top-row">
-            <div class="form-group">
-                <label for="nie">NIE del Estudiante <span class="required">*</span></label>
-                <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890" required>
-                <div class="error-message" id="nie-error">El NIE debe tener 8-10 dígitos</div>
-            </div>
-            <div class="form-group">
-                <label for="fecha-registro">Fecha</label>
-                <input type="text" id="fecha-registro" readonly>
-            </div>
-            <div class="form-group">
-                <label for="hora-registro">Hora</label>
-                <input type="text" id="hora-registro" readonly>
-            </div>
+    <div class="form-group">
+      <label for="nombre-completo">Nombre Completo del Estudiante <span class="required">*</span></label>
+      <input type="text" id="nombre-completo" placeholder="Nombre completo del estudiante" required>
+      <div class="error-message" id="nombre-error">Este campo es obligatorio</div>
+    </div>
+
+    <div class="form-group">
+      <label for="nombre-responsable">Nombre del Responsable <span class="required">*</span></label>
+      <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor" required>
+      <div class="error-message" id="responsable-error">Este campo es obligatorio</div>
+    </div>
+
+    <div class="form-group">
+      <label for="dui">Número de Documento (DUI)</label>
+      <input type="text" id="dui" placeholder="########-#" maxlength="10">
+      <div class="error-message" id="dui-error">Formato: 12345678-9</div>
+    </div>
+
+    <div class="inline-group">
+      <div class="form-group">
+        <label for="reserva-matricula">Grado <span class="required">*</span></label>
+        <select id="reserva-matricula" required>
+          <option value="" disabled selected>Seleccione el nivel</option>
+          <optgroup label="Parvularia">
+            <option>Parvularia 4</option>
+            <option>Parvularia 5</option>
+            <option>Parvularia 6</option>
+          </optgroup>
+          <optgroup label="Educación Básica">
+            <option>Primer Grado</option>
+            <option>Segundo Grado</option>
+            <option>Tercer Grado</option>
+            <option>Cuarto Grado</option>
+            <option>Quinto Grado</option>
+            <option>Sexto Grado</option>
+            <option>Séptimo Grado</option>
+            <option>Octavo Grado</option>
+            <option>Noveno Grado</option>
+          </optgroup>
+          <optgroup label="Bachillerato">
+            <option>Primer Año General</option>
+            <option>Primer Año Técnico</option>
+            <option>Segundo Año General</option>
+            <option>Segundo Año Técnico</option>
+            <option>Tercer Año Técnico</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="turno">Turno <span class="required">*</span></label>
+        <select id="turno" required>
+          <option value="" disabled selected>Seleccione</option>
+          <option value="Matutino">Matutino</option>
+          <option value="Vespertino">Vespertino</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="seccion">Sección <span class="required">*</span></label>
+        <select id="seccion" required>
+          <option value="" disabled selected>Seleccione</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="Jornada">Jornada</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="contact-group">
+      <div class="form-group">
+        <label for="numero-contacto">Número de Contacto <span class="required">*</span></label>
+        <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9" required>
+        <div class="error-message" id="tel-error">Formato: 7890-1234</div>
+      </div>
+
+      <div class="checkbox-group">
+        <div class="checkbox-wrapper" id="whatsapp-box" title="Marcar si el contacto tiene WhatsApp">
+          <div class="custom-checkbox" id="whatsapp-checkbox">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          </div>
+          <span class="checkbox-label">Tiene WhatsApp</span>
         </div>
+      </div>
+    </div>
 
-        <div class="form-group">
-            <label for="nombre-completo">Nombre Completo del Estudiante <span class="required">*</span></label>
-            <input type="text" id="nombre-completo" placeholder="Nombre completo del estudiante" required>
-            <div class="error-message" id="nombre-error">Este campo es obligatorio</div>
+    <!-- Declaración jurada (aceptación obligatoria) -->
+    <div class="form-group">
+      <label>Declaración jurada <span class="required">*</span></label>
+      <div class="declaracion-box">
+        <div class="checkbox-wrapper" id="declaracion-box" title="Aceptar la declaración jurada">
+          <div class="custom-checkbox" id="declaracion-checkbox">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          </div>
+          <span class="checkbox-label">Declaro bajo juramento que los datos proporcionados en este formulario son verídicos, completos y exactos. Me responsabilizo de su autenticidad y autorizo al centro educativo a verificarlos para fines administrativos y académicos.</span>
         </div>
+      </div>
+      <div class="error-message" id="declaracion-error">Debe aceptar la declaración para continuar.</div>
+    </div>
 
-        <div class="form-group">
-            <label for="nombre-responsable">Nombre del Responsable <span class="required">*</span></label>
-            <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor" required>
-            <div class="error-message" id="responsable-error">Este campo es obligatorio</div>
-        </div>
-
-        <div class="form-group">
-            <label for="dui">Número de Documento (DUI)</label>
-            <input type="text" id="dui" placeholder="########-#" maxlength="10">
-            <div class="error-message" id="dui-error">Formato: 12345678-9</div>
-        </div>
-
-        <div class="inline-group">
-            <div class="form-group">
-                <label for="reserva-matricula">Grado <span class="required">*</span></label>
-                <select id="reserva-matricula" required>
-                    <option value="" disabled selected>Seleccione el nivel</option>
-                    <optgroup label="Parvularia">
-                        <option>Parvularia 4</option>
-                        <option>Parvularia 5</option>
-                        <option>Parvularia 6</option>
-                    </optgroup>
-                    <optgroup label="Educación Básica">
-                        <option>Primer Grado</option>
-                        <option>Segundo Grado</option>
-                        <option>Tercer Grado</option>
-                        <option>Cuarto Grado</option>
-                        <option>Quinto Grado</option>
-                        <option>Sexto Grado</option>
-                        <option>Séptimo Grado</option>
-                        <option>Octavo Grado</option>
-                        <option>Noveno Grado</option>
-                    </optgroup>
-                    <optgroup label="Bachillerato">
-                        <option>Primer Año General</option>
-                        <option>Primer Año Técnico</option>
-                        <option>Segundo Año General</option>
-                        <option>Segundo Año Técnico</option>
-                        <option>Tercer Año Técnico</option>
-                    </optgroup>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="turno">Turno <span class="required">*</span></label>
-                <select id="turno" required>
-                    <option value="" disabled selected>Seleccione</option>
-                    <option value="Matutino">Matutino</option>
-                    <option value="Vespertino">Vespertino</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="seccion">Sección <span class="required">*</span></label>
-                <select id="seccion" required>
-                    <option value="" disabled selected>Seleccione</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="Jornada">Jornada</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="contact-group">
-            <div class="form-group">
-                <label for="numero-contacto">Número de Contacto <span class="required">*</span></label>
-                <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9" required>
-                <div class="error-message" id="tel-error">Formato: 7890-1234</div>
-            </div>
-
-            <div class="checkbox-group">
-                <div class="checkbox-wrapper" id="whatsapp-box" title="Marcar si el contacto tiene WhatsApp">
-                    <div class="custom-checkbox" id="whatsapp-checkbox">
-                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    </div>
-                    <span class="checkbox-label">Tiene WhatsApp</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Declaración jurada (aceptación obligatoria) -->
-        <div class="form-group">
-            <label>Declaración jurada <span class="required">*</span></label>
-            <div class="declaracion-box">
-                <div class="checkbox-wrapper" id="declaracion-box" title="Aceptar la declaración jurada">
-                    <div class="custom-checkbox" id="declaracion-checkbox">
-                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-                    </div>
-                    <span class="checkbox-label">Declaro bajo juramento que los datos proporcionados en este formulario son verídicos, completos y exactos. Me responsabilizo de su autenticidad y autorizo al centro educativo a verificarlos para fines administrativos y académicos.</span>
-                </div>
-            </div>
-            <div class="error-message" id="declaracion-error">Debe aceptar la declaración para continuar.</div>
-        </div>
-
-        <div class="actions">
-            <!-- Solo queda el botón de PDF -->
-            <button type="button" id="btn-pdf" class="btn btn-pdf" disabled>
-                <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>
-                <span>Descargar PDF</span>
-            </button>
-        </div>
-    </form>
+    <div class="actions">
+      <button type="button" id="btn-pdf" class="btn btn-pdf" disabled>
+        <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>
+        <span>Descargar PDF</span>
+      </button>
+    </div>
+  </form>
 </div>
 
 <div class="success-message" id="success-message">
-    <div class="success-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-    </div>
-    <span class="success-text">¡Operación realizada con éxito!</span>
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+  </div>
+  <span class="success-text">¡Operación realizada con éxito!</span>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 <script>
 // ===== Partículas =====
 (function(){
-  const canvas = document.getElementById('particles-canvas'); if(!canvas) return;
-  const ctx = canvas.getContext('2d'); let particles=[], animationId;
-  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; initParticles(); }
-  function initParticles(){ particles=[]; const count = innerWidth<768?30:60;
-    for(let i=0;i<count;i++){ particles.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, radius:Math.random()*2.5+1, speed:Math.random()*1.2+0.4, opacity:Math.random()*0.5+0.3 }); } }
-  function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{ p.y+=p.speed; if(p.y>canvas.height){ p.y=-10; p.x=Math.random()*canvas.width; }
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.radius,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${p.opacity})`; ctx.fill(); });
-    animationId = requestAnimationFrame(animate); }
-  resize(); animate(); addEventListener('resize', resize);
+  const canvas=document.getElementById('particles-canvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d'); let particles=[];
+  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; init(); }
+  function init(){ particles=[]; const n=innerWidth<768?30:60;
+    for(let i=0;i<n;i++){ particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2.5+1,s:Math.random()*1.2+0.4,o:Math.random()*0.5+0.3}); } }
+  function anim(){ ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{ p.y+=p.s; if(p.y>canvas.height){ p.y=-10; p.x=Math.random()*canvas.width; }
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${p.o})`; ctx.fill(); });
+    requestAnimationFrame(anim); }
+  resize(); anim(); addEventListener('resize', resize);
 })();
 
 // ===== Fecha/Hora =====
-const fechaEl = document.getElementById('fecha-registro');
-const horaEl = document.getElementById('hora-registro');
-const pad = n => n.toString().padStart(2,'0');
+const fechaEl=document.getElementById('fecha-registro');
+const horaEl=document.getElementById('hora-registro');
+const pad=n=>n.toString().padStart(2,'0');
 function updateDateTime(){
   const now=new Date();
   fechaEl.value=`${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
   horaEl.value=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 }
-updateDateTime(); setInterval(updateDateTime, 1000);
+updateDateTime(); setInterval(updateDateTime,1000);
 
-// ===== Inputs =====
-const telInput = document.getElementById('numero-contacto');
-const duiInput = document.getElementById('dui');
-const nieInput = document.getElementById('nie');
+// ===== Inputs/Validación =====
+const telInput=document.getElementById('numero-contacto');
+const duiInput=document.getElementById('dui');
+const nieInput=document.getElementById('nie');
+telInput.addEventListener('input',function(){let v=this.value.replace(/\D/g,'').slice(0,8); if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4); this.value=v; validateField(this);});
+duiInput.addEventListener('input',function(){let v=this.value.replace(/\D/g,'').slice(0,9); if(v.length>8)v=v.slice(0,8)+'-'+v.slice(8); this.value=v; validateField(this);});
+nieInput.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,10); validateField(this);});
 
-telInput.addEventListener('input', function(){
-  let v=this.value.replace(/\D/g,'').slice(0,8);
-  if(v.length>4) v=v.slice(0,4)+'-'+v.slice(4);
-  this.value=v; validateField(this);
-});
-duiInput.addEventListener('input', function(){
-  let v=this.value.replace(/\D/g,'').slice(0,9);
-  if(v.length>8) v=v.slice(0,8)+'-'+v.slice(8);
-  this.value=v; validateField(this);
-});
-nieInput.addEventListener('input', function(){
-  this.value=this.value.replace(/\D/g,'').slice(0,10);
-  validateField(this);
-});
-
-// ===== Checkbox WhatsApp (solo marca visual) =====
 let whatsappChecked=false;
 const whatsappBox=document.getElementById('whatsapp-box');
 const whatsappCheckbox=document.getElementById('whatsapp-checkbox');
-whatsappBox.addEventListener('click', ()=>{
-  whatsappChecked=!whatsappChecked;
-  whatsappCheckbox.classList.toggle('checked', whatsappChecked);
-});
+whatsappBox.addEventListener('click',()=>{whatsappChecked=!whatsappChecked; whatsappCheckbox.classList.toggle('checked',whatsappChecked);});
 
-// ===== Declaración jurada (obligatoria) =====
 let declaracionChecked=false;
 const declaracionBox=document.getElementById('declaracion-box');
 const declaracionCheckbox=document.getElementById('declaracion-checkbox');
 const declaracionError=document.getElementById('declaracion-error');
-declaracionBox.addEventListener('click', ()=>{
-  declaracionChecked=!declaracionChecked;
-  declaracionCheckbox.classList.toggle('checked', declaracionChecked);
-  if(declaracionChecked) declaracionError.classList.remove('show');
-  checkFormValidity();
-});
+declaracionBox.addEventListener('click',()=>{declaracionChecked=!declaracionChecked; declaracionCheckbox.classList.toggle('checked',declaracionChecked); if(declaracionChecked) declaracionError.classList.remove('show'); checkFormValidity();});
 
-// ===== Validaciones =====
 function validateField(field){
-  const errorEl=document.getElementById(field.id+'-error');
-  let ok=true;
-  if(field.id==='nie'){
-    const v=field.value.trim();
-    ok = v.length>=8 && v.length<=10 && /^\d+$/.test(v);
-  }else if(field.id==='numero-contacto'){
-    ok = /^\d{4}-\d{4}$/.test(field.value);
-  }else if(field.id==='dui'){
-    const v=field.value.trim();
-    ok = !v || /^\d{8}-\d$/.test(v);
-  }else if(field.required){
-    ok = field.value.trim() !== '';
-  }
-  if(errorEl){
-    if(!ok && field.value){ errorEl.classList.add('show'); field.classList.add('error'); }
-    else{ errorEl.classList.remove('show'); field.classList.remove('error'); }
-  }
+  const errorEl=document.getElementById(field.id+'-error'); let ok=true;
+  if(field.id==='nie'){const v=field.value.trim(); ok=v.length>=8 && v.length<=10 && /^\d+$/.test(v);}
+  else if(field.id==='numero-contacto'){ ok=/^\d{4}-\d{4}$/.test(field.value); }
+  else if(field.id==='dui'){ const v=field.value.trim(); ok=!v || /^\d{8}-\d$/.test(v); }
+  else if(field.required){ ok=field.value.trim()!==''; }
+  if(errorEl){ if(!ok && field.value){ errorEl.classList.add('show'); field.classList.add('error'); } else { errorEl.classList.remove('show'); field.classList.remove('error'); } }
   return ok;
 }
 
-// ===== Reglas grado/turno/sección =====
 const gradoSelect=document.getElementById('reserva-matricula');
 const turnoSelect=document.getElementById('turno');
 const seccionSelect=document.getElementById('seccion');
 
-function normalize(str){ return (str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim(); }
-function setTurnoOptions(allowed){
-  turnoSelect.querySelectorAll('option').forEach(opt=>{ if(opt.value==='') return; opt.disabled=!allowed.includes(opt.value); });
-  if(!allowed.includes(turnoSelect.value)) turnoSelect.value=allowed[0]||'';
-}
-function setSeccionOptions(allowed){
-  seccionSelect.querySelectorAll('option').forEach(opt=>{ if(opt.value==='') return; opt.disabled=!allowed.includes(opt.value); });
-  if(!allowed.includes(seccionSelect.value)) seccionSelect.value=allowed[0]||'';
-}
+function normalize(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();}
+function setTurnoOptions(allowed){ turnoSelect.querySelectorAll('option').forEach(o=>{ if(o.value==='')return; o.disabled=!allowed.includes(o.value); }); if(!allowed.includes(turnoSelect.value)) turnoSelect.value=allowed[0]||''; }
+function setSeccionOptions(allowed){ seccionSelect.querySelectorAll('option').forEach(o=>{ if(o.value==='')return; o.disabled=!allowed.includes(o.value); }); if(!allowed.includes(seccionSelect.value)) seccionSelect.value=allowed[0]||''; }
 function applyTurnoSeccionCoupling(){
-  const grado=normalize(gradoSelect.value); const turno=turnoSelect.value;
+  const grado=normalize(gradoSelect.value), t=turnoSelect.value;
   const basicos=['primer grado','segundo grado','tercer grado','cuarto grado','quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'];
   if(!basicos.includes(grado)) return;
-  if(turno==='Matutino'){ setSeccionOptions(['A']); if(seccionSelect.value!=='A') seccionSelect.value='A'; }
-  else if(turno==='Vespertino'){ setSeccionOptions(['B']); if(seccionSelect.value!=='B') seccionSelect.value='B'; }
-  else{ setSeccionOptions(['A','B']); }
+  if(t==='Matutino'){ setSeccionOptions(['A']); if(seccionSelect.value!=='A') seccionSelect.value='A'; }
+  else if(t==='Vespertino'){ setSeccionOptions(['B']); if(seccionSelect.value!=='B') seccionSelect.value='B'; }
+  else { setSeccionOptions(['A','B']); }
 }
 function applyGradeRules(){
   const grado=normalize(gradoSelect.value);
-  turnoSelect.disabled=false;
-  setTurnoOptions(['Matutino','Vespertino']);
-  setSeccionOptions(['A','B','Jornada']);
-
-  if(grado==='parvularia 4' || grado==='parvularia 5'){
-    setTurnoOptions(['Vespertino']); turnoSelect.value='Vespertino';
-    setSeccionOptions(['B']); seccionSelect.value='B'; return;
-  }
+  turnoSelect.disabled=false; setTurnoOptions(['Matutino','Vespertino']); setSeccionOptions(['A','B','Jornada']);
+  if(grado==='parvularia 4'||grado==='parvularia 5'){ setTurnoOptions(['Vespertino']); turnoSelect.value='Vespertino'; setSeccionOptions(['B']); seccionSelect.value='B'; return; }
   const bach=['primer ano general','primer ano tecnico','segundo ano general','segundo ano tecnico'];
-  if(bach.includes(grado)){
-    turnoSelect.disabled=true; turnoSelect.value='';
-    setSeccionOptions(['Jornada']); seccionSelect.value='Jornada'; return;
-  }
-  if(grado==='tercer ano tecnico'){
-    setTurnoOptions(['Matutino']); turnoSelect.value='Matutino'; return;
-  }
-  if(grado==='parvularia 6'){
-    setTurnoOptions(['Matutino']); turnoSelect.value='Matutino';
-    setSeccionOptions(['A']); seccionSelect.value='A'; return;
-  }
+  if(bach.includes(grado)){ turnoSelect.disabled=true; turnoSelect.value=''; setSeccionOptions(['Jornada']); seccionSelect.value='Jornada'; return; }
+  if(grado==='tercer ano tecnico'){ setTurnoOptions(['Matutino']); turnoSelect.value='Matutino'; return; }
+  if(grado==='parvularia 6'){ setTurnoOptions(['Matutino']); turnoSelect.value='Matutino'; setSeccionOptions(['A']); seccionSelect.value='A'; return; }
   applyTurnoSeccionCoupling();
 }
-gradoSelect.addEventListener('change', ()=>{ applyGradeRules(); checkFormValidity(); });
-turnoSelect.addEventListener('change', ()=>{ applyTurnoSeccionCoupling(); checkFormValidity(); });
-seccionSelect.addEventListener('change', checkFormValidity);
+gradoSelect.addEventListener('change',()=>{applyGradeRules();checkFormValidity();});
+turnoSelect.addEventListener('change',()=>{applyTurnoSeccionCoupling();checkFormValidity();});
+seccionSelect.addEventListener('change',checkFormValidity);
 
-// ===== Habilitar botón PDF =====
-const formEl = document.getElementById('prematricula-form');
-const btnPdf = document.getElementById('btn-pdf');
-
+const btnPdf=document.getElementById('btn-pdf');
 function checkFormValidity(){
   const nie=document.getElementById('nie');
   const nombre=document.getElementById('nombre-completo');
   const responsable=document.getElementById('nombre-responsable');
   const tel=document.getElementById('numero-contacto');
   const dui=document.getElementById('dui');
-
   let ok=true;
   if(!validateField(nie) || nie.value.trim().length<8) ok=false;
   if(!nombre.value.trim()) ok=false;
@@ -496,27 +353,52 @@ function checkFormValidity(){
   if(!gradoSelect.value) ok=false;
   if(!turnoSelect.disabled && !turnoSelect.value) ok=false;
   if(!seccionSelect.value) ok=false;
-
-  if(!declaracionChecked){ ok=false; declaracionError.classList.add('show'); }
-  else{ declaracionError.classList.remove('show'); }
-
-  btnPdf.disabled = !ok;
+  if(!declaracionChecked){ ok=false; declaracionError.classList.add('show'); } else { declaracionError.classList.remove('show'); }
+  btnPdf.disabled=!ok;
 }
-
-[nieInput, document.getElementById('nombre-completo'),
- document.getElementById('nombre-responsable'), telInput, duiInput].forEach(inp=>{
-  inp.addEventListener('input', ()=>{ validateField(inp); checkFormValidity(); });
-  inp.addEventListener('blur', ()=>validateField(inp));
+[nieInput,document.getElementById('nombre-completo'),document.getElementById('nombre-responsable'),telInput,duiInput].forEach(inp=>{
+  inp.addEventListener('input',()=>{validateField(inp);checkFormValidity();});
+  inp.addEventListener('blur',()=>validateField(inp));
 });
 
-// ===== Cargar logo para PDF =====
-let _logoDataURL=null;
-async function loadLogoDataURL(){
-  if(_logoDataURL) return _logoDataURL;
-  const url='https://i.imgur.com/ugoJzRX.jpeg';
-  const res=await fetch(url,{mode:'cors'}); const blob=await res.blob();
-  _logoDataURL = await new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result); fr.readAsDataURL(blob); });
-  return _logoDataURL;
+// ======== LOGO: 3 vías (Base64 directo / fetch / vector fallback) ========
+// 1) Si defines tu logo en BASE64 aquí, se usará SIEMPRE (sin CORS):
+//    - Reemplaza el valor por algo como: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgA...'
+const LOGO_BASE64 = ''; // <- pega aquí tu data URL para garantizar que aparezca
+
+async function loadLogoDataURL() {
+  if (LOGO_BASE64 && LOGO_BASE64.startsWith('data:image/')) return LOGO_BASE64;
+
+  // 2) Intento por fetch -> blob -> base64 (puede fallar por CORS según el host)
+  const url = 'https://i.imgur.com/ugoJzRX.jpeg';
+  try {
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const blob = await res.blob();
+    const dataUrl = await new Promise((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.readAsDataURL(blob);
+    });
+    return dataUrl;
+  } catch (e) {
+    // devolver cadena vacía para activar fallback vectorial
+    return '';
+  }
+}
+
+// 3) Fallback: “logo” vectorial (CECSI) si no hay imagen disponible
+function drawVectorLogoFallback(doc, x, y, size){
+  // círculo sólido
+  doc.setFillColor(102,126,234);
+  doc.circle(x + size/2, y + size/2, size/2, 'F');
+  // texto blanco centrado
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(14);
+  doc.text('CECSI', x + size/2, y + size/2 + 5, { align: 'center' });
+  // restaurar negro
+  doc.setTextColor(0,0,0);
 }
 
 // ===== Generar PDF =====
@@ -527,35 +409,41 @@ async function generatePDF(){
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit:'pt', format:'letter' });
 
-    const nie = nieInput.value.trim();
+    const nie = document.getElementById('nie').value.trim();
     const nombre = document.getElementById('nombre-completo').value.trim();
     const responsable = document.getElementById('nombre-responsable').value.trim();
-    const dui = duiInput.value.trim();
-    const grado = gradoSelect.value;
-    const turno = turnoSelect.disabled ? 'No aplica' : turnoSelect.value;
-    const seccion = seccionSelect.value;
-    const tel = telInput.value.trim();
+    const dui = document.getElementById('dui').value.trim();
+    const grado = document.getElementById('reserva-matricula').value;
+    const turno = document.getElementById('turno').disabled ? 'No aplica' : document.getElementById('turno').value;
+    const seccion = document.getElementById('seccion').value;
+    const tel = document.getElementById('numero-contacto').value.trim();
 
     const margin=50; let y=margin;
 
     // Header
     doc.setFillColor(102,126,234);
     doc.rect(0,0,612,80,'F');
-
     doc.setTextColor(255,255,255);
     doc.setFont('helvetica','bold'); doc.setFontSize(24);
     doc.text('PREMATRÍCULA 2026', margin, y+25);
     doc.setFontSize(14);
     doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y+45);
 
-    // Logo
-    try{
-      const logoData = await loadLogoDataURL();
-      const logoW=60, logoH=60, xLogo=612 - margin - logoW, yLogo=10;
-      doc.addImage(logoData, 'JPEG', xLogo, yLogo, logoW, logoH);
-    }catch(e){ console.warn('No se pudo cargar el logo:', e); }
+    // LOGO (derecha). Intentar BASE64/CORS y si no, fallback vectorial.
+    const logoX = 612 - margin - 60, logoY = 10, logoW = 60, logoH = 60;
+    const dataUrl = await loadLogoDataURL();
+    if (dataUrl) {
+      // Detectar formato del dataURL para jsPDF
+      const isPng = dataUrl.startsWith('data:image/png');
+      const isJpeg = dataUrl.startsWith('data:image/jpeg') || dataUrl.startsWith('data:image/jpg');
+      const fmt = isPng ? 'PNG' : (isJpeg ? 'JPEG' : 'JPEG');
+      doc.addImage(dataUrl, fmt, logoX, logoY, logoW, logoH);
+    } else {
+      // Fallback vectorial para evitar "logo invisible"
+      drawVectorLogoFallback(doc, logoX, logoY, logoW);
+    }
 
-    // Línea
+    // Línea decorativa
     y=110; doc.setTextColor(0,0,0);
     doc.setDrawColor(102,126,234); doc.setLineWidth(2);
     doc.line(margin,y,612-margin,y); y+=30;
@@ -565,13 +453,12 @@ async function generatePDF(){
     doc.text('INFORMACIÓN DE REGISTRO', margin, y); y+=20;
 
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
-    doc.text(`Fecha: ${fechaEl.value}`, margin, y);
-    doc.text(`Hora: ${horaEl.value}`, 350, y); y+=30;
+    doc.text(`Fecha: ${document.getElementById('fecha-registro').value}`, margin, y);
+    doc.text(`Hora: ${document.getElementById('hora-registro').value}`, 350, y); y+=30;
 
     // Estudiante
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('DATOS DEL ESTUDIANTE', margin, y); y+=20;
-
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`NIE: ${nie}`, margin, y); y+=18;
     doc.text(`Nombre Completo: ${nombre}`, margin, y); y+=30;
@@ -579,7 +466,6 @@ async function generatePDF(){
     // Responsable
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('DATOS DEL RESPONSABLE', margin, y); y+=20;
-
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`Nombre: ${responsable}`, margin, y); y+=18;
     if(dui){ doc.text(`DUI: ${dui}`, margin, y); y+=18; }
@@ -589,7 +475,6 @@ async function generatePDF(){
     // Académica
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('INFORMACIÓN ACADÉMICA', margin, y); y+=20;
-
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`Grado: ${grado}`, margin, y); y+=18;
     doc.text(`Turno: ${turno}`, margin, y); y+=18;
@@ -598,7 +483,6 @@ async function generatePDF(){
     // Declaración jurada
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
     doc.text('DECLARACIÓN JURADA', margin, y); y+=20;
-
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     const boxSize=10; doc.rect(margin, y-8, boxSize, boxSize);
     if(declaracionChecked){ doc.setFont('helvetica','bold'); doc.text('✓', margin+2.2, y); doc.setFont('helvetica','normal'); }
@@ -618,7 +502,6 @@ exclusivamente académicos y administrativos.`;
     doc.setDrawColor(180,180,180);
     doc.line(margin, y+20, 260, y+20); doc.text('Firma del Responsable', margin, y+35);
     doc.line(320, y+20, 582, y+20); doc.text('Lugar y fecha', 320, y+35);
-    y += 60;
 
     // Footer
     doc.setDrawColor(220,220,220); doc.setLineWidth(1);
@@ -629,11 +512,10 @@ exclusivamente académicos y administrativos.`;
 
     const filename = `Prematricula_${nie || 'sinNIE'}_${Date.now()}.pdf`;
     doc.save(filename);
-
     showSuccessMessage('¡PDF generado exitosamente!');
   }catch(err){
     console.error('Error al generar PDF:', err);
-    alert('Hubo un error al generar el PDF. Por favor, intente nuevamente.');
+    alert('Hubo un error al generar el PDF.');
   }finally{
     document.getElementById('loading-overlay').classList.remove('show');
   }
@@ -643,30 +525,17 @@ exclusivamente académicos y administrativos.`;
 function showSuccessMessage(message){
   const toast=document.getElementById('success-message');
   toast.querySelector('.success-text').textContent=message;
-  toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'), 3500);
+  toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3500);
 }
 
-// ===== Inicialización =====
-addEventListener('load', ()=>{ applyGradeRules(); checkFormValidity(); });
-formEl.addEventListener('submit', e=>e.preventDefault());
+// ===== Inicialización / Modal =====
+addEventListener('load',()=>{ applyGradeRules(); checkFormValidity(); });
+document.getElementById('prematricula-form').addEventListener('submit',e=>e.preventDefault());
 
-// ===== Botón PDF -> abre modal =====
-const modal = document.getElementById('prepdf-modal');
-const btnCancel = document.getElementById('modal-cancel');
-const btnConfirm = document.getElementById('modal-confirm');
-
-document.getElementById('btn-pdf').addEventListener('click', ()=>{
-  if(btnPdf.disabled) return;
-  // Muestra el modal previo
-  modal.classList.add('show');
-});
-
-btnCancel.addEventListener('click', ()=> modal.classList.remove('show'));
-btnConfirm.addEventListener('click', async ()=>{
-  modal.classList.remove('show');
-  await generatePDF();
-});
+const modal=document.getElementById('prepdf-modal');
+document.getElementById('btn-pdf').addEventListener('click',()=>{ if(!btnPdf.disabled) modal.classList.add('show'); });
+document.getElementById('modal-cancel').addEventListener('click',()=>modal.classList.remove('show'));
+document.getElementById('modal-confirm').addEventListener('click',async()=>{ modal.classList.remove('show'); await generatePDF(); });
 </script>
-
 </body>
 </html>
