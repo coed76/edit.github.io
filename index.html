@@ -1,670 +1,305 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Prematrícula 2026</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulario de Prematrícula 2026</title>
+<style>
+/* === RESETEO GENERAL === */
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex; justify-content: center; align-items: center;
+  padding: 20px;
+  overflow-x: hidden;
+  position: relative;
+}
 
-        /* Canvas para partículas */
-        #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
+/* === CANVAS === */
+#particles-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
 
-        .form-container {
-            max-width: 700px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 50px 45px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 10;
-            animation: slideIn 0.6s ease-out;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
+/* === CONTENEDOR DEL FORMULARIO === */
+.form-container {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 45px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.3);
+  position: relative;
+  z-index: 10;
+  animation: slideIn .6s ease-out;
+}
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+@keyframes slideIn {
+  from {opacity: 0; transform: translateY(30px);}
+  to {opacity: 1; transform: translateY(0);}
+}
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-        }
+/* === CABECERA === */
+.header { text-align: center; margin-bottom: 40px; }
+.logo-container {
+  width: 130px; height: 130px;
+  margin: 0 auto 15px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+.logo-container img { width: 100%; height: 100%; border-radius: 50%; }
+@keyframes pulse {
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+}
+h1 { color:#2d3748; font-size:2.1em; font-weight:700; }
+h2 { color:#667eea; font-size:1.1em; font-weight:500; margin-top:6px; }
+.year-badge {
+  display:inline-block;
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff; padding:6px 18px; border-radius:20px;
+  font-size:.9em; font-weight:600; margin-top:10px;
+}
 
-        .logo-container {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 20px;
-            position: relative;
-            animation: pulse 2s ease-in-out infinite;
-            background: white;
-            border-radius: 50%;
-            padding: 5px;
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-        }
+/* === CAMPOS DEL FORMULARIO === */
+.form-group { margin-bottom: 22px; }
+label {
+  display:block; color:#4a5568; font-weight:600; margin-bottom:8px;
+  font-size:.95em; transition: color .3s ease;
+}
+input[type="text"], select {
+  width:100%; padding:14px 16px;
+  border:2px solid #e2e8f0;
+  border-radius:12px; font-size:1em;
+  transition: all .3s ease;
+  background:white; color:#2d3748;
+}
+input:focus, select:focus {
+  border-color:#667eea;
+  box-shadow:0 0 0 4px rgba(102,126,234,0.1);
+}
+input.error, select.error { border-color:#e53e3e; }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
+.select-arrow { position: relative; }
+.select-arrow::after {
+  content:'▼';
+  position:absolute;
+  right:15px; top:50%; transform:translateY(-50%);
+  color:#667eea; font-size:.75em; pointer-events:none;
+}
 
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+/* === GRUPOS === */
+.inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
+.contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
 
-        h1 {
-            color: #2d3748;
-            font-size: 2.2em;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
+/* === CHECKBOX === */
+.checkbox-group { display:flex; align-items:center; justify-content:flex-start; padding-top:30px; }
+.checkbox-wrapper { display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
+.custom-checkbox {
+  width:24px; height:24px;
+  border:2px solid #e2e8f0; border-radius:6px;
+  display:flex; align-items:center; justify-content:center;
+  transition: all .3s ease; background:white;
+}
+.custom-checkbox.checked {
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  border-color:#667eea;
+}
+.custom-checkbox svg {
+  width:16px; height:16px; fill:white; opacity:0; transition:opacity .2s;
+}
+.custom-checkbox.checked svg { opacity:1; }
+.checkbox-label { color:#4a5568; font-weight:500; }
 
-        h2 {
-            color: #667eea;
-            font-size: 1.2em;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
+/* === BOTÓN === */
+.button-container { text-align:center; margin-top:35px; }
+.whatsapp-button {
+  background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
+  color:white; border:none; border-radius:14px;
+  padding:16px 40px; font-size:1.05em; font-weight:600;
+  cursor:pointer; display:inline-flex; align-items:center; gap:12px;
+  box-shadow:0 10px 30px rgba(37,211,102,.3);
+  transition:all .3s ease; animation:buttonPulse 2s ease-in-out infinite;
+}
+@keyframes buttonPulse {
+  0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);}
+  50%{box-shadow:0 10px 40px rgba(37,211,102,.5);}
+}
+.whatsapp-button:hover { transform:translateY(-3px); }
+.whatsapp-button svg { width:24px; height:24px; fill:white; }
 
-        .year-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6px 20px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            margin-top: 10px;
-        }
+/* === MENSAJE DE ÉXITO === */
+.success-message {
+  position:fixed; top:25px; right:25px;
+  background:white; padding:18px 25px;
+  border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.2);
+  display:none; align-items:center; gap:12px;
+  z-index:1000; animation:slideInRight .5s ease-out;
+}
+@keyframes slideInRight {
+  from{opacity:0;transform:translateX(100px);}
+  to{opacity:1;transform:translateX(0);}
+}
+.success-message.show{display:flex;}
+.success-icon {
+  width:38px; height:38px;
+  background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+}
+.success-icon svg { width:20px; height:20px; fill:white; }
+.success-text { color:#2d3748; font-weight:600; }
 
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            animation: fadeInUp 0.5s ease-out backwards;
-        }
-
-        .form-group:nth-child(1) { animation-delay: 0.1s; }
-        .form-group:nth-child(2) { animation-delay: 0.2s; }
-        .form-group:nth-child(3) { animation-delay: 0.3s; }
-        .form-group:nth-child(4) { animation-delay: 0.4s; }
-        .form-group:nth-child(5) { animation-delay: 0.5s; }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        label {
-            display: block;
-            color: #4a5568;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-            transition: color 0.3s ease;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        input[type="text"], .form-select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            background: white;
-            color: #2d3748;
-            appearance: none; /* Elimina estilos nativos del select */
-        }
-
-        input[type="text"]:hover, .form-select:hover {
-            border-color: #cbd5e0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transform: translateY(-1px);
-        }
-
-        input[type="text"]:focus, .form-select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        /* Estilos específicos para el SELECT para simular el dropdown arrow */
-        .select-arrow::after {
-            content: '▼';
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            color: #667eea;
-            font-size: 0.7em;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .inline-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .contact-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-            margin-bottom: 35px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            padding-top: 32px;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .custom-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #e2e8f0;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .custom-checkbox.checked {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-color: #667eea;
-        }
-
-        .custom-checkbox svg {
-            width: 16px;
-            height: 16px;
-            fill: white;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .custom-checkbox.checked svg {
-            opacity: 1;
-        }
-
-        .checkbox-label {
-            color: #4a5568;
-            font-weight: 500;
-            font-size: 0.95em;
-        }
-
-        .button-container {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .whatsapp-button {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            padding: 18px 45px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            animation: buttonPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes buttonPulse {
-            0%, 100% {
-                box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-            }
-            50% {
-                box-shadow: 0 10px 40px rgba(37, 211, 102, 0.5);
-            }
-        }
-
-        .whatsapp-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.4);
-        }
-
-        .whatsapp-button:active {
-            transform: translateY(-1px);
-        }
-
-        .whatsapp-button svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
-        }
-
-        .success-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            display: none;
-            align-items: center;
-            gap: 15px;
-            z-index: 1000;
-            animation: slideInRight 0.5s ease-out;
-            max-width: 90%;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .success-message.show {
-            display: flex;
-        }
-
-        .success-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .success-icon svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        .success-text {
-            color: #2d3748;
-            font-weight: 600;
-        }
-
-        /* RESPONSIVE DESIGN */
-
-        @media (max-width: 1024px) and (min-width: 769px) {
-            .form-container { max-width: 650px; padding: 45px 40px; }
-            h1 { font-size: 2em; }
-            h2 { font-size: 1.15em; }
-            .inline-group { grid-template-columns: 1fr 1fr 1fr; }
-            .contact-group { grid-template-columns: 1.5fr 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 15px; }
-            .form-container { padding: 35px 30px; border-radius: 20px; }
-            .logo-container { width: 100px; height: 100px; }
-            h1 { font-size: 1.8em; }
-            h2 { font-size: 1.1em; }
-            .inline-group { grid-template-columns: 1fr; gap: 20px; }
-            .contact-group { grid-template-columns: 1fr; gap: 20px; }
-            .checkbox-group { padding-top: 0; }
-            .whatsapp-button { padding: 16px 35px; font-size: 1.05em; }
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 10px; }
-            .form-container { padding: 30px 20px; border-radius: 18px; }
-            .logo-container { width: 90px; height: 90px; margin-bottom: 15px; }
-            h1 { font-size: 1.6em; }
-            h2 { font-size: 1em; }
-            .whatsapp-button { width: 100%; justify-content: center; padding: 15px 30px; font-size: 1em; gap: 10px; }
-            .success-message { left: 10px; right: 10px; top: auto; bottom: 10px; padding: 15px 20px; font-size: 0.9em; }
-        }
-
-        /* Modo landscape para móviles */
-        @media (max-height: 600px) and (orientation: landscape) {
-            body { align-items: flex-start; padding: 15px; }
-            .form-container { margin: 20px auto; padding: 30px; }
-            .logo-container { width: 80px; height: 80px; margin-bottom: 15px; }
-            .header { margin-bottom: 25px; }
-            h1 { font-size: 1.6em; }
-            h2 { font-size: 1em; }
-        }
-    </style>
+/* === RESPONSIVE === */
+@media(max-width:768px){
+  .inline-group, .contact-group{grid-template-columns:1fr;}
+  .form-container{padding:35px;}
+  .logo-container{width:100px; height:100px;}
+}
+@media(max-width:480px){
+  .form-container{padding:25px;}
+  .whatsapp-button{width:100%; justify-content:center;}
+}
+</style>
 </head>
 <body>
 
 <canvas id="particles-canvas"></canvas>
 
 <div class="form-container">
-    <div class="header">
-        <div class="logo-container">
-                        <img src="https://i.imgur.com/ugoJzRX.jpeg" alt="Logo Complejo Educativo Cantón San Isidro" id="logo-img">
-        </div>
-        <h1>PREMATRÍCULA</h1>
-        <h2>COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO</h2>
-        <span class="year-badge">AÑO 2026</span>
-    </div>
+  <div class="header">
+    <div class="logo-container">
+      <img src="https://i.imgur.com/ugoJzRX.jpeg" alt="Logo Complejo Educativo Cantón San Isidro">
+    </div>
+    <h1>PREMATRÍCULA</h1>
+    <h2>COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO</h2>
+    <span class="year-badge">AÑO 2026</span>
+  </div>
 
-    <form id="prematricula-form">
-        <div class="form-section">
-            <div class="form-group">
-                <label for="nie">NIE del Estudiante</label>
-                <div class="input-wrapper">
-                    <input type="text" id="nie" name="nie" placeholder="Ej: 1234567890">
-                </div>
-            </div>
+  <form id="prematricula-form" autocomplete="off">
+    <div class="form-group">
+      <label for="nie">NIE del Estudiante *</label>
+      <input type="text" id="nie" placeholder="Ej: 1234567890" maxlength="10">
+    </div>
+    <div class="form-group">
+      <label for="nombre-completo">Nombre Completo *</label>
+      <input type="text" id="nombre-completo" placeholder="Ingrese el nombre completo">
+    </div>
+    <div class="form-group">
+      <label for="nombre-responsable">Nombre del Responsable *</label>
+      <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
+    </div>
 
-            <div class="form-group">
-                <label for="nombre-completo">Nombre Completo del Estudiante</label>
-                <div class="input-wrapper">
-                    <input type="text" id="nombre-completo" name="nombre-completo" placeholder="Ingrese el nombre completo">
-                </div>
-            </div>
+    <div class="inline-group">
+      <div class="form-group select-arrow">
+        <label for="reserva-matricula">Reserva Matrícula en (Grado) *</label>
+        <select id="reserva-matricula">
+          <option value="" disabled selected>Seleccione el nivel</option>
+          <option>Parvularia 4</option>
+          <option>Parvularia 5</option>
+          <option>Parvularia 6</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="turno">Turno</label>
+        <input type="text" id="turno" placeholder="Ej: Mañana">
+      </div>
+      <div class="form-group">
+        <label for="seccion">Sección</label>
+        <input type="text" id="seccion" placeholder="Ej: A">
+      </div>
+    </div>
 
-            <div class="form-group">
-                <label for="nombre-responsable">Nombre del Responsable</label>
-                <div class="input-wrapper">
-                    <input type="text" id="nombre-responsable" name="nombre-responsable" placeholder="Padre, madre o tutor">
-                </div>
-            </div>
+    <div class="contact-group">
+      <div class="form-group">
+        <label for="numero-contacto">Número de Contacto *</label>
+        <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9">
+      </div>
+      <div class="checkbox-group">
+        <div class="checkbox-wrapper" id="whatsapp-box">
+          <div class="custom-checkbox" id="whatsapp-checkbox">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          </div>
+          <span class="checkbox-label">Tiene WhatsApp</span>
+        </div>
+      </div>
+    </div>
 
-            <div class="inline-group">
-                                <div class="form-group">
-                    <label for="reserva-matricula">Reserva Matrícula en (Grado)</label>
-                    <div class="input-wrapper select-arrow">
-                        <select id="reserva-matricula" name="reserva-matricula" class="form-select">
-                            <option value="" disabled selected>Seleccione el nivel</option>
-                            <option value="Parvularia 4">Parvularia 4</option>
-                            <option value="Parvularia 5">Parvularia 5</option>
-                            <option value="Parvularia 6">Parvularia 6</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="turno">Turno</label>
-                    <input type="text" id="turno" name="turno" placeholder="Ej: Mañana">
-                </div>
-                
-                <div class="form-group">
-                    <label for="seccion">Sección</label>
-                    <input type="text" id="seccion" name="seccion" placeholder="Ej: A">
-                </div>
-            </div>
-
-            <div class="contact-group">
-                <div class="form-group">
-                    <label for="numero-contacto">Número de Contacto</label>
-                    <input type="text" id="numero-contacto" name="numero-contacto" placeholder="7890-1234">
-                </div>
-                
-                <div class="checkbox-group">
-                    <div class="checkbox-wrapper" onclick="toggleCheckbox()">
-                        <div class="custom-checkbox" id="whatsapp-checkbox">
-                            <svg viewBox="0 0 24 24">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                            </svg>
-                        </div>
-                        <span class="checkbox-label">Tiene WhatsApp</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="button-container">
-            <button type="button" class="whatsapp-button" onclick="generarDocumentoWhatsapp()">
-                <svg viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-                Enviar por WhatsApp
-            </button>
-        </div>
-    </form>
+    <div class="button-container">
+      <button type="button" id="btn-enviar" class="whatsapp-button">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></svg>
+        Enviar por WhatsApp
+      </button>
+    </div>
+  </form>
 </div>
 
 <div class="success-message" id="success-message">
-    <div class="success-icon">
-        <svg viewBox="0 0 24 24">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-        </svg>
-      </div>
-    <span class="success-text">¡Mensaje generado con éxito!</span>
+  <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+  <span class="success-text">¡Mensaje generado con éxito!</span>
 </div>
 
 <script>
-    // Sistema de partículas optimizado (usa Canvas para mejor rendimiento)
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    
-    resizeCanvas();
+// === Partículas ===
+const canvas=document.getElementById('particles-canvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+resize();addEventListener('resize',resize);
+const particles=[],count=innerWidth<768?25:50;
+class Particle{constructor(){this.reset();this.y=Math.random()*canvas.height;}
+reset(){this.x=Math.random()*canvas.width;this.y=-10;this.speed=Math.random()+.3;this.r=Math.random()*2+1;this.op=Math.random()*.5+.2;}
+update(){this.y+=this.speed;if(this.y>canvas.height)this.reset();}
+draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,2*Math.PI);ctx.fillStyle=`rgba(255,255,255,${this.op})`;ctx.fill();}}
+for(let i=0;i<count;i++)particles.push(new Particle());
+(function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);})();
 
-    const particles = [];
-    let particleCount = window.innerWidth < 768 ? 30 : 60;
+// === Checkbox ===
+let whatsappChecked=false;
+document.getElementById('whatsapp-box').addEventListener('click',()=>{
+  whatsappChecked=!whatsappChecked;
+  document.getElementById('whatsapp-checkbox').classList.toggle('checked',whatsappChecked);
+});
 
-    class Particle {
-        constructor() {
-            this.reset();
-            this.y = Math.random() * canvas.height;
-        }
+// === Función principal ===
+document.getElementById('btn-enviar').addEventListener('click',()=>{
+  const fields=['nie','nombre-completo','nombre-responsable','reserva-matricula','numero-contacto'];
+  let valid=true;
+  fields.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el.value.trim()){el.classList.add('error');valid=false;}
+    else el.classList.remove('error');
+  });
+  const tel=document.getElementById('numero-contacto');
+  if(tel.value && !/^\d{4}-\d{4}$/.test(tel.value)){alert('⚠️ Formato del número debe ser ####-####');tel.classList.add('error');return;}
+  if(!valid){alert('⚠️ Por favor, complete todos los campos obligatorios');return;}
 
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = -10;
-            this.speed = Math.random() * 1 + 0.5;
-            this.radius = Math.random() * 3 + 1;
-            this.opacity = Math.random() * 0.5 + 0.2;
-            this.drift = Math.random() * 0.5 - 0.25;
-        }
-
-        update() {
-            this.y += this.speed;
-            this.x += this.drift;
-
-            if (this.y > canvas.height) {
-                this.reset();
-            }
-
-            if (this.x < 0 || this.x > canvas.width) {
-                this.x = Math.random() * canvas.width;
-            }
-        }
-
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-            ctx.fill();
-        }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        const newCount = window.innerWidth < 768 ? 30 : 60;
-        
-        if (newCount > particles.length) {
-            for (let i = particles.length; i < newCount; i++) {
-                particles.push(new Particle());
-            }
-        } else if (newCount < particles.length) {
-            particles.splice(newCount);
-        }
-    });
-
-    // Sistema de checkbox
-    let whatsappChecked = false;
-
-    function toggleCheckbox() {
-        whatsappChecked = !whatsappChecked;
-        const checkbox = document.getElementById('whatsapp-checkbox');
-        
-        if (whatsappChecked) {
-            checkbox.classList.add('checked');
-        } else {
-            checkbox.classList.remove('checked');
-        }
-    }
-
-    // Función para generar y enviar por WhatsApp
-    function generarDocumentoWhatsapp() {
-        const nie = document.getElementById('nie').value.trim();
-        const nombreCompleto = document.getElementById('nombre-completo').value.trim();
-        const nombreResponsable = document.getElementById('nombre-responsable').value.trim();
-        // Cargar el valor del select
-        const reservaMatricula = document.getElementById('reserva-matricula').value; 
-        const turno = document.getElementById('turno').value.trim();
-        const seccion = document.getElementById('seccion').value.trim();
-        const numeroContacto = document.getElementById('numero-contacto').value.trim();
-
-        // Validar que el select tenga una opción seleccionada (además del placeholder)
-        if (!nie || !nombreCompleto || !nombreResponsable || !reservaMatricula || !numeroContacto) {
-            alert('⚠️ Por favor, complete todos los campos obligatorios');
-            return;
-        }
-
-        const poseeWhatsapp = whatsappChecked ? 'Sí' : 'No';
-
-        // Mensaje formateado para WhatsApp
-        let mensaje = `╔═══════════════════════════╗\n`;
-        mensaje += `║  *PREMATRÍCULA 2026*  ║\n`;
-        mensaje += `╚═══════════════════════════╝\n\n`;
-        mensaje += `🏫 *COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO*\n\n`;
-        mensaje += `📋 *DATOS DEL ESTUDIANTE*\n`;
-        mensaje += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        mensaje += `👤 NIE: ${nie}\n`;
-        mensaje += `📝 Nombre: ${nombreCompleto}\n\n`;
-        mensaje += `👨‍👩‍👧 *DATOS DEL RESPONSABLE*\n`;
-        mensaje += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        mensaje += `👤 Nombre: ${nombreResponsable}\n`;
-        mensaje += `📱 Contacto: ${numeroContacto}\n`;
-        mensaje += `💬 WhatsApp: ${poseeWhatsapp}\n\n`;
-        mensaje += `📚 *INFORMACIÓN ACADÉMICA*\n`;
-        mensaje += `━━━━━━━━━━━━━━━━━━━━━\n`;
-        mensaje += `🎓 Grado: ${reservaMatricula}\n`;
-        mensaje += `⏰ Turno: ${turno}\n`;
-        mensaje += `📂 Sección: ${seccion}\n\n`;
-        mensaje += `✅ *Documento generado exitosamente*\n`;
-        mensaje += `📅 Fecha: ${new Date().toLocaleDateString('es-ES')}`;
-
-        const mensajeCodificado = encodeURIComponent(mensaje);
-        window.open(`https://api.whatsapp.com/send?text=${mensajeCodificado}`, '_blank');
-
-        const successMsg = document.getElementById('success-message');
-        successMsg.classList.add('show');
-        setTimeout(() => {
-            successMsg.classList.remove('show');
-        }, 3000);
-    }
-    
-    // Asignar función al ámbito global para HTML (para que toggleCheckbox funcione)
-    window.toggleCheckbox = toggleCheckbox;
-    window.generarDocumentoWhatsapp = generarDocumentoWhatsapp;
-
-
-    // Efecto de enfoque en inputs
-    const inputs = document.querySelectorAll('input[type="text"], .form-select');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            const label = this.closest('.form-group').querySelector('label');
-            if (label) label.style.color = '#667eea';
-        });
-        
-        input.addEventListener('blur', function() {
-            const label = this.closest('.form-group').querySelector('label');
-            if (label) label.style.color = '#4a5568';
-        });
-    });
+  const data={
+    nie:nie.value.trim(),
+    nombre:nombre-completo.value.trim(),
+    responsable:nombre-responsable.value.trim(),
+    grado:reserva-matricula.value,
+    turno:turno.value.trim()||'No especificado',
+    seccion:seccion.value.trim()||'No asignada',
+    contacto:numero-contacto.value.trim(),
+    whatsapp:whatsappChecked?'Sí':'No'
+  };
+  const mensaje=`*PREMATRÍCULA 2026*\n🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO\n\n👤 NIE: ${data.nie}\n🧒 Nombre: ${data.nombre}\n👨‍👩‍👧 Responsable: ${data.responsable}\n📱 Contacto: ${data.contacto}\n💬 WhatsApp: ${data.whatsapp}\n🎓 Grado: ${data.grado}\n⏰ Turno: ${data.turno}\n📂 Sección: ${data.seccion}\n\n📅 Fecha: ${new Date().toLocaleDateString('es-ES')}`;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`,'_blank');
+  const msg=document.getElementById('success-message');
+  msg.classList.add('show');
+  setTimeout(()=>msg.classList.remove('show'),3000);
+});
 </script>
-
 </body>
 </html>
