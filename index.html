@@ -6,33 +6,37 @@
 <title>Formulario de Prematrícula 2026</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative}
-#particles-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
-.form-container{z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:24px;padding:45px;max-width:740px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.header{text-align:center;margin-bottom:32px}
+body{font-family:'Segoe UI',Tahoma,Verdana,sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative;overflow-x:hidden}
+#particles-canvas{position:fixed;inset:0;pointer-events:none;z-index:1}
+.form-container{z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.3);border-radius:24px;padding:40px;max-width:760px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:slideIn .6s ease-out}
+@keyframes slideIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.header{text-align:center;margin-bottom:28px}
 .logo-container{width:140px;height:140px;margin:0 auto 10px;background:#fff;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px rgba(40,167,69,.3)}
 .logo-container img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-h1{color:#2d3748;font-size:2em}
-h2{color:#667eea;font-size:1.05em}
-.year-badge{display:inline-block;margin-top:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:6px 16px;border-radius:20px;font-weight:600}
+h1{color:#2d3748;font-size:2.1em}
+h2{color:#667eea;font-size:1.05em;margin-top:6px}
+.year-badge{display:inline-block;margin-top:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:6px 16px;border-radius:20px;font-weight:600;font-size:.9em}
 .form-group{margin-bottom:18px}
 label{display:block;font-weight:600;color:#4a5568;margin-bottom:6px}
-input[type="text"],select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px}
+input[type="text"],select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;font-size:1rem}
 input[readonly]{background:#f7fafc}
+input:focus,select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 4px rgba(102,126,234,.1)}
 .top-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
 .inline-group{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
 .contact-group{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-.checkbox-group{display:flex;align-items:center;padding-top:8px}
+.checkbox-group{display:flex;align-items:center;padding-top:6px}
 .checkbox-wrapper{display:flex;align-items:center;gap:8px;cursor:pointer}
-.custom-checkbox{width:22px;height:22px;border:2px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.custom-checkbox{width:22px;height:22px;border:2px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#fff;transition:.2s}
 .custom-checkbox.checked{background:linear-gradient(135deg,#667eea,#764ba2);border-color:#667eea}
-.custom-checkbox svg{width:14px;height:14px;fill:#fff;opacity:0}
+.custom-checkbox svg{width:14px;height:14px;fill:#fff;opacity:0;transition:opacity .15s}
 .custom-checkbox.checked svg{opacity:1}
-.actions{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
-.btn{border:none;color:#fff;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:inline-flex;gap:10px;align-items:center}
-.btn svg{width:20px;height:20px;fill:#fff}
+.actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:8px}
+.btn{border:none;color:#fff;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:inline-flex;gap:10px;align-items:center;box-shadow:0 10px 24px rgba(0,0,0,.12);transition:transform .15s}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn:hover{transform:translateY(-2px)}
 .btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E)}
 .btn-pdf{background:linear-gradient(135deg,#667eea,#764ba2)}
+.btn-ghost{background:linear-gradient(135deg,#718096,#4a5568)}
 .success-message{position:fixed;top:18px;right:18px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,.2);display:none;gap:10px;z-index:1000}
 .success-message.show{display:flex}
 @media(max-width:768px){.top-row,.inline-group,.contact-group{grid-template-columns:1fr}}
@@ -55,26 +59,26 @@ input[readonly]{background:#f7fafc}
     <div class="top-row">
       <div class="form-group">
         <label for="nie">NIE del Estudiante *</label>
-        <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890">
+        <input type="text" id="nie" maxlength="10" placeholder="Ej: 1234567890" required>
       </div>
       <div class="form-group">
         <label for="fecha-registro">Fecha</label>
-        <input type="text" id="fecha-registro" readonly>
+        <input type="text" id="fecha-registro" readonly required>
       </div>
       <div class="form-group">
         <label for="hora-registro">Hora</label>
-        <input type="text" id="hora-registro" readonly>
+        <input type="text" id="hora-registro" readonly required>
       </div>
     </div>
 
     <div class="form-group">
       <label for="nombre-completo">Nombre Completo *</label>
-      <input type="text" id="nombre-completo">
+      <input type="text" id="nombre-completo" required>
     </div>
 
     <div class="form-group">
       <label for="nombre-responsable">Nombre del Responsable *</label>
-      <input type="text" id="nombre-responsable">
+      <input type="text" id="nombre-responsable" required>
     </div>
 
     <div class="form-group">
@@ -85,7 +89,7 @@ input[readonly]{background:#f7fafc}
     <div class="inline-group">
       <div class="form-group">
         <label for="reserva-matricula">Reserva Matrícula en (Grado) *</label>
-        <select id="reserva-matricula">
+        <select id="reserva-matricula" required>
           <option value="" disabled selected>Seleccione el nivel</option>
           <optgroup label="Parvularia">
             <option>Parvularia 4</option>
@@ -115,7 +119,7 @@ input[readonly]{background:#f7fafc}
 
       <div class="form-group">
         <label for="turno">Turno *</label>
-        <select id="turno">
+        <select id="turno" required>
           <option value="" disabled selected>Seleccione el turno</option>
           <option value="Matutino">Matutino</option>
           <option value="Vespertino">Vespertino</option>
@@ -124,7 +128,7 @@ input[readonly]{background:#f7fafc}
 
       <div class="form-group">
         <label for="seccion">Sección *</label>
-        <select id="seccion">
+        <select id="seccion" required>
           <option value="" disabled selected>Seleccione una opción</option>
           <option value="A">A</option>
           <option value="B">B</option>
@@ -136,10 +140,10 @@ input[readonly]{background:#f7fafc}
     <div class="contact-group">
       <div class="form-group">
         <label for="numero-contacto">Número de Contacto *</label>
-        <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9">
+        <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9" required>
       </div>
       <div class="checkbox-group">
-        <div class="checkbox-wrapper" id="whatsapp-box">
+        <div class="checkbox-wrapper" id="whatsapp-box" title="Marcar si el contacto tiene WhatsApp">
           <div class="custom-checkbox" id="whatsapp-checkbox">
             <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
           </div>
@@ -149,217 +153,280 @@ input[readonly]{background:#f7fafc}
     </div>
 
     <div class="actions">
-      <button type="button" id="btn-enviar" class="btn btn-whatsapp">
-        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></svg>
-        Enviar por WhatsApp
-      </button>
-      <button type="button" id="btn-pdf" class="btn btn-pdf">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2zM8 9h8v2H8V9zm0 4h5v2H8v-2z"/></svg>
-        Descargar PDF (Carta)
-      </button>
+      <button type="button" id="btn-enviar" class="btn btn-whatsapp" disabled>Enviar por WhatsApp</button>
+      <button type="button" id="btn-pdf" class="btn btn-pdf" disabled>Descargar PDF (Carta)</button>
+      <button type="button" id="btn-pdf-wys" class="btn btn-ghost" disabled>Descargar PDF (WYSIWYG Carta)</button>
+      <button type="button" id="btn-reset" class="btn btn-ghost">Nuevo formulario</button>
     </div>
   </form>
 </div>
 
-<div class="success-message" id="success-message">
-  <span>¡Operación realizada!</span>
-</div>
+<div class="success-message" id="success-message"><span>¡Operación realizada!</span></div>
 
-<!-- jsPDF -->
+<!-- Librerías -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-/* ====== CONFIG ====== */
-const API_BASE = 'http://localhost:8080'; // ↩️ Cambia si tu backend WhatsApp está en otra URL
+/* ===== Partículas decorativas ===== */
+(function(){
+  const canvas=document.getElementById('particles-canvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const resize=()=>{canvas.width=innerWidth;canvas.height=innerHeight}; resize(); addEventListener('resize',resize);
+  const particles=[], count=innerWidth<768?25:50;
+  class P{constructor(){this.r=Math.random()*2+1; this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.vy=Math.random()+.3; this.op=Math.random()*.5+.2;}
+    u(){this.y+=this.vy; if(this.y>canvas.height){this.y=-10; this.x=Math.random()*canvas.width;}}
+    d(){ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,2*Math.PI); ctx.fillStyle=`rgba(255,255,255,${this.op})`; ctx.fill();}}
+  for(let i=0;i<count;i++) particles.push(new P());
+  (function loop(){ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.u();p.d();}); requestAnimationFrame(loop);})();
+})();
 
-/* ====== Fecha/Hora ====== */
+/* ===== Utilidades generales ===== */
 const fechaEl = document.getElementById('fecha-registro');
 const horaEl  = document.getElementById('hora-registro');
-function pad(n){ return n.toString().padStart(2,'0'); }
-function tickDateTime(){
-  const now = new Date();
-  fechaEl.value = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
-  horaEl.value  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-}
+function pad(n){return n.toString().padStart(2,'0');}
+function tickDateTime(){const now=new Date(); fechaEl.value=`${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`; horaEl.value=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;}
 tickDateTime(); setInterval(tickDateTime, 1000);
 
-/* ====== Inputs con máscaras ====== */
-document.getElementById('numero-contacto').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,8);
-  if (v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
-  this.value = v;
+document.getElementById('numero-contacto').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,8); if(v.length>4) v=v.slice(0,4)+'-'+v.slice(4); this.value=v;
 });
-document.getElementById('dui').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,9);
-  if (v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
-  this.value = v;
+document.getElementById('dui').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,9); if(v.length>8) v=v.slice(0,8)+'-'+v.slice(8); this.value=v;
 });
-
-/* ====== Checkbox WhatsApp ====== */
-let whatsappChecked = false;
-document.getElementById('whatsapp-box').addEventListener('click', () => {
-  whatsappChecked = !whatsappChecked;
+let whatsappChecked=false;
+document.getElementById('whatsapp-box').addEventListener('click',()=>{
+  whatsappChecked=!whatsappChecked;
   document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
 });
 
-/* ====== Recolectar / Validar ====== */
-function datosForm(){
-  return {
-    nie: document.getElementById('nie').value.trim(),
-    nombre: document.getElementById('nombre-completo').value.trim(),
-    responsable: document.getElementById('nombre-responsable').value.trim(),
-    dui: document.getElementById('dui').value.trim(),
-    grado: document.getElementById('reserva-matricula').value,
-    turno: document.getElementById('turno').value,
-    seccion: document.getElementById('seccion').value,
-    contacto: document.getElementById('numero-contacto').value.trim(),
-    fecha: fechaEl.value, hora: horaEl.value,
-    whatsapp: whatsappChecked ? 'Sí' : 'No'
-  };
-}
-function validar(d){
-  if(!d.nie || !d.nombre || !d.responsable || !d.grado || !d.seccion || !d.contacto || !d.fecha || !d.hora){
-    alert('⚠️ Complete todos los campos obligatorios'); return false;
+/* ===== Reglas de Grado ↔ Turno/Sección ===== */
+const gradoSelect=document.getElementById('reserva-matricula');
+const turnoSelect=document.getElementById('turno');
+const seccionSelect=document.getElementById('seccion');
+
+function enableAllTurnos(){[...turnoSelect.options].forEach(o=>{if(o.value)o.disabled=false;}); turnoSelect.disabled=false;}
+function enableAllSecciones(){[...seccionSelect.options].forEach(o=>{if(o.value)o.disabled=false;}); seccionSelect.disabled=false;}
+function setTurnoAllowed(allowed){const S=new Set(allowed);[...turnoSelect.options].forEach(o=>{if(!o.value)return;o.disabled=!S.has(o.value)}); if(!S.has(turnoSelect.value)) turnoSelect.value=allowed[0]||'';}
+function setSeccionAllowed(allowed){const S=new Set(allowed);[...seccionSelect.options].forEach(o=>{if(!o.value)return;o.disabled=!S.has(o.value)}); if(!S.has(seccionSelect.value)) seccionSelect.value=allowed[0]||'';}
+function normalize(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+
+function applyGradeRules(){
+  const g=normalize(gradoSelect.value); enableAllTurnos(); enableAllSecciones();
+
+  // Parvularia 4/5 → Vespertino + B
+  if(g==='parvularia 4' || g==='parvularia 5'){ setTurnoAllowed(['Vespertino']); setSeccionAllowed(['B']); return; }
+
+  // Bachilleratos 1°/2° (General/Técnico) → sin turno, sección Jornada
+  if(g==='primer ano general'||g==='primer ano tecnico'||g==='segundo ano general'||g==='segundo ano tecnico'){
+    turnoSelect.value=''; turnoSelect.disabled=true; setSeccionAllowed(['Jornada']); seccionSelect.value='Jornada'; return;
   }
-  if(d.dui && !/^\d{8}-\d$/.test(d.dui)){ alert('⚠️ DUI inválido'); return false; }
-  if(!/^\d{4}-\d{4}$/.test(d.contacto)){ alert('⚠️ Teléfono inválido'); return false; }
-  return true;
+
+  // Tercer Año Técnico → solo Matutino
+  if(g==='tercer ano tecnico'){ setTurnoAllowed(['Matutino']); return; }
 }
 
-/* ====== PDF tamaño carta ====== */
-async function generarPDFCarta(d){
+function applyTurnoSeccionCoupling(){
+  const g=normalize(gradoSelect.value); const t=turnoSelect.value;
+  const basicos=['primer grado','segundo grado','tercer grado','cuarto grado','quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'];
+  if(!basicos.includes(g)) return;
+
+  if(t==='Matutino'){ setSeccionAllowed(['A']); }
+  else if(t==='Vespertino'){ setSeccionAllowed(['B']); if(g==='primer grado' && seccionSelect.value==='A'){ alert('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO'); seccionSelect.value='B'; } }
+  else { enableAllSecciones(); }
+}
+
+gradoSelect.addEventListener('change',()=>{ applyGradeRules(); applyTurnoSeccionCoupling(); checkFormFields(); });
+turnoSelect.addEventListener('change',()=>{ applyTurnoSeccionCoupling(); checkFormFields(); });
+seccionSelect.addEventListener('change',()=>{ checkFormFields(); });
+
+/* ===== Habilitar/Deshabilitar botones por validación ===== */
+const form = document.getElementById('prematricula-form');
+function telValido(v){return /^\d{4}-\d{4}$/.test(v||'');}
+function duiValido(v){return !v || /^\d{8}-\d$/.test(v);}
+function checkFormFields(){
+  const btns = document.querySelectorAll('.actions .btn');
+  let ok=true;
+  form.querySelectorAll('[required]').forEach(el=>{
+    if(el.disabled) return;
+    if(!el.value) ok=false;
+  });
+  if(!telValido(document.getElementById('numero-contacto').value.trim())) ok=false;
+  if(!duiValido(document.getElementById('dui').value.trim())) ok=false;
+  document.getElementById('btn-enviar').disabled=!ok;
+  document.getElementById('btn-pdf').disabled=!ok;
+  document.getElementById('btn-pdf-wys').disabled=!ok;
+}
+form.addEventListener('input',checkFormFields); window.addEventListener('load',()=>{applyGradeRules();applyTurnoSeccionCoupling();checkFormFields();});
+
+/* ===== Nuevo formulario ===== */
+function nuevoFormulario(){
+  form.reset();
+  document.getElementById('whatsapp-checkbox').classList.remove('checked');
+  applyGradeRules(); applyTurnoSeccionCoupling(); checkFormFields();
+}
+document.getElementById('btn-reset').addEventListener('click', nuevoFormulario);
+
+/* ===== Construcción de mensaje + teléfono ===== */
+function isMobile(){ return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
+function telSVtoE164(t){ const d=(t||'').replace(/\D/g,''); return d.length===8?`503${d}`:''; }
+
+function construirMensaje(){
+  const nie=document.getElementById('nie').value.trim();
+  const nom=document.getElementById('nombre-completo').value.trim();
+  const res=document.getElementById('nombre-responsable').value.trim();
+  const dui=document.getElementById('dui').value.trim();
+  const gra=gradoSelect.value;
+  const tur=turnoSelect.disabled ? '—' : (turnoSelect.value || '—');
+  const sec=seccionSelect.value;
+  const tel=document.getElementById('numero-contacto').value.trim();
+  const fec=fechaEl.value, hor=horaEl.value;
+  const lineaDUI = dui ? `🪪 DUI: ${dui}\n` : '';
+
+  return {
+    texto:
+`*PREMATRÍCULA 2026*
+🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
+
+📅 *Registro*
+Fecha: ${fec}
+Hora: ${hor}
+
+📋 *Datos del Estudiante*
+👤 NIE: ${nie}
+🧒 Nombre: ${nom}
+
+👨‍👩‍👧 *Responsable*
+👤 Nombre: ${res}
+${lineaDUI}📱 Contacto: ${tel}
+💬 WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}
+
+📚 *Información Académica*
+🎓 Grado: ${gra}
+⏰ Turno: ${tur}
+📂 Sección: ${sec}`,
+    grado: gra,
+    telefonoE164: telSVtoE164(tel)
+  };
+}
+
+/* ===== PDF con jsPDF (Tamaño Carta, texto nativo) ===== */
+async function generarPDFCarta(){
+  const d = construirMensaje();
+  const nom = document.getElementById('nombre-completo').value.trim();
+  const nie = document.getElementById('nie').value.trim();
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'pt', format: 'letter' }); // 612x792 pt (Carta)
+  const doc = new jsPDF({ unit:'pt', format:'letter' }); // 612x792
   const margin = 48; let y = margin;
 
   doc.setFont('helvetica','bold'); doc.setFontSize(18);
   doc.text('PREMATRÍCULA 2026', margin, y); y += 20;
   doc.setFont('helvetica','normal'); doc.setFontSize(12);
   doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y); y += 14;
-  doc.setDrawColor(102,126,234); doc.line(margin, y+8, 612 - margin, y+8); y += 26;
 
+  doc.setDrawColor(102,126,234); doc.setLineWidth(1);
+  doc.line(margin, y+8, 612 - margin, y+8); y += 26;
+
+  // Registro
   doc.setFont('helvetica','bold'); doc.text('Registro', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Fecha: ${d.fecha}    Hora: ${d.hora}`, margin, y); y += 20;
+  doc.text(`Fecha: ${fechaEl.value}    Hora: ${horaEl.value}`, margin, y); y += 20;
 
+  // Estudiante
   doc.setFont('helvetica','bold'); doc.text('Datos del Estudiante', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`NIE: ${d.nie}`, margin, y); y += 16;
-  doc.text(`Nombre: ${d.nombre}`, margin, y); y += 20;
+  doc.text(`NIE: ${nie}`, margin, y); y += 16;
+  doc.text(`Nombre: ${nom}`, margin, y); y += 20;
 
+  // Responsable
+  const resp=document.getElementById('nombre-responsable').value.trim();
+  const dui = document.getElementById('dui').value.trim();
+  const tel = document.getElementById('numero-contacto').value.trim();
   doc.setFont('helvetica','bold'); doc.text('Responsable', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Nombre: ${d.responsable}`, margin, y); y += 16;
-  if(d.dui){ doc.text(`DUI: ${d.dui}`, margin, y); y += 16; }
-  doc.text(`Contacto: ${d.contacto}`, margin, y); y += 16;
-  doc.text(`WhatsApp: ${d.whatsapp}`, margin, y); y += 20;
+  doc.text(`Nombre: ${resp}`, margin, y); y += 16;
+  if(dui) { doc.text(`DUI: ${dui}`, margin, y); y += 16; }
+  doc.text(`Contacto: ${tel}`, margin, y); y += 16;
+  doc.text(`WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}`, margin, y); y += 20;
 
+  // Académica
+  const gra=gradoSelect.value, tur=turnoSelect.disabled?'—':(turnoSelect.value||'—'), sec=seccionSelect.value;
   doc.setFont('helvetica','bold'); doc.text('Información Académica', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Grado: ${d.grado}`, margin, y); y += 16;
-  doc.text(`Turno: ${d.turno || '—'}`, margin, y); y += 16;
-  doc.text(`Sección: ${d.seccion}`, margin, y); y += 24;
+  doc.text(`Grado: ${gra}`, margin, y); y += 16;
+  doc.text(`Turno: ${tur}`, margin, y); y += 16;
+  doc.text(`Sección: ${sec}`, margin, y); y += 24;
 
   doc.setDrawColor(220); doc.line(margin, 792 - margin - 24, 612 - margin, 792 - margin - 24);
   doc.setFontSize(10); doc.setTextColor(120);
   doc.text('Documento generado automáticamente desde el formulario de prematrícula.', margin, 792 - margin);
 
-  const filename = `Prematricula_${d.nie||'sinNIE'}_${Date.now()}.pdf`;
-  doc.save(filename); // descarga local
+  const filename = `Prematricula_${nie||'sinNIE'}_${Date.now()}.pdf`;
+  doc.save(filename); // descarga
 
-  const dataUrl = doc.output('datauristring'); // para backend WhatsApp
-  return { filename, dataUrl };
+  return { filename };
 }
 
-/* ====== WhatsApp Cloud API (backend) ====== */
-async function enviarWhatsAppDocumento(toE164, filename, pdfDataUrl) {
-  const resp = await fetch(`${API_BASE}/api/whatsapp/send`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      to: toE164,           // ej "50379677031"
-      filename,             // ej "Prematricula_...pdf"
-      caption: 'Prematrícula 2026',
-      pdfBase64: pdfDataUrl // "data:application/pdf;base64,...."
-    })
-  });
-  if (!resp.ok) {
-    const err = await resp.json().catch(()=>({}));
-    throw new Error('Error API WhatsApp: ' + JSON.stringify(err));
+/* ===== PDF WYSIWYG (captura visual) Tamaño Carta ===== */
+async function generarPDF_WYSIWYG_Carta(){
+  const nodo = document.querySelector('.form-container');
+  const canvas = await html2canvas(nodo, { scale: 2, useCORS:true });
+  const imgData = canvas.toDataURL('image/png');
+  const pdf = new jsPDF({ orientation:'p', unit:'pt', format:'letter' });
+  const pageW=612, pageH=792, margin=24;
+  const targetW = pageW - margin*2;
+  const scale = targetW / canvas.width;
+  const targetH = canvas.height * scale;
+
+  let y = margin;
+  pdf.addImage(imgData,'PNG',margin,y,targetW,targetH);
+
+  let rest = targetH - (pageH - margin*2);
+  while(rest>0){
+    pdf.addPage('letter','p');
+    y = margin - (targetH - rest);
+    pdf.addImage(imgData,'PNG',margin,y,targetW,targetH);
+    rest -= (pageH - margin*2);
   }
-  return resp.json();
+  pdf.save('Prematricula_WYSIWYG_Carta.pdf');
 }
 
-/* ====== Util: formatea a E.164 SV ====== */
-function telefonoSVaE164(t){ // t: "7890-1234" -> "50378901234"
-  const digits = (t||'').replace(/\D/g,'').slice(0,8);
-  return digits.length === 8 ? `503${digits}` : '';
+/* ===== Enviar por WhatsApp (sin backend) ===== */
+function enviarWhatsApp(){
+  const { texto, grado, telefonoE164 } = construirMensaje();
+  // Si es Noveno Grado: generar PDF (carta) y abrir chat al número fijo además del contacto
+  if (grado === 'Noveno Grado') {
+    generarPDFCarta().then(()=>{
+      const base = isMobile() ? 'https://api.whatsapp.com' : 'https://web.whatsapp.com';
+      const numeroFijo = '50379677031'; // sin '+'
+      const urlWhatsApp = `${base}/send?phone=${numeroFijo}&text=${encodeURIComponent(texto)}`;
+      window.open(urlWhatsApp,'_blank');
+    });
+  } else {
+    const base = isMobile() ? 'https://api.whatsapp.com' : 'https://web.whatsapp.com';
+    const url = telefonoE164
+      ? `${base}/send?phone=${telefonoE164}&text=${encodeURIComponent(texto)}`
+      : `${base}/send?text=${encodeURIComponent(texto)}`;
+    window.open(url,'_blank');
+  }
+
+  const toast=document.getElementById('success-message');
+  toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000);
 }
 
-/* ====== Botones ====== */
-document.getElementById('btn-pdf').addEventListener('click', async ()=>{
-  const d = datosForm(); if(!validar(d)) return;
-  await generarPDFCarta(d); // siempre tamaño carta
+/* ===== Botones ===== */
+document.getElementById('btn-enviar').addEventListener('click', ()=>{
+  // Validación mínima antes de enviar
+  if (document.getElementById('btn-enviar').disabled) { alert('Complete correctamente el formulario.'); return; }
+  enviarWhatsApp();
 });
-
-document.getElementById('btn-enviar').addEventListener('click', async ()=>{
-  try{
-    const d = datosForm(); if(!validar(d)) return;
-
-    // Mensaje de texto (para abrir WhatsApp web con chat)
-    const lineaDUI = d.dui ? `🪪 DUI: ${d.dui}\n` : '';
-    const mensaje =
-`*PREMATRÍCULA 2026*
-🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
-
-📅 *Registro*
-Fecha: ${d.fecha}
-Hora: ${d.hora}
-
-📋 *Datos del Estudiante*
-👤 NIE: ${d.nie}
-🧒 Nombre: ${d.nombre}
-
-👨‍👩‍👧 *Responsable*
-👤 Nombre: ${d.responsable}
-${lineaDUI}📱 Contacto: ${d.contacto}
-💬 WhatsApp: ${d.whatsapp}
-
-📚 *Información Académica*
-🎓 Grado: ${d.grado}
-⏰ Turno: ${d.turno || '—'}
-📂 Sección: ${d.seccion}`;
-
-    if (d.grado === 'Noveno Grado') {
-      // 1) Generar PDF Carta
-      const { filename, dataUrl } = await generarPDFCarta(d);
-
-      // 2) Enviar documento por Cloud API al número fijo
-      const numeroDestino = '50379677031'; // sin '+'
-      await enviarWhatsAppDocumento(numeroDestino, filename, dataUrl);
-
-      // 3) También abrir WhatsApp Web con el número fijo (tu snippet integrado)
-      const telefono = numeroDestino;
-      const urlWhatsApp = `https://web.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`;
-      window.open(urlWhatsApp, '_blank');
-
-      alert('✅ PDF generado (Carta) y enviado por WhatsApp Cloud API. Se abrió WhatsApp Web con el chat.');
-    } else {
-      // Otros grados: abrir WhatsApp Web al número de contacto del formulario (si existe)
-      const telefono = telefonoSVaE164(d.contacto) || ''; // E.164 SV
-      const urlWhatsApp = telefono
-        ? `https://web.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`
-        : `https://web.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
-      window.open(urlWhatsApp, '_blank');
-    }
-
-    // Toast
-    const msg=document.querySelector('.success-message');
-    msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),3000);
-  } catch (e) {
-    console.error(e);
-    alert('❌ No se pudo completar el envío: ' + e.message);
-  }
+document.getElementById('btn-pdf').addEventListener('click', async ()=>{
+  if (document.getElementById('btn-pdf').disabled) { alert('Complete correctamente el formulario.'); return; }
+  await generarPDFCarta();
+});
+document.getElementById('btn-pdf-wys').addEventListener('click', async ()=>{
+  if (document.getElementById('btn-pdf-wys').disabled) { alert('Complete correctamente el formulario.'); return; }
+  await generarPDF_WYSIWYG_Carta();
 });
 </script>
 </body>
