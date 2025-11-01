@@ -27,7 +27,7 @@ body {
   backdrop-filter: blur(10px);
   border-radius: 24px;
   padding: 45px;
-  width: 100%; max-width: 700px;
+  width: 100%; max-width: 740px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   border: 1px solid rgba(255,255,255,0.3);
   position: relative; z-index: 10;
@@ -93,17 +93,17 @@ input.error, select.error { border-color:#e53e3e; }
 .custom-checkbox.checked svg { opacity:1; }
 .checkbox-label { color:#4a5568; font-weight:500; }
 
-/* === BOTÓN === */
-.button-container { text-align:center; margin-top:35px; }
-.whatsapp-button {
-  background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
-  color:white; border:none; border-radius:14px; padding:16px 40px; font-size:1.05em; font-weight:600;
-  cursor:pointer; display:inline-flex; align-items:center; gap:12px;
-  box-shadow:0 10px 30px rgba(37,211,102,.3); transition:all .3s; animation:buttonPulse 2s ease-in-out infinite;
+/* === BOTONES === */
+.actions { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:10px; }
+.btn {
+  color:white; border:none; border-radius:12px; padding:12px 18px; font-size:1rem; font-weight:600; cursor:pointer;
+  display:inline-flex; align-items:center; gap:10px; box-shadow:0 10px 24px rgba(0,0,0,.12); transition:transform .15s ease;
 }
-@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{box-shadow:0 10px 40px rgba(37,211,102,.5);} }
-.whatsapp-button:hover { transform:translateY(-3px); }
-.whatsapp-button svg { width:24px; height:24px; fill:white; }
+.btn:hover{ transform: translateY(-2px); }
+.btn-whatsapp { background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); }
+.btn-pdf { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
+
+.btn svg { width:22px; height:22px; fill:white; }
 
 /* === MENSAJE DE ÉXITO === */
 .success-message {
@@ -135,6 +135,7 @@ input.error, select.error { border-color:#e53e3e; }
 @media(max-width:768px){
   .top-row { grid-template-columns: 1fr; }
   .inline-group, .contact-group { grid-template-columns: 1fr; }
+  .actions { gap:10px; }
 }
 </style>
 </head>
@@ -251,10 +252,14 @@ input.error, select.error { border-color:#e53e3e; }
       </div>
     </div>
 
-    <div class="button-container">
-      <button type="button" id="btn-enviar" class="whatsapp-button">
+    <div class="actions">
+      <button type="button" id="btn-enviar" class="btn btn-whatsapp" title="Enviar por WhatsApp">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></svg>
         Enviar por WhatsApp
+      </button>
+      <button type="button" id="btn-pdf" class="btn btn-pdf" title="Descargar PDF (Carta)">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2zM8 9h8v2H8V9zm0 4h5v2H8v-2z"/></svg>
+        Descargar PDF (Carta)
       </button>
     </div>
   </form>
@@ -454,21 +459,42 @@ seccionSelect.addEventListener('change', ()=>{
 applyGradeRules();
 applyTurnoSeccionCoupling();
 
-/* ========= Generar PDF (Carta) y “enviar” por WhatsApp si es Noveno ========= */
+/* ========= Helpers para PDF ========= */
+// Cargar imagen remota (logo) como dataURL (CORS seguro)
+async function fetchImageAsDataURL(url){
+  try{
+    const res = await fetch(url, {mode:'cors'});
+    const blob = await res.blob();
+    return await new Promise((resolve)=>{
+      const reader = new FileReader();
+      reader.onload = ()=> resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  }catch(e){
+    return null; // continuará sin logo si falla
+  }
+}
+
+// Generar PDF en tamaño carta, devolver {blob, filename}
 async function generarPDFCarta(datos){
-  // jsPDF en tamaño letter (carta)
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit:'pt', format:'letter' }); // 612 x 792 pt
-
   const margin = 48; // 2/3 in
   let y = margin;
 
-  doc.setFont('helvetica','bold'); doc.setFontSize(16);
-  doc.text('PREMATRÍCULA 2026', margin, y); y += 22;
-  doc.setFont('helvetica','normal'); doc.setFontSize(12);
-  doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y); y += 24;
+  // Encabezado con logo
+  const logoDataURL = await fetchImageAsDataURL('https://i.imgur.com/ugoJzRX.jpeg');
+  const logoSize = 64;
+  if(logoDataURL){
+    doc.addImage(logoDataURL, 'JPEG', 612 - margin - logoSize, y, logoSize, logoSize);
+  }
 
-  // Línea
+  doc.setFont('helvetica','bold'); doc.setFontSize(18);
+  doc.text('PREMATRÍCULA 2026', margin, y + 18);
+  doc.setFontSize(12); doc.setFont('helvetica','normal');
+  doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y + 38);
+
+  y += 70;
   doc.setDrawColor(102,126,234); doc.setLineWidth(1);
   doc.line(margin, y, 612 - margin, y); y += 18;
 
@@ -487,7 +513,7 @@ async function generarPDFCarta(datos){
   doc.setFont('helvetica','bold'); doc.text('Responsable', margin, y); y += 16;
   doc.setFont('helvetica','normal');
   doc.text(`Nombre: ${datos.responsable}`, margin, y); y += 16;
-  if(datos.dui) { doc.text(`DUI: ${datos.dui}`, margin, y); y += 20; }
+  if(datos.dui) { doc.text(`DUI: ${datos.dui}`, margin, y); y += 16; }
   doc.text(`Contacto: ${datos.contacto}`, margin, y); y += 16;
   doc.text(`WhatsApp: ${datos.whatsapp}`, margin, y); y += 22;
 
@@ -503,7 +529,6 @@ async function generarPDFCarta(datos){
   doc.setFontSize(10); doc.setTextColor(120);
   doc.text('Documento generado automáticamente desde el formulario de prematrícula.', margin, 792 - margin);
 
-  // Devuelve Blob y nombre
   const blob = doc.output('blob');
   const filename = `Prematricula_${datos.nie || 'sinNIE'}_${Date.now()}.pdf`;
 
@@ -514,26 +539,11 @@ async function generarPDFCarta(datos){
   document.body.appendChild(a); a.click();
   setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
 
-  // Intento de compartir (móviles compatibles)
-  try {
-    const file = new File([blob], filename, { type: 'application/pdf' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        title: 'Prematrícula 2026 - Noveno Grado',
-        text: 'Adjunto documento de prematrícula.',
-        files: [file]
-      });
-    }
-  } catch(e){ /* Silencioso: si no se puede, seguimos con el enlace de WhatsApp */ }
-
-  // Abrir WhatsApp al número específico con texto
-  const texto = `Hola, envío la prematrícula (Noveno Grado). Se adjunta el PDF descargado: ${filename}`;
-  const numero = '50379677031'; // sin +
-  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, '_blank');
+  return { blob, filename };
 }
 
-/* === Envío WhatsApp (flujo general) === */
-document.getElementById('btn-enviar').addEventListener('click', async () => {
+/* ========= Obtener datos desde el formulario ========= */
+function getDatos(){
   const nie          = document.getElementById('nie').value.trim();
   const nombre       = document.getElementById('nombre-completo').value.trim();
   const responsable  = document.getElementById('nombre-responsable').value.trim();
@@ -545,57 +555,91 @@ document.getElementById('btn-enviar').addEventListener('click', async () => {
   const fecha        = fechaEl.value;
   const hora         = horaEl.value;
 
-  // Validaciones
-  if(!nie || !nombre || !responsable || !grado || (!turno && !turnoSelect.disabled) || !seccion || !contacto || !fecha || !hora){
-    alert('⚠️ Complete todos los campos obligatorios');
-    return;
-  }
-  if(dui && !/^\d{8}-\d$/.test(dui)){
-    alert('⚠️ El DUI debe tener el formato ########-#');
-    return;
-  }
-  if(!/^\d{4}-\d{4}$/.test(contacto)){
-    alert('⚠️ El número debe tener el formato ####-####');
-    return;
-  }
-
-  const data = {
-    nie, nombre, responsable, dui,
-    grado, turno: (turnoSelect.disabled ? '—' : turno),
+  return {
+    nie, nombre, responsable, dui, grado,
+    turno: (turnoSelect.disabled ? '—' : turno),
     seccion, contacto, fecha, hora,
     whatsapp: (document.getElementById('whatsapp-checkbox').classList.contains('checked') ? 'Sí' : 'No')
   };
+}
 
-  // Si es Noveno Grado → generar PDF (carta) y abrir chat al número específico
-  if (grado === 'Noveno Grado') {
-    await generarPDFCarta(data);
+/* ========= Validaciones mínimas ========= */
+function validarDatos(datos){
+  if(!datos.nie || !datos.nombre || !datos.responsable || !datos.grado ||
+     (!turnoSelect.disabled && !turnoSelect.value) || !datos.seccion ||
+     !datos.contacto || !datos.fecha || !datos.hora){
+    alert('⚠️ Complete todos los campos obligatorios');
+    return false;
+  }
+  if(datos.dui && !/^\d{8}-\d$/.test(datos.dui)){
+    alert('⚠️ El DUI debe tener el formato ########-#');
+    return false;
+  }
+  if(!/^\d{4}-\d{4}$/.test(datos.contacto)){
+    alert('⚠️ El número debe tener el formato ####-####');
+    return false;
+  }
+  return true;
+}
+
+/* ========= Botón: Descargar PDF (Carta) ========= */
+document.getElementById('btn-pdf').addEventListener('click', async ()=>{
+  const datos = getDatos();
+  if(!validarDatos(datos)) return;
+  await generarPDFCarta(datos); // descarga inmediata del PDF carta
+});
+
+/* === Envío WhatsApp (flujo general + caso especial Noveno) === */
+document.getElementById('btn-enviar').addEventListener('click', async () => {
+  const datos = getDatos();
+  if(!validarDatos(datos)) return;
+
+  // Si es Noveno Grado → PDF + Web Share + WhatsApp a número fijo
+  if (datos.grado === 'Noveno Grado') {
+    const { blob, filename } = await generarPDFCarta(datos);
+
+    // Intentar compartir (móviles compatibles)
+    try {
+      const file = new File([blob], filename, { type: 'application/pdf' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: 'Prematrícula 2026 - Noveno Grado',
+          text: 'Adjunto documento de prematrícula.',
+          files: [file]
+        });
+      }
+    } catch(e){ /* Silencio: si no se puede compartir, seguimos */ }
+
+    // Abrir WhatsApp al número específico con texto
+    const numero = '50379677031'; // sin +
+    const texto = `Hola, envío la prematrícula (Noveno Grado). Se adjunta el PDF descargado: ${filename}`;
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, '_blank');
   } else {
-    // Flujo normal: mensaje formateado
-    const lineaDUI = dui ? `🪪 DUI: ${dui}\n` : '';
+    // Flujo normal: abrir WhatsApp genérico con el texto
+    const lineaDUI = datos.dui ? `🪪 DUI: ${datos.dui}\n` : '';
     const mensaje =
 `*PREMATRÍCULA 2026*
 🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
 
 📅 *Registro*
-Fecha: ${fecha}
-Hora: ${hora}
+Fecha: ${datos.fecha}
+Hora: ${datos.hora}
 
 📋 *Datos del Estudiante*
-👤 NIE: ${nie}
-🧒 Nombre: ${nombre}
+👤 NIE: ${datos.nie}
+🧒 Nombre: ${datos.nombre}
 
 👨‍👩‍👧 *Responsable*
-👤 Nombre: ${responsable}
-${lineaDUI}📱 Contacto: ${contacto}
-💬 WhatsApp: ${data.whatsapp}
+👤 Nombre: ${datos.responsable}
+${lineaDUI}📱 Contacto: ${datos.contacto}
+💬 WhatsApp: ${datos.whatsapp}
 
 📚 *Información Académica*
-🎓 Grado: ${grado}
-⏰ Turno: ${turnoSelect.disabled ? '—' : turno}
-📂 Sección: ${seccion}`;
+🎓 Grado: ${datos.grado}
+⏰ Turno: ${datos.turno}
+📂 Sección: ${datos.seccion}`;
 
-    const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
-    window.open(url,'_blank');
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
   }
 
   // Toast de éxito
