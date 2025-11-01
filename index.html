@@ -249,7 +249,7 @@
   <div class="success-icon">
     <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
   </div>
-  <span class="success-text">¡Operación realizada con éxito!</span>
+  <span class="success-text">¡PDF generado exitosamente!</span>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -362,7 +362,7 @@ function checkFormValidity(){
 });
 
 // ======== LOGO: 3 vías (Base64 directo / fetch / vector fallback) ========
-const LOGO_BASE64 = ''; // Si pegas aquí tu dataURL (data:image/png;base64,AAA...), evita CORS y siempre sale el logo
+const LOGO_BASE64 = ''; // Pega aquí tu dataURL (data:image/png;base64,AAA...) para evitar CORS
 
 async function loadLogoDataURL() {
   if (LOGO_BASE64 && LOGO_BASE64.startsWith('data:image/')) return LOGO_BASE64;
@@ -460,21 +460,21 @@ async function generatePDF(){
     doc.text(`Teléfono: ${tel}`, margin, y); y+=18;
     doc.text(`WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}`, margin, y); y+=30;
 
-    // Información Académica
+    /* ======= SOLO cambio de título aquí ======= */
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
-    doc.text('INFORMACIÓN ACADÉMICA', margin, y); y+=20;
+    doc.text('RESERVA CUPO 2026', margin, y);  // <- antes: INFORMACIÓN ACADÉMICA
+    y += 20;
 
+    // (Se mantiene el contenido de grado/turno/sección igual)
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     doc.text(`Grado: ${grado}`, margin, y); y+=18;
     doc.text(`Turno: ${turno}`, margin, y); y+=18;
     doc.text(`Sección: ${seccion}`, margin, y); y+=30;
 
-    // ======= Título solicitado en el PDF (cambio aquí) =======
+    // Declaración jurada (se mantiene como estaba)
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(102,126,234);
-    doc.text('Grado/Turno y sección donde reserva matrícula para 2026', margin, y);
-    y += 20;
+    doc.text('DECLARACIÓN JURADA', margin, y); y+=20;
 
-    // Mantengo la casilla y texto de aceptación como estaban (si deseas otra redacción, me dices)
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(0,0,0);
     const boxSize=10; doc.rect(margin, y-8, boxSize, boxSize);
     if(declaracionChecked){ doc.setFont('helvetica','bold'); doc.text('✓', margin+2.2, y); doc.setFont('helvetica','normal'); }
