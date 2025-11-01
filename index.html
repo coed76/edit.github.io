@@ -5,142 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Formulario de Prematrícula 2026</title>
 <style>
-/* === RESETEO GENERAL === */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex; justify-content: center; align-items: center;
-  padding: 20px;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* === CANVAS === */
-#particles-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-
-/* === CONTENEDOR DEL FORMULARIO === */
-.form-container {
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 24px;
-  padding: 45px;
-  width: 100%; max-width: 740px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.3);
-  position: relative; z-index: 10;
-  animation: slideIn .6s ease-out;
-}
-@keyframes slideIn { from {opacity:0; transform:translateY(30px);} to {opacity:1; transform:translateY(0);} }
-
-/* === CABECERA === */
-.header { text-align:center; margin-bottom:40px; }
-
-/* ✅ LOGO CIRCULAR PERFECTO */
-.logo-container {
-  width: 140px; height: 140px; margin: 0 auto 20px;
-  background: white; border-radius: 50%; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 25px rgba(40,167,69,0.3);
-  animation: pulse 2s ease-in-out infinite;
-}
-.logo-container img {
-  width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;
-}
-@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
-
-h1 { color:#2d3748; font-size:2.1em; font-weight:700; }
-h2 { color:#667eea; font-size:1.1em; font-weight:500; margin-top:6px; }
-.year-badge {
-  display:inline-block; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-  color:#fff; padding:6px 18px; border-radius:20px; font-size:.9em; font-weight:600; margin-top:10px;
-}
-
-/* === CAMPOS === */
-.form-group { margin-bottom:22px; }
-label { display:block; color:#4a5568; font-weight:600; margin-bottom:8px; font-size:.95em; transition:color .3s; }
-input[type="text"], select {
-  width:100%; padding:14px 16px; border:2px solid #e2e8f0; border-radius:12px;
-  font-size:1em; transition:all .3s; background:white; color:#2d3748; appearance:none;
-}
-input[readonly] { background:#f7fafc; cursor: default; }
-input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
-input.error, select.error { border-color:#e53e3e; }
-
-/* === NIE + FECHA + HORA === */
-.top-row { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; }
-
-.inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
-.contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
-
-.select-arrow { position:relative; }
-.select-arrow::after {
-  content:'▼'; position:absolute; right:15px; top:50%; transform:translateY(-50%);
-  color:#667eea; font-size:.75em; pointer-events:none;
-}
-
-/* === CHECKBOX === */
-.checkbox-group { display:flex; align-items:center; padding-top:30px; }
-.checkbox-wrapper { display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
-.custom-checkbox {
-  width:24px; height:24px; border:2px solid #e2e8f0; border-radius:6px;
-  display:flex; align-items:center; justify-content:center; transition:all .3s; background:white;
-}
-.custom-checkbox.checked { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); border-color:#667eea; }
-.custom-checkbox svg { width:16px; height:16px; fill:white; opacity:0; transition:opacity .2s; }
-.custom-checkbox.checked svg { opacity:1; }
-.checkbox-label { color:#4a5568; font-weight:500; }
-
-/* === BOTONES === */
-.actions { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:10px; }
-.btn {
-  color:white; border:none; border-radius:12px; padding:12px 18px; font-size:1rem; font-weight:600; cursor:pointer;
-  display:inline-flex; align-items:center; gap:10px; box-shadow:0 10px 24px rgba(0,0,0,.12); transition:transform .15s ease;
-}
-.btn:hover{ transform: translateY(-2px); }
-.btn-whatsapp { background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); }
-.btn-pdf { background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); }
-
-.btn svg { width:22px; height:22px; fill:white; }
-
-/* === MENSAJE DE ÉXITO === */
-.success-message {
-  position:fixed; top:25px; right:25px; background:white; padding:18px 25px;
-  border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.2);
-  display:none; align-items:center; gap:12px; z-index:1000;
-}
-.success-message.show{display:flex;}
-.success-icon { width:38px; height:38px; background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; }
-.success-icon svg { width:20px; height:20px; fill:white; }
-
-/* === MODAL === */
-.modal-backdrop{
-  position:fixed; inset:0; background:rgba(0,0,0,.4);
-  display:none; align-items:center; justify-content:center; z-index:1100;
-}
-.modal{
-  background:#fff; border-radius:14px; padding:22px; width:min(520px,90%);
-  box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;
-}
-.modal h3{ margin-bottom:10px; color:#2d3748; }
-.modal p{ color:#4a5568; margin-bottom:16px; }
-.modal button{
-  background:#667eea; color:#fff; border:none; border-radius:10px;
-  padding:10px 18px; font-weight:600; cursor:pointer;
-}
-
-/* === RESPONSIVE === */
-@media(max-width:768px){
-  .top-row { grid-template-columns: 1fr; }
-  .inline-group, .contact-group { grid-template-columns: 1fr; }
-  .actions { gap:10px; }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative}
+#particles-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+.form-container{z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:24px;padding:45px;max-width:740px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.header{text-align:center;margin-bottom:32px}
+.logo-container{width:140px;height:140px;margin:0 auto 10px;background:#fff;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 25px rgba(40,167,69,.3)}
+.logo-container img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+h1{color:#2d3748;font-size:2em}
+h2{color:#667eea;font-size:1.05em}
+.year-badge{display:inline-block;margin-top:8px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:6px 16px;border-radius:20px;font-weight:600}
+.form-group{margin-bottom:18px}
+label{display:block;font-weight:600;color:#4a5568;margin-bottom:6px}
+input[type="text"],select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px}
+input[readonly]{background:#f7fafc}
+.top-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.inline-group{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.contact-group{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.checkbox-group{display:flex;align-items:center;padding-top:8px}
+.checkbox-wrapper{display:flex;align-items:center;gap:8px;cursor:pointer}
+.custom-checkbox{width:22px;height:22px;border:2px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.custom-checkbox.checked{background:linear-gradient(135deg,#667eea,#764ba2);border-color:#667eea}
+.custom-checkbox svg{width:14px;height:14px;fill:#fff;opacity:0}
+.custom-checkbox.checked svg{opacity:1}
+.actions{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+.btn{border:none;color:#fff;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;display:inline-flex;gap:10px;align-items:center}
+.btn svg{width:20px;height:20px;fill:#fff}
+.btn-whatsapp{background:linear-gradient(135deg,#25D366,#128C7E)}
+.btn-pdf{background:linear-gradient(135deg,#667eea,#764ba2)}
+.success-message{position:fixed;top:18px;right:18px;background:#fff;padding:14px 18px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,.2);display:none;gap:10px;z-index:1000}
+.success-message.show{display:flex}
+@media(max-width:768px){.top-row,.inline-group,.contact-group{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <canvas id="particles-canvas"></canvas>
 
 <div class="form-container">
@@ -154,7 +52,6 @@ input.error, select.error { border-color:#e53e3e; }
   </div>
 
   <form id="prematricula-form" autocomplete="off">
-    <!-- NIE + Fecha + Hora -->
     <div class="top-row">
       <div class="form-group">
         <label for="nie">NIE del Estudiante *</label>
@@ -172,22 +69,21 @@ input.error, select.error { border-color:#e53e3e; }
 
     <div class="form-group">
       <label for="nombre-completo">Nombre Completo *</label>
-      <input type="text" id="nombre-completo" placeholder="Ingrese el nombre completo">
+      <input type="text" id="nombre-completo">
     </div>
 
     <div class="form-group">
       <label for="nombre-responsable">Nombre del Responsable *</label>
-      <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
+      <input type="text" id="nombre-responsable">
     </div>
 
-    <!-- DUI ancho completo -->
     <div class="form-group">
       <label for="dui">Número de Documento (DUI)</label>
       <input type="text" id="dui" placeholder="########-#">
     </div>
 
     <div class="inline-group">
-      <div class="form-group select-arrow">
+      <div class="form-group">
         <label for="reserva-matricula">Reserva Matrícula en (Grado) *</label>
         <select id="reserva-matricula">
           <option value="" disabled selected>Seleccione el nivel</option>
@@ -217,7 +113,7 @@ input.error, select.error { border-color:#e53e3e; }
         </select>
       </div>
 
-      <div class="form-group select-arrow">
+      <div class="form-group">
         <label for="turno">Turno *</label>
         <select id="turno">
           <option value="" disabled selected>Seleccione el turno</option>
@@ -226,7 +122,7 @@ input.error, select.error { border-color:#e53e3e; }
         </select>
       </div>
 
-      <div class="form-group select-arrow">
+      <div class="form-group">
         <label for="seccion">Sección *</label>
         <select id="seccion">
           <option value="" disabled selected>Seleccione una opción</option>
@@ -253,11 +149,11 @@ input.error, select.error { border-color:#e53e3e; }
     </div>
 
     <div class="actions">
-      <button type="button" id="btn-enviar" class="btn btn-whatsapp" title="Enviar por WhatsApp">
+      <button type="button" id="btn-enviar" class="btn btn-whatsapp">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347Z"/></svg>
         Enviar por WhatsApp
       </button>
-      <button type="button" id="btn-pdf" class="btn btn-pdf" title="Descargar PDF (Carta)">
+      <button type="button" id="btn-pdf" class="btn btn-pdf">
         <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2zM8 9h8v2H8V9zm0 4h5v2H8v-2z"/></svg>
         Descargar PDF (Carta)
       </button>
@@ -266,388 +162,205 @@ input.error, select.error { border-color:#e53e3e; }
 </div>
 
 <div class="success-message" id="success-message">
-  <div class="success-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
-  <span class="success-text">¡Mensaje generado con éxito!</span>
+  <span>¡Operación realizada!</span>
 </div>
 
-<!-- MODAL -->
-<div class="modal-backdrop" id="modal">
-  <div class="modal">
-    <h3>Aviso</h3>
-    <p id="modal-text">ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO</p>
-    <button id="modal-ok">Entendido</button>
-  </div>
-</div>
-
-<!-- jsPDF para generar PDF en tamaño carta -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-NaWTHrSxFqg7oO7IX8e7u8P9GvU2BqGm8oR7hO3bA+QZcN9oQ9Xbq6wq4c1m0u3eW4C3tGQf5qgF9V1mX9W5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-// === Partículas (decorativo) ===
-const canvas = document.getElementById('particles-canvas');
-if (canvas) {
-  const ctx = canvas.getContext('2d');
-  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
-  resize(); addEventListener('resize', resize);
-  const particles = [], count = innerWidth < 768 ? 25 : 50;
-  class Particle { constructor(){ this.reset(); this.y=Math.random()*canvas.height; }
-    reset(){ this.x=Math.random()*canvas.width; this.y=-10; this.speed=Math.random()+.3; this.r=Math.random()*2+1; this.op=Math.random()*.5+.2; }
-    update(){ this.y+=this.speed; if(this.y>canvas.height) this.reset(); }
-    draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,2*Math.PI); ctx.fillStyle=`rgba(255,255,255,${this.op})`; ctx.fill(); } }
-  for(let i=0;i<count;i++) particles.push(new Particle());
-  (function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); })();
-}
+/* ====== CONFIG ====== */
+const API_BASE = 'http://localhost:8080'; // ↩️ Cambia si tu backend WhatsApp está en otra URL
 
-// === Checkbox WhatsApp ===
+/* ====== Fecha/Hora ====== */
+const fechaEl = document.getElementById('fecha-registro');
+const horaEl  = document.getElementById('hora-registro');
+function pad(n){ return n.toString().padStart(2,'0'); }
+function tickDateTime(){
+  const now = new Date();
+  fechaEl.value = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+  horaEl.value  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
+tickDateTime(); setInterval(tickDateTime, 1000);
+
+/* ====== Inputs con máscaras ====== */
+document.getElementById('numero-contacto').addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'').slice(0,8);
+  if (v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
+  this.value = v;
+});
+document.getElementById('dui').addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'').slice(0,9);
+  if (v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
+  this.value = v;
+});
+
+/* ====== Checkbox WhatsApp ====== */
 let whatsappChecked = false;
 document.getElementById('whatsapp-box').addEventListener('click', () => {
   whatsappChecked = !whatsappChecked;
   document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
 });
 
-// === Fecha y Hora automáticas ===
-const fechaEl = document.getElementById('fecha-registro');
-const horaEl  = document.getElementById('hora-registro');
-function pad(n){ return n.toString().padStart(2,'0'); }
-function actualizarFechaHora() {
-  const now = new Date();
-  const fecha = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
-  const hora  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  fechaEl.value = fecha; horaEl.value = hora;
+/* ====== Recolectar / Validar ====== */
+function datosForm(){
+  return {
+    nie: document.getElementById('nie').value.trim(),
+    nombre: document.getElementById('nombre-completo').value.trim(),
+    responsable: document.getElementById('nombre-responsable').value.trim(),
+    dui: document.getElementById('dui').value.trim(),
+    grado: document.getElementById('reserva-matricula').value,
+    turno: document.getElementById('turno').value,
+    seccion: document.getElementById('seccion').value,
+    contacto: document.getElementById('numero-contacto').value.trim(),
+    fecha: fechaEl.value, hora: horaEl.value,
+    whatsapp: whatsappChecked ? 'Sí' : 'No'
+  };
 }
-actualizarFechaHora(); setInterval(actualizarFechaHora, 1000);
-
-// === DUI formato ########-# ===
-document.getElementById('dui').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,9);
-  if(v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
-  this.value = v;
-});
-
-// === Teléfono ####-#### ===
-document.getElementById('numero-contacto').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,8);
-  if(v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
-  this.value = v;
-});
-
-// === Utilidades ===
-const gradoSelect   = document.getElementById('reserva-matricula');
-const turnoSelect   = document.getElementById('turno');
-const seccionSelect = document.getElementById('seccion');
-
-const modal = document.getElementById('modal');
-const modalText = document.getElementById('modal-text');
-document.getElementById('modal-ok').addEventListener('click', ()=> modal.style.display='none');
-
-function showModal(msg){
-  modalText.textContent = msg || 'Aviso';
-  modal.style.display = 'flex';
-}
-
-function enableAllTurnos(){
-  [...turnoSelect.options].forEach(o=>{
-    if(o.value) o.disabled = false;
-  });
-  turnoSelect.disabled = false;
-}
-function enableAllSecciones(){
-  [...seccionSelect.options].forEach(o=>{
-    if(o.value) o.disabled = false;
-  });
-  seccionSelect.disabled = false;
-}
-function setSeccionAllowed(allowed){
-  const allowedSet = new Set(allowed);
-  [...seccionSelect.options].forEach(o=>{
-    if(!o.value) return;
-    o.disabled = !allowedSet.has(o.value);
-  });
-  if(!allowedSet.has(seccionSelect.value)){
-    const first = [...seccionSelect.options].find(o=>allowedSet.has(o.value));
-    seccionSelect.value = first ? first.value : '';
+function validar(d){
+  if(!d.nie || !d.nombre || !d.responsable || !d.grado || !d.seccion || !d.contacto || !d.fecha || !d.hora){
+    alert('⚠️ Complete todos los campos obligatorios'); return false;
   }
-}
-function setTurnoAllowed(allowed){
-  const allowedSet = new Set(allowed);
-  [...turnoSelect.options].forEach(o=>{
-    if(!o.value) return;
-    o.disabled = !allowedSet.has(o.value);
-  });
-  if(!allowedSet.has(turnoSelect.value)){
-    turnoSelect.value = allowed[0] || '';
-  }
-}
-function normalize(str){
-  return (str||'').toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // sin acentos
+  if(d.dui && !/^\d{8}-\d$/.test(d.dui)){ alert('⚠️ DUI inválido'); return false; }
+  if(!/^\d{4}-\d{4}$/.test(d.contacto)){ alert('⚠️ Teléfono inválido'); return false; }
+  return true;
 }
 
-// === Reglas por grado ===
-function applyGradeRules(){
-  const g = normalize(gradoSelect.value);
-  enableAllTurnos();
-  enableAllSecciones();
-
-  // Parvularia 4 y 5 → Vespertino + B
-  if(g === 'parvularia 4' || g === 'parvularia 5'){
-    setTurnoAllowed(['Vespertino']); turnoSelect.value = 'Vespertino';
-    setSeccionAllowed(['B']);        seccionSelect.value = 'B';
-    return;
-  }
-
-  // Bachillerato (General/Técnico) con turno deshabilitado y sección Jornada
-  if(g === 'primer ano general' || g === 'primer ano tecnico' ||
-     g === 'segundo ano general' || g === 'segundo ano tecnico'){
-    turnoSelect.value = '';
-    turnoSelect.disabled = true;      // deshabilitar turno
-    setSeccionAllowed(['Jornada']);   seccionSelect.value = 'Jornada';
-    seccionSelect.disabled = false;
-    return;
-  }
-
-  // Tercer Año Técnico → solo Turno Matutino (secciones libres)
-  if(g === 'tercer ano tecnico'){
-    setTurnoAllowed(['Matutino']); turnoSelect.value = 'Matutino';
-    return;
-  }
-}
-
-// Vincular Turno-Sección para 1°–9°
-function applyTurnoSeccionCoupling(){
-  const g = normalize(gradoSelect.value);
-  const t = turnoSelect.value;
-  const gradosBasicos = [
-    'primer grado','segundo grado','tercer grado','cuarto grado',
-    'quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'
-  ];
-  if(gradosBasicos.includes(g)){
-    if(t === 'Matutino'){
-      setSeccionAllowed(['A']); seccionSelect.value = 'A';
-    } else if(t === 'Vespertino'){
-      setSeccionAllowed(['B']);
-      if(g === 'primer grado' && seccionSelect.value === 'A'){
-        showModal('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO');
-        seccionSelect.value = 'B';
-      } else {
-        seccionSelect.value = 'B';
-      }
-    } else {
-      enableAllSecciones();
-    }
-  }
-}
-
-// Eventos de reglas
-gradoSelect.addEventListener('change', ()=>{
-  applyGradeRules();
-  applyTurnoSeccionCoupling();
-});
-turnoSelect.addEventListener('change', ()=>{
-  applyTurnoSeccionCoupling();
-});
-seccionSelect.addEventListener('change', ()=>{
-  const g = normalize(gradoSelect.value);
-  const t = turnoSelect.value;
-  if(g === 'primer grado' && t === 'Vespertino' && seccionSelect.value === 'A'){
-    showModal('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO');
-    seccionSelect.value = 'B';
-  }
-});
-
-// Inicializar
-applyGradeRules();
-applyTurnoSeccionCoupling();
-
-/* ========= Helpers para PDF ========= */
-// Cargar imagen remota (logo) como dataURL (CORS seguro)
-async function fetchImageAsDataURL(url){
-  try{
-    const res = await fetch(url, {mode:'cors'});
-    const blob = await res.blob();
-    return await new Promise((resolve)=>{
-      const reader = new FileReader();
-      reader.onload = ()=> resolve(reader.result);
-      reader.readAsDataURL(blob);
-    });
-  }catch(e){
-    return null; // continuará sin logo si falla
-  }
-}
-
-// Generar PDF en tamaño carta, devolver {blob, filename}
-async function generarPDFCarta(datos){
+/* ====== PDF tamaño carta ====== */
+async function generarPDFCarta(d){
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'pt', format:'letter' }); // 612 x 792 pt
-  const margin = 48; // 2/3 in
-  let y = margin;
-
-  // Encabezado con logo
-  const logoDataURL = await fetchImageAsDataURL('https://i.imgur.com/ugoJzRX.jpeg');
-  const logoSize = 64;
-  if(logoDataURL){
-    doc.addImage(logoDataURL, 'JPEG', 612 - margin - logoSize, y, logoSize, logoSize);
-  }
+  const doc = new jsPDF({ unit: 'pt', format: 'letter' }); // 612x792 pt (Carta)
+  const margin = 48; let y = margin;
 
   doc.setFont('helvetica','bold'); doc.setFontSize(18);
-  doc.text('PREMATRÍCULA 2026', margin, y + 18);
-  doc.setFontSize(12); doc.setFont('helvetica','normal');
-  doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y + 38);
+  doc.text('PREMATRÍCULA 2026', margin, y); y += 20;
+  doc.setFont('helvetica','normal'); doc.setFontSize(12);
+  doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y); y += 14;
+  doc.setDrawColor(102,126,234); doc.line(margin, y+8, 612 - margin, y+8); y += 26;
 
-  y += 70;
-  doc.setDrawColor(102,126,234); doc.setLineWidth(1);
-  doc.line(margin, y, 612 - margin, y); y += 18;
-
-  // Registro
   doc.setFont('helvetica','bold'); doc.text('Registro', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Fecha: ${datos.fecha}    Hora: ${datos.hora}`, margin, y); y += 20;
+  doc.text(`Fecha: ${d.fecha}    Hora: ${d.hora}`, margin, y); y += 20;
 
-  // Estudiante
   doc.setFont('helvetica','bold'); doc.text('Datos del Estudiante', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`NIE: ${datos.nie}`, margin, y); y += 16;
-  doc.text(`Nombre: ${datos.nombre}`, margin, y); y += 22;
+  doc.text(`NIE: ${d.nie}`, margin, y); y += 16;
+  doc.text(`Nombre: ${d.nombre}`, margin, y); y += 20;
 
-  // Responsable
   doc.setFont('helvetica','bold'); doc.text('Responsable', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Nombre: ${datos.responsable}`, margin, y); y += 16;
-  if(datos.dui) { doc.text(`DUI: ${datos.dui}`, margin, y); y += 16; }
-  doc.text(`Contacto: ${datos.contacto}`, margin, y); y += 16;
-  doc.text(`WhatsApp: ${datos.whatsapp}`, margin, y); y += 22;
+  doc.text(`Nombre: ${d.responsable}`, margin, y); y += 16;
+  if(d.dui){ doc.text(`DUI: ${d.dui}`, margin, y); y += 16; }
+  doc.text(`Contacto: ${d.contacto}`, margin, y); y += 16;
+  doc.text(`WhatsApp: ${d.whatsapp}`, margin, y); y += 20;
 
-  // Académica
   doc.setFont('helvetica','bold'); doc.text('Información Académica', margin, y); y += 16;
   doc.setFont('helvetica','normal');
-  doc.text(`Grado: ${datos.grado}`, margin, y); y += 16;
-  doc.text(`Turno: ${datos.turno}`, margin, y); y += 16;
-  doc.text(`Sección: ${datos.seccion}`, margin, y); y += 24;
+  doc.text(`Grado: ${d.grado}`, margin, y); y += 16;
+  doc.text(`Turno: ${d.turno || '—'}`, margin, y); y += 16;
+  doc.text(`Sección: ${d.seccion}`, margin, y); y += 24;
 
-  // Pie
   doc.setDrawColor(220); doc.line(margin, 792 - margin - 24, 612 - margin, 792 - margin - 24);
   doc.setFontSize(10); doc.setTextColor(120);
   doc.text('Documento generado automáticamente desde el formulario de prematrícula.', margin, 792 - margin);
 
-  const blob = doc.output('blob');
-  const filename = `Prematricula_${datos.nie || 'sinNIE'}_${Date.now()}.pdf`;
+  const filename = `Prematricula_${d.nie||'sinNIE'}_${Date.now()}.pdf`;
+  doc.save(filename); // descarga local
 
-  // Desencadenar descarga local
-  const a = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click();
-  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
-
-  return { blob, filename };
+  const dataUrl = doc.output('datauristring'); // para backend WhatsApp
+  return { filename, dataUrl };
 }
 
-/* ========= Obtener datos desde el formulario ========= */
-function getDatos(){
-  const nie          = document.getElementById('nie').value.trim();
-  const nombre       = document.getElementById('nombre-completo').value.trim();
-  const responsable  = document.getElementById('nombre-responsable').value.trim();
-  const dui          = document.getElementById('dui').value.trim();
-  const grado        = gradoSelect.value;
-  const turno        = turnoSelect.value;
-  const seccion      = seccionSelect.value;
-  const contacto     = document.getElementById('numero-contacto').value.trim();
-  const fecha        = fechaEl.value;
-  const hora         = horaEl.value;
-
-  return {
-    nie, nombre, responsable, dui, grado,
-    turno: (turnoSelect.disabled ? '—' : turno),
-    seccion, contacto, fecha, hora,
-    whatsapp: (document.getElementById('whatsapp-checkbox').classList.contains('checked') ? 'Sí' : 'No')
-  };
+/* ====== WhatsApp Cloud API (backend) ====== */
+async function enviarWhatsAppDocumento(toE164, filename, pdfDataUrl) {
+  const resp = await fetch(`${API_BASE}/api/whatsapp/send`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      to: toE164,           // ej "50379677031"
+      filename,             // ej "Prematricula_...pdf"
+      caption: 'Prematrícula 2026',
+      pdfBase64: pdfDataUrl // "data:application/pdf;base64,...."
+    })
+  });
+  if (!resp.ok) {
+    const err = await resp.json().catch(()=>({}));
+    throw new Error('Error API WhatsApp: ' + JSON.stringify(err));
+  }
+  return resp.json();
 }
 
-/* ========= Validaciones mínimas ========= */
-function validarDatos(datos){
-  if(!datos.nie || !datos.nombre || !datos.responsable || !datos.grado ||
-     (!turnoSelect.disabled && !turnoSelect.value) || !datos.seccion ||
-     !datos.contacto || !datos.fecha || !datos.hora){
-    alert('⚠️ Complete todos los campos obligatorios');
-    return false;
-  }
-  if(datos.dui && !/^\d{8}-\d$/.test(datos.dui)){
-    alert('⚠️ El DUI debe tener el formato ########-#');
-    return false;
-  }
-  if(!/^\d{4}-\d{4}$/.test(datos.contacto)){
-    alert('⚠️ El número debe tener el formato ####-####');
-    return false;
-  }
-  return true;
+/* ====== Util: formatea a E.164 SV ====== */
+function telefonoSVaE164(t){ // t: "7890-1234" -> "50378901234"
+  const digits = (t||'').replace(/\D/g,'').slice(0,8);
+  return digits.length === 8 ? `503${digits}` : '';
 }
 
-/* ========= Botón: Descargar PDF (Carta) ========= */
+/* ====== Botones ====== */
 document.getElementById('btn-pdf').addEventListener('click', async ()=>{
-  const datos = getDatos();
-  if(!validarDatos(datos)) return;
-  await generarPDFCarta(datos); // descarga inmediata del PDF carta
+  const d = datosForm(); if(!validar(d)) return;
+  await generarPDFCarta(d); // siempre tamaño carta
 });
 
-/* === Envío WhatsApp (flujo general + caso especial Noveno) === */
-document.getElementById('btn-enviar').addEventListener('click', async () => {
-  const datos = getDatos();
-  if(!validarDatos(datos)) return;
+document.getElementById('btn-enviar').addEventListener('click', async ()=>{
+  try{
+    const d = datosForm(); if(!validar(d)) return;
 
-  // Si es Noveno Grado → PDF + Web Share + WhatsApp a número fijo
-  if (datos.grado === 'Noveno Grado') {
-    const { blob, filename } = await generarPDFCarta(datos);
-
-    // Intentar compartir (móviles compatibles)
-    try {
-      const file = new File([blob], filename, { type: 'application/pdf' });
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: 'Prematrícula 2026 - Noveno Grado',
-          text: 'Adjunto documento de prematrícula.',
-          files: [file]
-        });
-      }
-    } catch(e){ /* Silencio: si no se puede compartir, seguimos */ }
-
-    // Abrir WhatsApp al número específico con texto
-    const numero = '50379677031'; // sin +
-    const texto = `Hola, envío la prematrícula (Noveno Grado). Se adjunta el PDF descargado: ${filename}`;
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, '_blank');
-  } else {
-    // Flujo normal: abrir WhatsApp genérico con el texto
-    const lineaDUI = datos.dui ? `🪪 DUI: ${datos.dui}\n` : '';
+    // Mensaje de texto (para abrir WhatsApp web con chat)
+    const lineaDUI = d.dui ? `🪪 DUI: ${d.dui}\n` : '';
     const mensaje =
 `*PREMATRÍCULA 2026*
 🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
 
 📅 *Registro*
-Fecha: ${datos.fecha}
-Hora: ${datos.hora}
+Fecha: ${d.fecha}
+Hora: ${d.hora}
 
 📋 *Datos del Estudiante*
-👤 NIE: ${datos.nie}
-🧒 Nombre: ${datos.nombre}
+👤 NIE: ${d.nie}
+🧒 Nombre: ${d.nombre}
 
 👨‍👩‍👧 *Responsable*
-👤 Nombre: ${datos.responsable}
-${lineaDUI}📱 Contacto: ${datos.contacto}
-💬 WhatsApp: ${datos.whatsapp}
+👤 Nombre: ${d.responsable}
+${lineaDUI}📱 Contacto: ${d.contacto}
+💬 WhatsApp: ${d.whatsapp}
 
 📚 *Información Académica*
-🎓 Grado: ${datos.grado}
-⏰ Turno: ${datos.turno}
-📂 Sección: ${datos.seccion}`;
+🎓 Grado: ${d.grado}
+⏰ Turno: ${d.turno || '—'}
+📂 Sección: ${d.seccion}`;
 
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
+    if (d.grado === 'Noveno Grado') {
+      // 1) Generar PDF Carta
+      const { filename, dataUrl } = await generarPDFCarta(d);
+
+      // 2) Enviar documento por Cloud API al número fijo
+      const numeroDestino = '50379677031'; // sin '+'
+      await enviarWhatsAppDocumento(numeroDestino, filename, dataUrl);
+
+      // 3) También abrir WhatsApp Web con el número fijo (tu snippet integrado)
+      const telefono = numeroDestino;
+      const urlWhatsApp = `https://web.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`;
+      window.open(urlWhatsApp, '_blank');
+
+      alert('✅ PDF generado (Carta) y enviado por WhatsApp Cloud API. Se abrió WhatsApp Web con el chat.');
+    } else {
+      // Otros grados: abrir WhatsApp Web al número de contacto del formulario (si existe)
+      const telefono = telefonoSVaE164(d.contacto) || ''; // E.164 SV
+      const urlWhatsApp = telefono
+        ? `https://web.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`
+        : `https://web.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+      window.open(urlWhatsApp, '_blank');
+    }
+
+    // Toast
+    const msg=document.querySelector('.success-message');
+    msg.classList.add('show'); setTimeout(()=>msg.classList.remove('show'),3000);
+  } catch (e) {
+    console.error(e);
+    alert('❌ No se pudo completar el envío: ' + e.message);
   }
-
-  // Toast de éxito
-  const msg=document.getElementById('success-message');
-  msg.classList.add('show');
-  setTimeout(()=>msg.classList.remove('show'),3000);
 });
 </script>
-
 </body>
 </html>
