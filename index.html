@@ -52,7 +52,6 @@ body {
   box-shadow: 0 8px 25px rgba(40,167,69,0.3);
   animation: pulse 2s ease-in-out infinite;
 }
-
 .logo-container img {
   width: 100%;
   height: 100%;
@@ -60,7 +59,6 @@ body {
   border-radius: 50%;
   display: block;
 }
-
 @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
 
 h1 { color:#2d3748; font-size:2.1em; font-weight:700; }
@@ -77,10 +75,12 @@ input[type="text"], select {
   width:100%; padding:14px 16px; border:2px solid #e2e8f0; border-radius:12px;
   font-size:1em; transition:all .3s; background:white; color:#2d3748; appearance:none;
 }
+input[readonly] { background: #f7fafc; cursor: default; }
 input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
 input.error, select.error { border-color:#e53e3e; }
 
 .inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
+.meta-group { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; } /* Fecha, Hora, DUI */
 .contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
 
 .select-arrow { position:relative; }
@@ -110,7 +110,7 @@ input.error, select.error { border-color:#e53e3e; }
   display:inline-flex; align-items:center; gap:12px;
   box-shadow:0 10px 30px rgba(37,211,102,.3); transition:all .3s; animation:buttonPulse 2s ease-in-out infinite;
 }
-@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{box-shadow:0 10px 40px rgba(37,211,102,.5);} }
+@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{boxshadow:0 10px 40px rgba(37,211,102,.5);} }
 .whatsapp-button:hover { transform:translateY(-3px); }
 .whatsapp-button svg { width:24px; height:24px; fill:white; }
 
@@ -118,12 +118,10 @@ input.error, select.error { border-color:#e53e3e; }
 .success-message {
   position:fixed; top:25px; right:25px; background:white; padding:18px 25px;
   border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.2);
-  display:none; align-items:center; gap:12px; z-index:1000;
-}
+  display:none; align-items:center; gap:12px; z-index:1000; }
 .success-message.show{display:flex;}
 .success-icon { width:38px; height:38px; background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .success-icon svg { width:20px; height:20px; fill:white; }
-.success-text { color:#2d3748; font-weight:600; }
 </style>
 </head>
 <body>
@@ -154,6 +152,22 @@ input.error, select.error { border-color:#e53e3e; }
     <div class="form-group">
       <label for="nombre-responsable">Nombre del Responsable *</label>
       <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
+    </div>
+
+    <!-- 🔹 NUEVO BLOQUE: Fecha, Hora (auto) y DUI -->
+    <div class="meta-group">
+      <div class="form-group">
+        <label for="fecha-registro">Fecha</label>
+        <input type="text" id="fecha-registro" readonly>
+      </div>
+      <div class="form-group">
+        <label for="hora-registro">Hora</label>
+        <input type="text" id="hora-registro" readonly>
+      </div>
+      <div class="form-group">
+        <label for="dui">Número de Documento (DUI)</label>
+        <input type="text" id="dui" placeholder="########-#">
+      </div>
     </div>
 
     <div class="inline-group">
@@ -236,22 +250,53 @@ input.error, select.error { border-color:#e53e3e; }
 </div>
 
 <script>
-// === Checkbox ===
+// === Partículas (opcional visual) ===
+const canvas = document.getElementById('particles-canvas');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+  const particles = [], count = innerWidth < 768 ? 25 : 50;
+  class Particle{
+    constructor(){this.reset();this.y=Math.random()*canvas.height;}
+    reset(){this.x=Math.random()*canvas.width;this.y=-10;this.speed=Math.random()+.3;this.r=Math.random()*2+1;this.op=Math.random()*.5+.2;}
+    update(){this.y+=this.speed;if(this.y>canvas.height)this.reset();}
+    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,2*Math.PI);ctx.fillStyle=`rgba(255,255,255,${this.op})`;ctx.fill();}
+  }
+  for(let i=0;i<count;i++)particles.push(new Particle());
+  (function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);})();
+}
+
+// === Checkbox WhatsApp ===
 let whatsappChecked = false;
 document.getElementById('whatsapp-box').addEventListener('click', () => {
   whatsappChecked = !whatsappChecked;
   document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
 });
 
+// === Fecha y Hora automáticas (solo visibles, sin modificar) ===
+const fechaEl = document.getElementById('fecha-registro');
+const horaEl  = document.getElementById('hora-registro');
+function pad(n){ return n.toString().padStart(2,'0'); }
+function actualizarFechaHora() {
+  const now = new Date();
+  const fecha = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+  const hora  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  fechaEl.value = fecha;
+  horaEl.value  = hora;
+}
+actualizarFechaHora();
+setInterval(actualizarFechaHora, 1000); // Actualiza cada segundo
+
 // === Lógica dinámica de Turno y Sección según grado ===
-const gradoSelect = document.getElementById('reserva-matricula');
-const turnoSelect = document.getElementById('turno');
+const gradoSelect   = document.getElementById('reserva-matricula');
+const turnoSelect   = document.getElementById('turno');
 const seccionSelect = document.getElementById('seccion');
 
 gradoSelect.addEventListener('change', function() {
   const grado = this.value;
 
-  // Resetear opciones
+  // Resetear opciones (habilitar todas)
   turnoSelect.querySelectorAll('option').forEach(opt => opt.disabled = false);
   seccionSelect.querySelectorAll('option').forEach(opt => opt.disabled = false);
 
@@ -271,47 +316,79 @@ gradoSelect.addEventListener('change', function() {
     seccionSelect.querySelector('option[value="B"]').disabled = true;
     seccionSelect.querySelector('option[value="Jornada"]').disabled = true;
   }
-  // Otros grados → todo habilitado
+  // Otros grados → todo habilitado, sin valor preseleccionado
   else {
     turnoSelect.value = '';
     seccionSelect.value = '';
   }
 });
 
+// === Formato de teléfono ####-#### (amigable) ===
+document.getElementById('numero-contacto').addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'').slice(0,8);
+  if(v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
+  this.value = v;
+});
+
+// === DUI: formato ########-# (opcional) ===
+document.getElementById('dui').addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'').slice(0,9);
+  if(v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
+  this.value = v;
+});
+
 // === Envío WhatsApp ===
 document.getElementById('btn-enviar').addEventListener('click', () => {
-  const nie = document.getElementById('nie').value.trim();
-  const nombre = document.getElementById('nombre-completo').value.trim();
-  const responsable = document.getElementById('nombre-responsable').value.trim();
-  const grado = gradoSelect.value;
-  const turno = turnoSelect.value;
-  const seccion = seccionSelect.value;
-  const contacto = document.getElementById('numero-contacto').value.trim();
+  const nie          = document.getElementById('nie').value.trim();
+  const nombre       = document.getElementById('nombre-completo').value.trim();
+  const responsable  = document.getElementById('nombre-responsable').value.trim();
+  const dui          = document.getElementById('dui').value.trim();
+  const grado        = gradoSelect.value;
+  const turno        = turnoSelect.value;
+  const seccion      = seccionSelect.value;
+  const contacto     = document.getElementById('numero-contacto').value.trim();
+  const fecha        = fechaEl.value;
+  const hora         = horaEl.value;
 
-  if (!nie || !nombre || !responsable || !grado || !turno || !seccion || !contacto) {
+  // Validaciones mínimas
+  const requiredOK = nie && nombre && responsable && grado && turno && seccion && contacto && fecha && hora;
+  if (!requiredOK) {
     alert('⚠️ Complete todos los campos obligatorios');
     return;
   }
+  // Validación DUI (solo si lo ingresan)
+  if (dui && !/^\d{8}-\d$/.test(dui)) {
+    alert('⚠️ El DUI debe tener el formato ########-#');
+    return;
+  }
+  // Validación teléfono
+  if (!/^\d{4}-\d{4}$/.test(contacto)) {
+    alert('⚠️ El número debe tener el formato ####-####');
+    return;
+  }
 
+  const lineaDUI = dui ? `🪪 DUI: ${dui}\n` : '';
   const mensaje =
 `*PREMATRÍCULA 2026*
 🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
 
-📋 *DATOS DEL ESTUDIANTE*
+📅 *Registro*
+Fecha: ${fecha}
+Hora: ${hora}
+
+📋 *Datos del Estudiante*
 👤 NIE: ${nie}
 🧒 Nombre: ${nombre}
 
-👨‍👩‍👧 *RESPONSABLE*
+👨‍👩‍👧 *Responsable*
 👤 Nombre: ${responsable}
-📱 Contacto: ${contacto}
+${lineaDUI}📱 Contacto: ${contacto}
 💬 WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}
 
-📚 *INFORMACIÓN ACADÉMICA*
+📚 *Información Académica*
 🎓 Grado: ${grado}
 ⏰ Turno: ${turno}
-📂 Sección: ${seccion}
-
-📅 Fecha: ${new Date().toLocaleDateString('es-ES')}`;
+📂 Sección: ${seccion}`;
 
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
 
