@@ -69,7 +69,7 @@ input[readonly] { background:#f7fafc; cursor: default; }
 input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
 input.error, select.error { border-color:#e53e3e; }
 
-/* === NUEVA FILA: NIE + FECHA + HORA === */
+/* === NIE + FECHA + HORA === */
 .top-row { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; }
 
 .inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
@@ -153,7 +153,7 @@ input.error, select.error { border-color:#e53e3e; }
   </div>
 
   <form id="prematricula-form" autocomplete="off">
-    <!-- 🔹 NIE + Fecha + Hora en la misma fila -->
+    <!-- NIE + Fecha + Hora -->
     <div class="top-row">
       <div class="form-group">
         <label for="nie">NIE del Estudiante *</label>
@@ -179,7 +179,7 @@ input.error, select.error { border-color:#e53e3e; }
       <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
     </div>
 
-    <!-- 🔹 DUI con más espacio (ancho completo) -->
+    <!-- DUI ancho completo -->
     <div class="form-group">
       <label for="dui">Número de Documento (DUI)</label>
       <input type="text" id="dui" placeholder="########-#">
@@ -273,6 +273,9 @@ input.error, select.error { border-color:#e53e3e; }
     <button id="modal-ok">Entendido</button>
   </div>
 </div>
+
+<!-- jsPDF para generar PDF en tamaño carta -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-NaWTHrSxFqg7oO7IX8e7u8P9GvU2BqGm8oR7hO3bA+QZcN9oQ9Xbq6wq4c1m0u3eW4C3tGQf5qgF9V1mX9W5xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 // === Partículas (decorativo) ===
@@ -430,7 +433,7 @@ function applyTurnoSeccionCoupling(){
   }
 }
 
-// Eventos
+// Eventos de reglas
 gradoSelect.addEventListener('change', ()=>{
   applyGradeRules();
   applyTurnoSeccionCoupling();
@@ -451,8 +454,86 @@ seccionSelect.addEventListener('change', ()=>{
 applyGradeRules();
 applyTurnoSeccionCoupling();
 
-// === Envío WhatsApp ===
-document.getElementById('btn-enviar').addEventListener('click', () => {
+/* ========= Generar PDF (Carta) y “enviar” por WhatsApp si es Noveno ========= */
+async function generarPDFCarta(datos){
+  // jsPDF en tamaño letter (carta)
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'pt', format:'letter' }); // 612 x 792 pt
+
+  const margin = 48; // 2/3 in
+  let y = margin;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text('PREMATRÍCULA 2026', margin, y); y += 22;
+  doc.setFont('helvetica','normal'); doc.setFontSize(12);
+  doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y); y += 24;
+
+  // Línea
+  doc.setDrawColor(102,126,234); doc.setLineWidth(1);
+  doc.line(margin, y, 612 - margin, y); y += 18;
+
+  // Registro
+  doc.setFont('helvetica','bold'); doc.text('Registro', margin, y); y += 16;
+  doc.setFont('helvetica','normal');
+  doc.text(`Fecha: ${datos.fecha}    Hora: ${datos.hora}`, margin, y); y += 20;
+
+  // Estudiante
+  doc.setFont('helvetica','bold'); doc.text('Datos del Estudiante', margin, y); y += 16;
+  doc.setFont('helvetica','normal');
+  doc.text(`NIE: ${datos.nie}`, margin, y); y += 16;
+  doc.text(`Nombre: ${datos.nombre}`, margin, y); y += 22;
+
+  // Responsable
+  doc.setFont('helvetica','bold'); doc.text('Responsable', margin, y); y += 16;
+  doc.setFont('helvetica','normal');
+  doc.text(`Nombre: ${datos.responsable}`, margin, y); y += 16;
+  if(datos.dui) { doc.text(`DUI: ${datos.dui}`, margin, y); y += 20; }
+  doc.text(`Contacto: ${datos.contacto}`, margin, y); y += 16;
+  doc.text(`WhatsApp: ${datos.whatsapp}`, margin, y); y += 22;
+
+  // Académica
+  doc.setFont('helvetica','bold'); doc.text('Información Académica', margin, y); y += 16;
+  doc.setFont('helvetica','normal');
+  doc.text(`Grado: ${datos.grado}`, margin, y); y += 16;
+  doc.text(`Turno: ${datos.turno}`, margin, y); y += 16;
+  doc.text(`Sección: ${datos.seccion}`, margin, y); y += 24;
+
+  // Pie
+  doc.setDrawColor(220); doc.line(margin, 792 - margin - 24, 612 - margin, 792 - margin - 24);
+  doc.setFontSize(10); doc.setTextColor(120);
+  doc.text('Documento generado automáticamente desde el formulario de prematrícula.', margin, 792 - margin);
+
+  // Devuelve Blob y nombre
+  const blob = doc.output('blob');
+  const filename = `Prematricula_${datos.nie || 'sinNIE'}_${Date.now()}.pdf`;
+
+  // Desencadenar descarga local
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1000);
+
+  // Intento de compartir (móviles compatibles)
+  try {
+    const file = new File([blob], filename, { type: 'application/pdf' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        title: 'Prematrícula 2026 - Noveno Grado',
+        text: 'Adjunto documento de prematrícula.',
+        files: [file]
+      });
+    }
+  } catch(e){ /* Silencioso: si no se puede, seguimos con el enlace de WhatsApp */ }
+
+  // Abrir WhatsApp al número específico con texto
+  const texto = `Hola, envío la prematrícula (Noveno Grado). Se adjunta el PDF descargado: ${filename}`;
+  const numero = '50379677031'; // sin +
+  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, '_blank');
+}
+
+/* === Envío WhatsApp (flujo general) === */
+document.getElementById('btn-enviar').addEventListener('click', async () => {
   const nie          = document.getElementById('nie').value.trim();
   const nombre       = document.getElementById('nombre-completo').value.trim();
   const responsable  = document.getElementById('nombre-responsable').value.trim();
@@ -464,6 +545,7 @@ document.getElementById('btn-enviar').addEventListener('click', () => {
   const fecha        = fechaEl.value;
   const hora         = horaEl.value;
 
+  // Validaciones
   if(!nie || !nombre || !responsable || !grado || (!turno && !turnoSelect.disabled) || !seccion || !contacto || !fecha || !hora){
     alert('⚠️ Complete todos los campos obligatorios');
     return;
@@ -477,8 +559,20 @@ document.getElementById('btn-enviar').addEventListener('click', () => {
     return;
   }
 
-  const lineaDUI = dui ? `🪪 DUI: ${dui}\n` : '';
-  const mensaje =
+  const data = {
+    nie, nombre, responsable, dui,
+    grado, turno: (turnoSelect.disabled ? '—' : turno),
+    seccion, contacto, fecha, hora,
+    whatsapp: (document.getElementById('whatsapp-checkbox').classList.contains('checked') ? 'Sí' : 'No')
+  };
+
+  // Si es Noveno Grado → generar PDF (carta) y abrir chat al número específico
+  if (grado === 'Noveno Grado') {
+    await generarPDFCarta(data);
+  } else {
+    // Flujo normal: mensaje formateado
+    const lineaDUI = dui ? `🪪 DUI: ${dui}\n` : '';
+    const mensaje =
 `*PREMATRÍCULA 2026*
 🏫 COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO
 
@@ -493,18 +587,21 @@ Hora: ${hora}
 👨‍👩‍👧 *Responsable*
 👤 Nombre: ${responsable}
 ${lineaDUI}📱 Contacto: ${contacto}
-💬 WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}
+💬 WhatsApp: ${data.whatsapp}
 
 📚 *Información Académica*
 🎓 Grado: ${grado}
 ⏰ Turno: ${turnoSelect.disabled ? '—' : turno}
 📂 Sección: ${seccion}`;
 
-  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
+    const url=`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+    window.open(url,'_blank');
+  }
 
-  const msg = document.getElementById('success-message');
+  // Toast de éxito
+  const msg=document.getElementById('success-message');
   msg.classList.add('show');
-  setTimeout(() => msg.classList.remove('show'), 3000);
+  setTimeout(()=>msg.classList.remove('show'),3000);
 });
 </script>
 
