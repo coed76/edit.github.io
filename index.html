@@ -6,11 +6,7 @@
     <meta name="description" content="Formulario de Prematrícula 2026 - Complejo Educativo Cantón San Isidro">
     <title>Prematrícula 2026 - CECSI</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #667eea;
@@ -36,555 +32,138 @@
         }
 
         #particles-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
         }
 
         .form-container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 45px;
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 10;
+            max-width: 800px; width: 100%; background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(15px); border-radius: 24px; padding: 45px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3); position: relative; z-index: 10;
             animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.4);
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
+        @keyframes slideIn { from {opacity:0; transform: translateY(40px) scale(0.95);} to {opacity:1; transform: translateY(0) scale(1);} }
 
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-            animation: fadeIn 0.8s ease-out 0.2s backwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        .header { text-align: center; margin-bottom: 35px; animation: fadeIn 0.8s ease-out 0.2s backwards; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity:1;} }
 
         .logo-container {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 18px;
-            background: #fff;
-            border-radius: 50%;
-            padding: 8px;
-            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.25);
-            animation: logoAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
-            transition: transform 0.3s ease;
+            width: 150px; height: 150px; margin: 0 auto 18px; background: #fff; border-radius: 50%;
+            padding: 8px; box-shadow: 0 10px 30px rgba(40, 167, 69, 0.25);
+            animation: logoAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards; transition: transform 0.3s ease;
         }
+        .logo-container:hover { transform: scale(1.05) rotate(2deg); }
+        @keyframes logoAppear { from {opacity:0; transform: scale(0) rotate(-180deg);} to {opacity:1; transform: scale(1) rotate(0deg);} }
+        .logo-container img { width:100%; height:100%; object-fit: cover; border-radius: 50%; }
 
-        .logo-container:hover {
-            transform: scale(1.05) rotate(2deg);
-        }
-
-        @keyframes logoAppear {
-            from {
-                opacity: 0;
-                transform: scale(0) rotate(-180deg);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        h1 {
-            color: var(--text-dark);
-            font-size: 2.3em;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        h2 {
-            color: var(--primary);
-            font-size: 1.1em;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
+        h1 { color: var(--text-dark); font-size: 2.3em; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.5px; }
+        h2 { color: var(--primary); font-size: 1.1em; font-weight: 500; margin-bottom: 12px; }
 
         .year-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 8px 24px;
-            border-radius: 25px;
-            font-size: 0.95em;
-            font-weight: 700;
-            margin-top: 8px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-            animation: badgePulse 2s ease-in-out infinite;
+            display: inline-block; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white; padding: 8px 24px; border-radius: 25px; font-size: 0.95em; font-weight: 700; margin-top: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); animation: badgePulse 2s ease-in-out infinite;
         }
+        @keyframes badgePulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
 
-        @keyframes badgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .form-group { margin-bottom: 22px; animation: slideUp 0.5s ease-out backwards; }
+        @keyframes slideUp { from{opacity:0; transform: translateY(15px);} to{opacity:1; transform: translateY(0);} }
+        .form-group:nth-child(1){animation-delay:0.1s;} .form-group:nth-child(2){animation-delay:0.15s;}
+        .form-group:nth-child(3){animation-delay:0.2s;} .form-group:nth-child(4){animation-delay:0.25s;}
+        .form-group:nth-child(5){animation-delay:0.3s;}
+
+        label { display:block; color:var(--text-medium); font-weight:600; margin-bottom:8px; font-size:0.95em; transition: color 0.3s ease; }
+        label .required { color:#e53e3e; margin-left:2px; }
+
+        input[type="text"], select {
+            width:100%; padding:14px 16px; border:2px solid var(--border); border-radius:12px; font-size:1rem;
+            transition: all 0.3s ease; background:white; color:var(--text-dark); font-family: inherit;
         }
+        input[readonly]{ background:#f7fafc; color:#718096; cursor:not-allowed; }
 
-        .form-group {
-            margin-bottom: 22px;
-            animation: slideUp 0.5s ease-out backwards;
-        }
+        input:focus, select:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 4px rgba(102,126,234,0.15); transform: translateY(-2px); }
+        input:hover:not([readonly]), select:hover { border-color:#cbd5e0; }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        input.error, select.error { border-color:#fc8181; animation: shake 0.4s; }
+        @keyframes shake { 0%,100%{transform: translateX(0);} 25%{transform: translateX(-8px);} 75%{transform: translateX(8px);} }
 
-        .form-group:nth-child(1) { animation-delay: 0.1s; }
-        .form-group:nth-child(2) { animation-delay: 0.15s; }
-        .form-group:nth-child(3) { animation-delay: 0.2s; }
-        .form-group:nth-child(4) { animation-delay: 0.25s; }
-        .form-group:nth-child(5) { animation-delay: 0.3s; }
+        .error-message { color:#e53e3e; font-size:0.85em; margin-top:6px; display:none; animation: fadeIn 0.3s ease; }
+        .error-message.show { display:block; }
 
-        label {
-            display: block;
-            color: var(--text-medium);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-            transition: color 0.3s ease;
-        }
+        .top-row { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; margin-bottom:22px; }
+        .inline-group { display:grid; grid-template-columns: 2fr 1fr 1fr; gap:15px; }
+        .contact-group { display:grid; grid-template-columns: 2fr 1fr; gap:15px; align-items:start; }
 
-        label .required {
-            color: #e53e3e;
-            margin-left: 2px;
-        }
+        .checkbox-group { display:flex; align-items:center; padding-top:32px; }
+        .checkbox-wrapper { display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; padding:8px 12px; border-radius:8px; transition: background 0.2s ease; }
+        .checkbox-wrapper:hover { background: rgba(102,126,234,0.05); }
+        .custom-checkbox { width:24px; height:24px; border:2px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; background:white; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); flex-shrink:0; }
+        .custom-checkbox.checked { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-color: var(--primary); transform: scale(1.1); }
+        .custom-checkbox svg { width:16px; height:16px; fill:white; opacity:0; transform: scale(0); transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+        .custom-checkbox.checked svg { opacity:1; transform: scale(1); }
+        .checkbox-label { color:var(--text-medium); font-weight:500; font-size:0.95em; }
 
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-            color: var(--text-dark);
-            font-family: inherit;
-        }
-
-        input[readonly] {
-            background: #f7fafc;
-            color: #718096;
-            cursor: not-allowed;
-        }
-
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
-        }
-
-        input:hover:not([readonly]),
-        select:hover {
-            border-color: #cbd5e0;
-        }
-
-        input.error,
-        select.error {
-            border-color: #fc8181;
-            animation: shake 0.4s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-
-        .error-message {
-            color: #e53e3e;
-            font-size: 0.85em;
-            margin-top: 6px;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        .top-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 22px;
-        }
-
-        .inline-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .contact-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 15px;
-            align-items: start;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            padding-top: 32px;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            user-select: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background 0.2s ease;
-        }
-
-        .checkbox-wrapper:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .custom-checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            flex-shrink: 0;
-        }
-
-        .custom-checkbox.checked {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .custom-checkbox svg {
-            width: 16px;
-            height: 16px;
-            fill: white;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .custom-checkbox.checked svg {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .checkbox-label {
-            color: var(--text-medium);
-            font-weight: 500;
-            font-size: 0.95em;
-        }
-
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 2px solid #f0f0f0;
-        }
-
+        .actions { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:35px; padding-top:25px; border-top:2px solid #f0f0f0; }
         .btn {
-            border: none;
-            color: white;
-            border-radius: 14px;
-            padding: 16px 32px;
-            font-size: 1.05em;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px var(--shadow);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            overflow: hidden;
-            font-family: inherit;
+            border:none; color:white; border-radius:14px; padding:16px 32px; font-size:1.05em; font-weight:700; cursor:pointer;
+            display:inline-flex; align-items:center; gap:12px; box-shadow:0 10px 25px var(--shadow);
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); position:relative; overflow:hidden; font-family: inherit;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px var(--shadow);
-        }
-
-        .btn:active {
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            filter: grayscale(50%);
-        }
-
-        .btn:disabled:hover::before {
-            width: 0;
-            height: 0;
-        }
-
-        .btn svg {
-            width: 22px;
-            height: 22px;
-            fill: white;
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-whatsapp {
-            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-        }
-
-        .btn-pdf {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-        }
+        .btn::before { content:''; position:absolute; top:50%; left:50%; width:0; height:0; border-radius:50%; background: rgba(255,255,255,0.3); transform: translate(-50%,-50%); transition: width 0.6s, height 0.6s; }
+        .btn:hover::before { width:300px; height:300px; }
+        .btn:hover { transform: translateY(-4px); box-shadow:0 15px 35px var(--shadow); }
+        .btn:active { transform: translateY(-2px); }
+        .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none!important; filter: grayscale(50%); }
+        .btn:disabled:hover::before { width:0; height:0; }
+        .btn svg { width:22px; height:22px; fill:white; position:relative; z-index:1; }
+        .btn span { position:relative; z-index:1; }
+        .btn-whatsapp { background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); }
+        .btn-pdf { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); }
 
         .success-message {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background: white;
-            padding: 18px 28px;
-            border-radius: 14px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
-            display: none;
-            align-items: center;
-            gap: 14px;
-            z-index: 1000;
-            animation: slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border-left: 4px solid var(--success);
+            position: fixed; top: 24px; right: 24px; background: white; padding: 18px 28px; border-radius: 14px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25); display: none; align-items: center; gap: 14px; z-index: 1000;
+            animation: slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); border-left: 4px solid var(--success);
         }
+        @keyframes slideInRight { from {opacity:0; transform: translateX(100px);} to {opacity:1; transform: translateX(0);} }
+        .success-message.show { display:flex; }
+        .success-icon { width:42px; height:42px; background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; animation: checkmarkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards; }
+        @keyframes checkmarkPop { from { transform: scale(0) rotate(-180deg); } to { transform: scale(1) rotate(0deg); } }
+        .success-icon svg { width:22px; height:22px; fill:white; }
+        .success-text { color:var(--text-dark); font-weight:600; font-size:0.95em; }
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+        .loading-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display:none; align-items:center; justify-content:center; z-index:2000; backdrop-filter: blur(5px); }
+        .loading-overlay.show { display:flex; }
+        .spinner { width:60px; height:60px; border:5px solid rgba(255,255,255,0.2); border-top-color:white; border-radius:50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .success-message.show {
-            display: flex;
-        }
-
-        .success-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--success) 0%, var(--success-dark) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            animation: checkmarkPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
-        }
-
-        @keyframes checkmarkPop {
-            from {
-                transform: scale(0) rotate(-180deg);
-            }
-            to {
-                transform: scale(1) rotate(0deg);
-            }
-        }
-
-        .success-icon svg {
-            width: 22px;
-            height: 22px;
-            fill: white;
-        }
-
-        .success-text {
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            backdrop-filter: blur(5px);
-        }
-
-        .loading-overlay.show {
-            display: flex;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        /* Declaración jurada bloque */
+        .declaracion-box { display:flex; gap:12px; align-items:flex-start; }
+        .declaracion-text { color: var(--text-medium); font-size: 0.92em; line-height: 1.35; }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
-            .form-container {
-                padding: 35px 25px;
-                border-radius: 20px;
-            }
-
-            .logo-container {
-                width: 120px;
-                height: 120px;
-            }
-
-            h1 {
-                font-size: 1.9em;
-            }
-
-            h2 {
-                font-size: 1em;
-            }
-
-            .top-row,
-            .inline-group,
-            .contact-group {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
-
-            .checkbox-group {
-                padding-top: 0;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-                padding: 15px 28px;
-            }
-
-            .success-message {
-                left: 16px;
-                right: 16px;
-                top: auto;
-                bottom: 16px;
-            }
+            .form-container { padding: 35px 25px; border-radius: 20px; }
+            .logo-container { width: 120px; height: 120px; }
+            h1 { font-size: 1.9em; }
+            h2 { font-size: 1em; }
+            .top-row, .inline-group, .contact-group { grid-template-columns: 1fr; gap: 18px; }
+            .checkbox-group { padding-top: 0; }
+            .actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; padding: 15px 28px; }
+            .success-message { left: 16px; right: 16px; top: auto; bottom: 16px; }
         }
 
         @media (max-width: 480px) {
-            .form-container {
-                padding: 28px 20px;
-            }
-
-            .logo-container {
-                width: 100px;
-                height: 100px;
-            }
-
-            h1 {
-                font-size: 1.7em;
-            }
-
-            h2 {
-                font-size: 0.95em;
-            }
-
-            .year-badge {
-                font-size: 0.85em;
-                padding: 6px 18px;
-            }
-
-            input[type="text"],
-            select {
-                padding: 12px 14px;
-                font-size: 0.95em;
-            }
-
-            .btn {
-                font-size: 0.95em;
-                padding: 14px 24px;
-            }
+            .form-container { padding: 28px 20px; }
+            .logo-container { width: 100px; height: 100px; }
+            h1 { font-size: 1.7em; }
+            h2 { font-size: 0.95em; }
+            .year-badge { font-size: 0.85em; padding: 6px 18px; }
+            input[type="text"], select { padding: 12px 14px; font-size: 0.95em; }
+            .btn { font-size: 0.95em; padding: 14px 24px; }
         }
     </style>
 </head>
@@ -698,30 +277,38 @@
                 <input type="text" id="numero-contacto" placeholder="7890-1234" maxlength="9" required>
                 <div class="error-message" id="tel-error">Formato: 7890-1234</div>
             </div>
-            
+
             <div class="checkbox-group">
                 <div class="checkbox-wrapper" id="whatsapp-box" title="Marcar si el contacto tiene WhatsApp">
                     <div class="custom-checkbox" id="whatsapp-checkbox">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                        </svg>
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
                     </div>
                     <span class="checkbox-label">Tiene WhatsApp</span>
                 </div>
             </div>
         </div>
 
+        <!-- Declaración jurada (aceptación obligatoria) -->
+        <div class="form-group">
+            <label>Declaración jurada <span class="required">*</span></label>
+            <div class="declaracion-box">
+                <div class="checkbox-wrapper" id="declaracion-box" title="Aceptar la declaración jurada">
+                    <div class="custom-checkbox" id="declaracion-checkbox">
+                        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                    </div>
+                    <span class="checkbox-label">Declaro bajo juramento que los datos proporcionados en este formulario son verídicos, completos y exactos. Me responsabilizo de su autenticidad y autorizo al centro educativo a verificarlos para fines administrativos y académicos.</span>
+                </div>
+            </div>
+            <div class="error-message" id="declaracion-error">Debe aceptar la declaración para continuar.</div>
+        </div>
+
         <div class="actions">
             <button type="button" id="btn-enviar" class="btn btn-whatsapp" disabled>
-                <svg viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                 <span>Enviar por WhatsApp</span>
             </button>
             <button type="button" id="btn-pdf" class="btn btn-pdf" disabled>
-                <svg viewBox="0 0 24 24">
-                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>
                 <span>Descargar PDF</span>
             </button>
         </div>
@@ -730,9 +317,7 @@
 
 <div class="success-message" id="success-message">
     <div class="success-icon">
-        <svg viewBox="0 0 24 24">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
     </div>
     <span class="success-text">¡Operación realizada con éxito!</span>
 </div>
@@ -744,21 +329,20 @@
 (function() {
     const canvas = document.getElementById('particles-canvas');
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     let particles = [];
     let animationId;
-    
+
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         initParticles();
     }
-    
+
     function initParticles() {
         particles = [];
         const count = window.innerWidth < 768 ? 30 : 60;
-        
         for (let i = 0; i < count; i++) {
             particles.push({
                 x: Math.random() * canvas.width,
@@ -769,30 +353,21 @@
             });
         }
     }
-    
+
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
         particles.forEach(p => {
             p.y += p.speed;
-            
-            if (p.y > canvas.height) {
-                p.y = -10;
-                p.x = Math.random() * canvas.width;
-            }
-            
+            if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
             ctx.fill();
         });
-        
         animationId = requestAnimationFrame(animate);
     }
-    
-    resize();
-    animate();
-    
+
+    resize(); animate();
     window.addEventListener('resize', resize);
 })();
 
@@ -800,25 +375,14 @@
 const fechaEl = document.getElementById('fecha-registro');
 const horaEl = document.getElementById('hora-registro');
 
-function pad(n) {
-    return n.toString().padStart(2, '0');
-}
+function pad(n){ return n.toString().padStart(2,'0'); }
 
 function updateDateTime() {
     const now = new Date();
-    const dia = pad(now.getDate());
-    const mes = pad(now.getMonth() + 1);
-    const ano = now.getFullYear();
-    const hora = pad(now.getHours());
-    const min = pad(now.getMinutes());
-    const seg = pad(now.getSeconds());
-    
-    fechaEl.value = `${dia}/${mes}/${ano}`;
-    horaEl.value = `${hora}:${min}:${seg}`;
+    fechaEl.value = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
+    horaEl.value = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 }
-
-updateDateTime();
-setInterval(updateDateTime, 1000);
+updateDateTime(); setInterval(updateDateTime, 1000);
 
 // ===== Formateo de Inputs =====
 const telInput = document.getElementById('numero-contacto');
@@ -827,22 +391,14 @@ const nieInput = document.getElementById('nie');
 
 telInput.addEventListener('input', function() {
     let value = this.value.replace(/\D/g, '').slice(0, 8);
-    if (value.length > 4) {
-        value = value.slice(0, 4) + '-' + value.slice(4);
-    }
-    this.value = value;
-    validateField(this);
+    if (value.length > 4) value = value.slice(0, 4) + '-' + value.slice(4);
+    this.value = value; validateField(this);
 });
-
 duiInput.addEventListener('input', function() {
     let value = this.value.replace(/\D/g, '').slice(0, 9);
-    if (value.length > 8) {
-        value = value.slice(0, 8) + '-' + value.slice(8);
-    }
-    this.value = value;
-    validateField(this);
+    if (value.length > 8) value = value.slice(0, 8) + '-' + value.slice(8);
+    this.value = value; validateField(this);
 });
-
 nieInput.addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '').slice(0, 10);
     validateField(this);
@@ -852,17 +408,29 @@ nieInput.addEventListener('input', function() {
 let whatsappChecked = false;
 const whatsappBox = document.getElementById('whatsapp-box');
 const whatsappCheckbox = document.getElementById('whatsapp-checkbox');
-
 whatsappBox.addEventListener('click', () => {
     whatsappChecked = !whatsappChecked;
     whatsappCheckbox.classList.toggle('checked', whatsappChecked);
+});
+
+// ===== Declaración jurada (obligatoria) =====
+let declaracionChecked = false;
+const declaracionBox = document.getElementById('declaracion-box');
+const declaracionCheckbox = document.getElementById('declaracion-checkbox');
+const declaracionError = document.getElementById('declaracion-error');
+
+declaracionBox.addEventListener('click', () => {
+    declaracionChecked = !declaracionChecked;
+    declaracionCheckbox.classList.toggle('checked', declaracionChecked);
+    if (declaracionChecked) declaracionError.classList.remove('show');
+    checkFormValidity();
 });
 
 // ===== Validación de Campos =====
 function validateField(field) {
     const errorEl = document.getElementById(field.id + '-error');
     let isValid = true;
-    
+
     if (field.id === 'nie') {
         const value = field.value.trim();
         isValid = value.length >= 8 && value.length <= 10 && /^\d+$/.test(value);
@@ -874,7 +442,7 @@ function validateField(field) {
     } else if (field.required) {
         isValid = field.value.trim() !== '';
     }
-    
+
     if (errorEl) {
         if (!isValid && field.value) {
             errorEl.classList.add('show');
@@ -884,7 +452,6 @@ function validateField(field) {
             field.classList.remove('error');
         }
     }
-    
     return isValid;
 }
 
@@ -894,121 +461,59 @@ const turnoSelect = document.getElementById('turno');
 const seccionSelect = document.getElementById('seccion');
 
 function normalize(str) {
-    return (str || '').toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
+    return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g,' ').trim();
 }
-
 function setTurnoOptions(allowed) {
     const options = turnoSelect.querySelectorAll('option');
-    options.forEach(opt => {
-        if (opt.value === '') return;
-        opt.disabled = !allowed.includes(opt.value);
-    });
-    
-    if (!allowed.includes(turnoSelect.value)) {
-        turnoSelect.value = allowed[0] || '';
-    }
+    options.forEach(opt => { if (opt.value === '') return; opt.disabled = !allowed.includes(opt.value); });
+    if (!allowed.includes(turnoSelect.value)) turnoSelect.value = allowed[0] || '';
 }
-
 function setSeccionOptions(allowed) {
     const options = seccionSelect.querySelectorAll('option');
-    options.forEach(opt => {
-        if (opt.value === '') return;
-        opt.disabled = !allowed.includes(opt.value);
-    });
-    
-    if (!allowed.includes(seccionSelect.value)) {
-        seccionSelect.value = allowed[0] || '';
-    }
+    options.forEach(opt => { if (opt.value === '') return; opt.disabled = !allowed.includes(opt.value); });
+    if (!allowed.includes(seccionSelect.value)) seccionSelect.value = allowed[0] || '';
 }
-
 function applyGradeRules() {
     const grado = normalize(gradoSelect.value);
-    
-    // Reset
     turnoSelect.disabled = false;
     setTurnoOptions(['Matutino', 'Vespertino']);
     setSeccionOptions(['A', 'B', 'Jornada']);
-    
-    // Parvularia 4 y 5 → Vespertino + B
+
     if (grado === 'parvularia 4' || grado === 'parvularia 5') {
-        setTurnoOptions(['Vespertino']);
-        turnoSelect.value = 'Vespertino';
-        setSeccionOptions(['B']);
-        seccionSelect.value = 'B';
-        return;
+        setTurnoOptions(['Vespertino']); turnoSelect.value = 'Vespertino';
+        setSeccionOptions(['B']); seccionSelect.value = 'B'; return;
     }
-    
-    // Bachilleratos 1° y 2° → Sin turno, Jornada
-    const bachilleratos = ['primer ano general', 'primer ano tecnico', 'segundo ano general', 'segundo ano tecnico'];
+
+    const bachilleratos = ['primer ano general','primer ano tecnico','segundo ano general','segundo ano tecnico'];
     if (bachilleratos.includes(grado)) {
-        turnoSelect.disabled = true;
-        turnoSelect.value = '';
-        setSeccionOptions(['Jornada']);
-        seccionSelect.value = 'Jornada';
-        return;
+        turnoSelect.disabled = true; turnoSelect.value = '';
+        setSeccionOptions(['Jornada']); seccionSelect.value = 'Jornada'; return;
     }
-    
-    // Tercer Año Técnico → Solo Matutino
+
     if (grado === 'tercer ano tecnico') {
-        setTurnoOptions(['Matutino']);
-        turnoSelect.value = 'Matutino';
-        return;
+        setTurnoOptions(['Matutino']); turnoSelect.value = 'Matutino'; return;
     }
-    
-    // Parvularia 6 → Matutino + A
+
     if (grado === 'parvularia 6') {
-        setTurnoOptions(['Matutino']);
-        turnoSelect.value = 'Matutino';
-        setSeccionOptions(['A']);
-        seccionSelect.value = 'A';
-        return;
+        setTurnoOptions(['Matutino']); turnoSelect.value = 'Matutino';
+        setSeccionOptions(['A']); seccionSelect.value = 'A'; return;
     }
-    
-    // Educación Básica: Turno determina sección
+
     applyTurnoSeccionCoupling();
 }
-
 function applyTurnoSeccionCoupling() {
     const grado = normalize(gradoSelect.value);
     const turno = turnoSelect.value;
-    
-    const basicos = [
-        'primer grado', 'segundo grado', 'tercer grado', 
-        'cuarto grado', 'quinto grado', 'sexto grado',
-        'septimo grado', 'octavo grado', 'noveno grado'
-    ];
-    
+
+    const basicos = ['primer grado','segundo grado','tercer grado','cuarto grado','quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'];
     if (!basicos.includes(grado)) return;
-    
-    if (turno === 'Matutino') {
-        setSeccionOptions(['A']);
-        if (seccionSelect.value !== 'A') {
-            seccionSelect.value = 'A';
-        }
-    } else if (turno === 'Vespertino') {
-        setSeccionOptions(['B']);
-        if (seccionSelect.value !== 'B') {
-            seccionSelect.value = 'B';
-        }
-    } else {
-        setSeccionOptions(['A', 'B']);
-    }
+
+    if (turno === 'Matutino') { setSeccionOptions(['A']); if (seccionSelect.value !== 'A') seccionSelect.value = 'A'; }
+    else if (turno === 'Vespertino') { setSeccionOptions(['B']); if (seccionSelect.value !== 'B') seccionSelect.value = 'B'; }
+    else { setSeccionOptions(['A','B']); }
 }
-
-gradoSelect.addEventListener('change', () => {
-    applyGradeRules();
-    checkFormValidity();
-});
-
-turnoSelect.addEventListener('change', () => {
-    applyTurnoSeccionCoupling();
-    checkFormValidity();
-});
-
+gradoSelect.addEventListener('change', () => { applyGradeRules(); checkFormValidity(); });
+turnoSelect.addEventListener('change', () => { applyTurnoSeccionCoupling(); checkFormValidity(); });
 seccionSelect.addEventListener('change', checkFormValidity);
 
 // ===== Validación General del Formulario =====
@@ -1022,10 +527,9 @@ function checkFormValidity() {
     const responsable = document.getElementById('nombre-responsable');
     const tel = document.getElementById('numero-contacto');
     const dui = document.getElementById('dui');
-    
+
     let isValid = true;
-    
-    // Validar campos requeridos
+
     if (!validateField(nie) || nie.value.trim().length < 8) isValid = false;
     if (!nombre.value.trim()) isValid = false;
     if (!responsable.value.trim()) isValid = false;
@@ -1034,31 +538,29 @@ function checkFormValidity() {
     if (!gradoSelect.value) isValid = false;
     if (!turnoSelect.disabled && !turnoSelect.value) isValid = false;
     if (!seccionSelect.value) isValid = false;
-    
+
+    if (!declaracionChecked) {
+        isValid = false;
+        declaracionError.classList.add('show');
+    } else {
+        declaracionError.classList.remove('show');
+    }
+
     btnEnviar.disabled = !isValid;
     btnPdf.disabled = !isValid;
 }
 
-// Event listeners para validación en tiempo real
-[nieInput, document.getElementById('nombre-completo'), 
+[nieInput, document.getElementById('nombre-completo'),
  document.getElementById('nombre-responsable'), telInput, duiInput].forEach(input => {
-    input.addEventListener('input', () => {
-        validateField(input);
-        checkFormValidity();
-    });
+    input.addEventListener('input', () => { validateField(input); checkFormValidity(); });
     input.addEventListener('blur', () => validateField(input));
 });
 
+// ===== Utilidades =====
+function isMobile(){ return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
+function phoneToE164(phone){ const d = phone.replace(/\D/g,''); return d.length===8 ? `503${d}` : ''; }
+
 // ===== Construcción del Mensaje =====
-function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-function phoneToE164(phone) {
-    const digits = phone.replace(/\D/g, '');
-    return digits.length === 8 ? `503${digits}` : '';
-}
-
 function buildMessage() {
     const nie = nieInput.value.trim();
     const nombre = document.getElementById('nombre-completo').value.trim();
@@ -1070,9 +572,9 @@ function buildMessage() {
     const tel = telInput.value.trim();
     const fecha = fechaEl.value;
     const hora = horaEl.value;
-    
+
     const duiLine = dui ? `🪪 DUI: ${dui}\n` : '';
-    
+
     const message = `╔═══════════════════════════╗
 ║  *PREMATRÍCULA 2026*  ║
 ╚═══════════════════════════╝
@@ -1101,30 +603,38 @@ ${duiLine}📱 Contacto: ${tel}
 ⏰ Turno: ${turno}
 📂 Sección: ${seccion}
 
-✅ *Documento generado exitosamente*
-📅 ${new Date().toLocaleDateString('es-ES', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-})}`;
+🧾 *Declaración Jurada aceptada:* ${declaracionChecked ? 'Sí' : 'No'}
 
-    return {
-        text: message,
-        grado: grado,
-        phone: phoneToE164(tel)
-    };
+✅ *Documento generado exitosamente*
+📅 ${new Date().toLocaleDateString('es-ES', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}`;
+
+    return { text: message, grado: grado, phone: phoneToE164(tel) };
 }
 
-// ===== Generar PDF =====
+// ===== Cargar logo como DataURL para PDF =====
+let _logoDataURL = null;
+async function loadLogoDataURL() {
+    if (_logoDataURL) return _logoDataURL;
+    const url = 'https://i.imgur.com/ugoJzRX.jpeg';
+    const res = await fetch(url, { mode: 'cors' });
+    const blob = await res.blob();
+    _logoDataURL = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
+    return _logoDataURL;
+}
+
+// ===== Generar PDF (con logo y declaración jurada) =====
 async function generatePDF() {
     const loadingOverlay = document.getElementById('loading-overlay');
     loadingOverlay.classList.add('show');
-    
+
     try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ unit: 'pt', format: 'letter' });
-        
+
         const nie = nieInput.value.trim();
         const nombre = document.getElementById('nombre-completo').value.trim();
         const responsable = document.getElementById('nombre-responsable').value.trim();
@@ -1133,121 +643,164 @@ async function generatePDF() {
         const turno = turnoSelect.disabled ? 'No aplica' : turnoSelect.value;
         const seccion = seccionSelect.value;
         const tel = telInput.value.trim();
-        
+
         const margin = 50;
         let y = margin;
-        
-        // Header con color
+
+        // Header de color (formato original)
         doc.setFillColor(102, 126, 234);
         doc.rect(0, 0, 612, 80, 'F');
-        
+
+        // Títulos
         doc.setTextColor(255, 255, 255);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(24);
         doc.text('PREMATRÍCULA 2026', margin, y + 25);
-        
+
         doc.setFontSize(14);
         doc.text('COMPLEJO EDUCATIVO CANTÓN SAN ISIDRO', margin, y + 45);
-        
+
+        // LOGO en el encabezado (sin alterar el formato base)
+        try {
+            const logoData = await loadLogoDataURL();
+            // Colocar logo dentro del header, alineado a la derecha
+            const logoW = 60, logoH = 60;
+            const xLogo = 612 - margin - logoW;
+            const yLogo = 10; // dentro de la franja
+            doc.addImage(logoData, 'JPEG', xLogo, yLogo, logoW, logoH);
+        } catch (e) {
+            // Si el logo falla, continuamos sin interrumpir la generación
+            console.warn('No se pudo cargar el logo para el PDF:', e);
+        }
+
+        // Regresar a texto normal
         y = 110;
         doc.setTextColor(0, 0, 0);
-        
+
         // Línea decorativa
         doc.setDrawColor(102, 126, 234);
         doc.setLineWidth(2);
         doc.line(margin, y, 612 - margin, y);
         y += 30;
-        
+
         // Información de Registro
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(102, 126, 234);
         doc.text('INFORMACIÓN DE REGISTRO', margin, y);
         y += 20;
-        
+
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
         doc.text(`Fecha: ${fechaEl.value}`, margin, y);
         doc.text(`Hora: ${horaEl.value}`, 350, y);
         y += 30;
-        
+
         // Datos del Estudiante
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(102, 126, 234);
         doc.text('DATOS DEL ESTUDIANTE', margin, y);
         y += 20;
-        
+
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
-        doc.text(`NIE: ${nie}`, margin, y);
-        y += 18;
-        doc.text(`Nombre Completo: ${nombre}`, margin, y);
-        y += 30;
-        
+        doc.text(`NIE: ${nie}`, margin, y); y += 18;
+        doc.text(`Nombre Completo: ${nombre}`, margin, y); y += 30;
+
         // Datos del Responsable
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(102, 126, 234);
         doc.text('DATOS DEL RESPONSABLE', margin, y);
         y += 20;
-        
+
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
-        doc.text(`Nombre: ${responsable}`, margin, y);
-        y += 18;
-        
-        if (dui) {
-            doc.text(`DUI: ${dui}`, margin, y);
-            y += 18;
-        }
-        
-        doc.text(`Teléfono: ${tel}`, margin, y);
-        y += 18;
-        doc.text(`WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}`, margin, y);
-        y += 30;
-        
+        doc.text(`Nombre: ${responsable}`, margin, y); y += 18;
+        if (dui) { doc.text(`DUI: ${dui}`, margin, y); y += 18; }
+        doc.text(`Teléfono: ${tel}`, margin, y); y += 18;
+        doc.text(`WhatsApp: ${whatsappChecked ? 'Sí' : 'No'}`, margin, y); y += 30;
+
         // Información Académica
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
         doc.setTextColor(102, 126, 234);
         doc.text('INFORMACIÓN ACADÉMICA', margin, y);
         y += 20;
-        
+
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
         doc.setTextColor(0, 0, 0);
-        doc.text(`Grado: ${grado}`, margin, y);
-        y += 18;
-        doc.text(`Turno: ${turno}`, margin, y);
-        y += 18;
-        doc.text(`Sección: ${seccion}`, margin, y);
-        y += 40;
-        
+        doc.text(`Grado: ${grado}`, margin, y); y += 18;
+        doc.text(`Turno: ${turno}`, margin, y); y += 18;
+        doc.text(`Sección: ${seccion}`, margin, y); y += 30;
+
+        // Declaración Jurada (nuevo bloque)
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setTextColor(102, 126, 234);
+        doc.text('DECLARACIÓN JURADA', margin, y);
+        y += 20;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+
+        // Cuadro de aceptación
+        const boxSize = 10;
+        doc.rect(margin, y - 8, boxSize, boxSize);
+        if (declaracionChecked) {
+            // Dibujar una "✓" simple
+            doc.setFont('helvetica', 'bold');
+            doc.text('✓', margin + 2.2, y);
+            doc.setFont('helvetica', 'normal');
+        }
+        doc.text('Acepto la declaración jurada', margin + 16, y);
+        y += 16;
+
+        const declaracionTexto =
+`Declaro bajo juramento que los datos proporcionados en este formulario son verídicos, completos y exactos. 
+Estoy consciente de que cualquier falsedad u omisión podrá acarrear la anulación del trámite de prematrícula 
+y/o responsabilidades administrativas. Autorizo al Centro Educativo a verificar la información para fines 
+exclusivamente académicos y administrativos.`;
+
+        const wrapped = doc.splitTextToSize(declaracionTexto, 612 - margin * 2);
+        doc.text(wrapped, margin, y);
+        y += wrapped.length * 14 + 20;
+
+        // Firmas
+        doc.setDrawColor(180, 180, 180);
+        doc.line(margin, y + 20, 260, y + 20);
+        doc.text('Firma del Responsable', margin, y + 35);
+        doc.line(320, y + 20, 582, y + 20);
+        doc.text('Lugar y fecha', 320, y + 35);
+        y += 60;
+
         // Footer
         doc.setDrawColor(220, 220, 220);
         doc.setLineWidth(1);
         doc.line(margin, 792 - 60, 612 - margin, 792 - 60);
-        
+
         doc.setFontSize(9);
         doc.setTextColor(120, 120, 120);
         doc.text('Documento generado automáticamente - Complejo Educativo Cantón San Isidro', margin, 792 - 40);
         doc.text(`Generado el: ${new Date().toLocaleString('es-ES')}`, margin, 792 - 25);
-        
+
         // Guardar
         const filename = `Prematricula_${nie}_${Date.now()}.pdf`;
         doc.save(filename);
-        
+
         showSuccessMessage('¡PDF generado exitosamente!');
-        
+
     } catch (error) {
         console.error('Error al generar PDF:', error);
         alert('Hubo un error al generar el PDF. Por favor, intente nuevamente.');
     } finally {
-        loadingOverlay.classList.remove('show');
+        document.getElementById('loading-overlay').classList.remove('show');
     }
 }
 
@@ -1255,7 +808,7 @@ async function generatePDF() {
 function sendWhatsApp() {
     const { text, grado, phone } = buildMessage();
     const base = isMobile() ? 'https://api.whatsapp.com' : 'https://web.whatsapp.com';
-    
+
     // Noveno Grado: genera PDF y envía al número fijo
     if (grado === 'Noveno Grado') {
         generatePDF().then(() => {
@@ -1265,10 +818,9 @@ function sendWhatsApp() {
             showSuccessMessage('PDF generado y WhatsApp abierto');
         });
     } else {
-        const url = phone 
+        const url = phone
             ? `${base}/send?phone=${phone}&text=${encodeURIComponent(text)}`
             : `${base}/send?text=${encodeURIComponent(text)}`;
-        
         window.open(url, '_blank');
         showSuccessMessage('¡Mensaje enviado por WhatsApp!');
     }
@@ -1279,36 +831,19 @@ function showSuccessMessage(message) {
     const toast = document.getElementById('success-message');
     const textEl = toast.querySelector('.success-text');
     textEl.textContent = message;
-    
     toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3500);
+    setTimeout(() => { toast.classList.remove('show'); }, 3500);
 }
 
 // ===== Event Listeners de Botones =====
-btnEnviar.addEventListener('click', () => {
-    if (!btnEnviar.disabled) {
-        sendWhatsApp();
-    }
-});
-
-btnPdf.addEventListener('click', () => {
-    if (!btnPdf.disabled) {
-        generatePDF();
-    }
-});
+btnEnviar.addEventListener('click', () => { if (!btnEnviar.disabled) sendWhatsApp(); });
+btnPdf.addEventListener('click', () => { if (!btnPdf.disabled) generatePDF(); });
 
 // ===== Inicialización =====
-window.addEventListener('load', () => {
-    applyGradeRules();
-    checkFormValidity();
-});
+window.addEventListener('load', () => { applyGradeRules(); checkFormValidity(); });
 
 // Prevenir envío del formulario con Enter
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-});
+form.addEventListener('submit', (e) => e.preventDefault());
 </script>
 
 </body>
