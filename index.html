@@ -40,24 +40,14 @@ body {
 
 /* ✅ LOGO CIRCULAR PERFECTO */
 .logo-container {
-  width: 140px;
-  height: 140px;
-  margin: 0 auto 20px;
-  background: white;
-  border-radius: 50%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 140px; height: 140px; margin: 0 auto 20px;
+  background: white; border-radius: 50%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 25px rgba(40,167,69,0.3);
   animation: pulse 2s ease-in-out infinite;
 }
 .logo-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;
 }
 @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.05);} }
 
@@ -75,12 +65,12 @@ input[type="text"], select {
   width:100%; padding:14px 16px; border:2px solid #e2e8f0; border-radius:12px;
   font-size:1em; transition:all .3s; background:white; color:#2d3748; appearance:none;
 }
-input[readonly] { background: #f7fafc; cursor: default; }
+input[readonly] { background:#f7fafc; cursor: default; }
 input:focus, select:focus { border-color:#667eea; box-shadow:0 0 0 4px rgba(102,126,234,0.1); }
 input.error, select.error { border-color:#e53e3e; }
 
 .inline-group { display:grid; grid-template-columns:2fr 1fr 1fr; gap:15px; }
-.meta-group { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; } /* Fecha, Hora, DUI */
+.meta-group  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; } /* Fecha, Hora, DUI */
 .contact-group { display:grid; grid-template-columns:2fr 1fr; gap:15px; }
 
 .select-arrow { position:relative; }
@@ -105,12 +95,11 @@ input.error, select.error { border-color:#e53e3e; }
 .button-container { text-align:center; margin-top:35px; }
 .whatsapp-button {
   background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
-  color:white; border:none; border-radius:14px;
-  padding:16px 40px; font-size:1.05em; font-weight:600; cursor:pointer;
-  display:inline-flex; align-items:center; gap:12px;
+  color:white; border:none; border-radius:14px; padding:16px 40px; font-size:1.05em; font-weight:600;
+  cursor:pointer; display:inline-flex; align-items:center; gap:12px;
   box-shadow:0 10px 30px rgba(37,211,102,.3); transition:all .3s; animation:buttonPulse 2s ease-in-out infinite;
 }
-@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{boxshadow:0 10px 40px rgba(37,211,102,.5);} }
+@keyframes buttonPulse { 0%,100%{box-shadow:0 10px 30px rgba(37,211,102,.3);} 50%{box-shadow:0 10px 40px rgba(37,211,102,.5);} }
 .whatsapp-button:hover { transform:translateY(-3px); }
 .whatsapp-button svg { width:24px; height:24px; fill:white; }
 
@@ -118,10 +107,27 @@ input.error, select.error { border-color:#e53e3e; }
 .success-message {
   position:fixed; top:25px; right:25px; background:white; padding:18px 25px;
   border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,.2);
-  display:none; align-items:center; gap:12px; z-index:1000; }
+  display:none; align-items:center; gap:12px; z-index:1000;
+}
 .success-message.show{display:flex;}
 .success-icon { width:38px; height:38px; background:linear-gradient(135deg,#25D366 0%,#128C7E 100%); border-radius:50%; display:flex; align-items:center; justify-content:center; }
 .success-icon svg { width:20px; height:20px; fill:white; }
+
+/* === MODAL === */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.4);
+  display:none; align-items:center; justify-content:center; z-index:1100;
+}
+.modal{
+  background:#fff; border-radius:14px; padding:22px; width:min(520px,90%);
+  box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center;
+}
+.modal h3{ margin-bottom:10px; color:#2d3748; }
+.modal p{ color:#4a5568; margin-bottom:16px; }
+.modal button{
+  background:#667eea; color:#fff; border:none; border-radius:10px;
+  padding:10px 18px; font-weight:600; cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -154,7 +160,7 @@ input.error, select.error { border-color:#e53e3e; }
       <input type="text" id="nombre-responsable" placeholder="Padre, madre o tutor">
     </div>
 
-    <!-- 🔹 NUEVO BLOQUE: Fecha, Hora (auto) y DUI -->
+    <!-- 🔹 Fecha, Hora (auto) y DUI -->
     <div class="meta-group">
       <div class="form-group">
         <label for="fecha-registro">Fecha</label>
@@ -194,6 +200,7 @@ input.error, select.error { border-color:#e53e3e; }
           <optgroup label="Bachillerato">
             <option>Primer Año General</option>
             <option>Primer Año Técnico</option>
+            <option>Segundo Año General</option>
             <option>Segundo Año Técnico</option>
             <option>Tercer Año Técnico</option>
           </optgroup>
@@ -249,22 +256,29 @@ input.error, select.error { border-color:#e53e3e; }
   <span class="success-text">¡Mensaje generado con éxito!</span>
 </div>
 
+<!-- MODAL -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <h3>Aviso</h3>
+    <p id="modal-text">ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO</p>
+    <button id="modal-ok">Entendido</button>
+  </div>
+</div>
+
 <script>
-// === Partículas (opcional visual) ===
+// === Partículas (decorativo) ===
 const canvas = document.getElementById('particles-canvas');
 if (canvas) {
   const ctx = canvas.getContext('2d');
   function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
   resize(); addEventListener('resize', resize);
   const particles = [], count = innerWidth < 768 ? 25 : 50;
-  class Particle{
-    constructor(){this.reset();this.y=Math.random()*canvas.height;}
-    reset(){this.x=Math.random()*canvas.width;this.y=-10;this.speed=Math.random()+.3;this.r=Math.random()*2+1;this.op=Math.random()*.5+.2;}
-    update(){this.y+=this.speed;if(this.y>canvas.height)this.reset();}
-    draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,2*Math.PI);ctx.fillStyle=`rgba(255,255,255,${this.op})`;ctx.fill();}
-  }
-  for(let i=0;i<count;i++)particles.push(new Particle());
-  (function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);})();
+  class Particle { constructor(){ this.reset(); this.y=Math.random()*canvas.height; }
+    reset(){ this.x=Math.random()*canvas.width; this.y=-10; this.speed=Math.random()+.3; this.r=Math.random()*2+1; this.op=Math.random()*.5+.2; }
+    update(){ this.y+=this.speed; if(this.y>canvas.height) this.reset(); }
+    draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,2*Math.PI); ctx.fillStyle=`rgba(255,255,255,${this.op})`; ctx.fill(); } }
+  for(let i=0;i<count;i++) particles.push(new Particle());
+  (function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); })();
 }
 
 // === Checkbox WhatsApp ===
@@ -274,7 +288,7 @@ document.getElementById('whatsapp-box').addEventListener('click', () => {
   document.getElementById('whatsapp-checkbox').classList.toggle('checked', whatsappChecked);
 });
 
-// === Fecha y Hora automáticas (solo visibles, sin modificar) ===
+// === Fecha y Hora automáticas ===
 const fechaEl = document.getElementById('fecha-registro');
 const horaEl  = document.getElementById('hora-registro');
 function pad(n){ return n.toString().padStart(2,'0'); }
@@ -282,60 +296,171 @@ function actualizarFechaHora() {
   const now = new Date();
   const fecha = `${pad(now.getDate())}/${pad(now.getMonth()+1)}/${now.getFullYear()}`;
   const hora  = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  fechaEl.value = fecha;
-  horaEl.value  = hora;
+  fechaEl.value = fecha; horaEl.value = hora;
 }
-actualizarFechaHora();
-setInterval(actualizarFechaHora, 1000); // Actualiza cada segundo
+actualizarFechaHora(); setInterval(actualizarFechaHora, 1000);
 
-// === Lógica dinámica de Turno y Sección según grado ===
-const gradoSelect   = document.getElementById('reserva-matricula');
-const turnoSelect   = document.getElementById('turno');
-const seccionSelect = document.getElementById('seccion');
-
-gradoSelect.addEventListener('change', function() {
-  const grado = this.value;
-
-  // Resetear opciones (habilitar todas)
-  turnoSelect.querySelectorAll('option').forEach(opt => opt.disabled = false);
-  seccionSelect.querySelectorAll('option').forEach(opt => opt.disabled = false);
-
-  // Parvularia 4 o 5 → solo Vespertino y Sección B
-  if (grado === 'Parvularia 4' || grado === 'Parvularia 5') {
-    turnoSelect.value = 'Vespertino';
-    seccionSelect.value = 'B';
-    turnoSelect.querySelector('option[value="Matutino"]').disabled = true;
-    seccionSelect.querySelector('option[value="A"]').disabled = true;
-    seccionSelect.querySelector('option[value="Jornada"]').disabled = true;
-  }
-  // Segundo Grado → solo Matutino y Sección A
-  else if (grado === 'Segundo Grado') {
-    turnoSelect.value = 'Matutino';
-    seccionSelect.value = 'A';
-    turnoSelect.querySelector('option[value="Vespertino"]').disabled = true;
-    seccionSelect.querySelector('option[value="B"]').disabled = true;
-    seccionSelect.querySelector('option[value="Jornada"]').disabled = true;
-  }
-  // Otros grados → todo habilitado, sin valor preseleccionado
-  else {
-    turnoSelect.value = '';
-    seccionSelect.value = '';
-  }
+// === DUI formato ########-# ===
+document.getElementById('dui').addEventListener('input', function(){
+  let v = this.value.replace(/\D/g,'').slice(0,9);
+  if(v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
+  this.value = v;
 });
 
-// === Formato de teléfono ####-#### (amigable) ===
+// === Teléfono ####-#### ===
 document.getElementById('numero-contacto').addEventListener('input', function(){
   let v = this.value.replace(/\D/g,'').slice(0,8);
   if(v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
   this.value = v;
 });
 
-// === DUI: formato ########-# (opcional) ===
-document.getElementById('dui').addEventListener('input', function(){
-  let v = this.value.replace(/\D/g,'').slice(0,9);
-  if(v.length > 8) v = v.slice(0,8) + '-' + v.slice(8);
-  this.value = v;
+// === Utilidades ===
+const gradoSelect   = document.getElementById('reserva-matricula');
+const turnoSelect   = document.getElementById('turno');
+const seccionSelect = document.getElementById('seccion');
+
+const modal = document.getElementById('modal');
+const modalText = document.getElementById('modal-text');
+document.getElementById('modal-ok').addEventListener('click', ()=> modal.style.display='none');
+
+function showModal(msg){
+  modalText.textContent = msg || 'Aviso';
+  modal.style.display = 'flex';
+}
+
+function enableAllTurnos(){
+  [...turnoSelect.options].forEach(o=>{
+    if(o.value) o.disabled = false;
+  });
+  turnoSelect.disabled = false;
+}
+function enableAllSecciones(){
+  [...seccionSelect.options].forEach(o=>{
+    if(o.value) o.disabled = false;
+  });
+  seccionSelect.disabled = false;
+}
+function setSeccionAllowed(allowed){
+  const allowedSet = new Set(allowed);
+  let changed = false;
+  [...seccionSelect.options].forEach(o=>{
+    if(!o.value) return;
+    o.disabled = !allowedSet.has(o.value);
+  });
+  if(!allowedSet.has(seccionSelect.value)){
+    // elegir el primero permitido
+    const first = [...seccionSelect.options].find(o=>allowedSet.has(o.value));
+    seccionSelect.value = first ? first.value : '';
+    changed = true;
+  }
+  return changed;
+}
+function setTurnoAllowed(allowed){
+  const allowedSet = new Set(allowed);
+  [...turnoSelect.options].forEach(o=>{
+    if(!o.value) return;
+    o.disabled = !allowedSet.has(o.value);
+  });
+  if(!allowedSet.has(turnoSelect.value)){
+    turnoSelect.value = allowed[0] || '';
+  }
+}
+
+function normalize(str){
+  return (str||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // quita acentos
+}
+
+// === Reglas por grado ===
+function applyGradeRules(){
+  const g = normalize(gradoSelect.value);
+  enableAllTurnos();
+  enableAllSecciones();
+
+  // Parvularia 4 y 5 → Vespertino + B
+  if(g === 'parvularia 4' || g === 'parvularia 5'){
+    setTurnoAllowed(['Vespertino']);
+    turnoSelect.value = 'Vespertino';
+    setSeccionAllowed(['B']);
+    seccionSelect.value = 'B';
+    return;
+  }
+
+  // Bachillerato (General/Técnico) con turno deshabilitado y sección Jornada
+  if(g === 'primer ano general' || g === 'primer ano tecnico' ||
+     g === 'segundo ano general' || g === 'segundo ano tecnico'){
+    turnoSelect.value = '';
+    turnoSelect.disabled = true;      // deshabilitar turno
+    setSeccionAllowed(['Jornada']);
+    seccionSelect.value = 'Jornada';
+    seccionSelect.disabled = false;
+    return;
+  }
+
+  // Tercer Año Técnico → solo Turno Matutino (secciones libres)
+  if(g === 'tercer ano tecnico'){
+    setTurnoAllowed(['Matutino']);
+    turnoSelect.value = 'Matutino';
+    // secciones libres (A/B/Jornada)
+    return;
+  }
+
+  // 1° a 9° → ambos turnos; sección depende del turno elegido
+  // (no fijamos turno por defecto)
+}
+
+function applyTurnoSeccionCoupling(){
+  const g = normalize(gradoSelect.value);
+  const t = turnoSelect.value;
+
+  // Para 1° a 9°: Matutino → A ; Vespertino → B
+  const gradosBasicos = [
+    'primer grado','segundo grado','tercer grado','cuarto grado',
+    'quinto grado','sexto grado','septimo grado','octavo grado','noveno grado'
+  ];
+  if(gradosBasicos.includes(g)){
+    if(t === 'Matutino'){
+      setSeccionAllowed(['A']);
+      seccionSelect.value = 'A';
+    } else if(t === 'Vespertino'){
+      setSeccionAllowed(['B']);
+      // Mensaje especial si es primer grado y usuario intenta A en Vespertino
+      if(g === 'primer grado' && seccionSelect.value === 'A'){
+        showModal('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO');
+        seccionSelect.value = 'B';
+      } else {
+        seccionSelect.value = 'B';
+      }
+    } else {
+      enableAllSecciones();
+    }
+  }
+}
+
+// Eventos
+gradoSelect.addEventListener('change', ()=>{
+  applyGradeRules();
+  applyTurnoSeccionCoupling();
 });
+
+// Si cambia turno, ajustar secciones (A/B) para 1°–9°
+turnoSelect.addEventListener('change', ()=>{
+  applyTurnoSeccionCoupling();
+});
+
+// Si cambia sección en Primer Grado + Vespertino y eligen A, mostrar modal y corregir a B
+seccionSelect.addEventListener('change', ()=>{
+  const g = normalize(gradoSelect.value);
+  const t = turnoSelect.value;
+  if(g === 'primer grado' && t === 'Vespertino' && seccionSelect.value === 'A'){
+    showModal('ESTA SECCION SOLO ESTA HABILITADA PARA TURNO MATUTINO');
+    seccionSelect.value = 'B';
+  }
+});
+
+// Inicializar
+applyGradeRules();
+applyTurnoSeccionCoupling();
 
 // === Envío WhatsApp ===
 document.getElementById('btn-enviar').addEventListener('click', () => {
@@ -347,22 +472,19 @@ document.getElementById('btn-enviar').addEventListener('click', () => {
   const turno        = turnoSelect.value;
   const seccion      = seccionSelect.value;
   const contacto     = document.getElementById('numero-contacto').value.trim();
-  const fecha        = fechaEl.value;
-  const hora         = horaEl.value;
+  const fecha        = document.getElementById('fecha-registro').value;
+  const hora         = document.getElementById('hora-registro').value;
 
-  // Validaciones mínimas
-  const requiredOK = nie && nombre && responsable && grado && turno && seccion && contacto && fecha && hora;
-  if (!requiredOK) {
+  // Validaciones
+  if(!nie || !nombre || !responsable || !grado || (!turno && !turnoSelect.disabled) || !seccion || !contacto || !fecha || !hora){
     alert('⚠️ Complete todos los campos obligatorios');
     return;
   }
-  // Validación DUI (solo si lo ingresan)
-  if (dui && !/^\d{8}-\d$/.test(dui)) {
+  if(dui && !/^\d{8}-\d$/.test(dui)){
     alert('⚠️ El DUI debe tener el formato ########-#');
     return;
   }
-  // Validación teléfono
-  if (!/^\d{4}-\d{4}$/.test(contacto)) {
+  if(!/^\d{4}-\d{4}$/.test(contacto)){
     alert('⚠️ El número debe tener el formato ####-####');
     return;
   }
@@ -387,7 +509,7 @@ ${lineaDUI}📱 Contacto: ${contacto}
 
 📚 *Información Académica*
 🎓 Grado: ${grado}
-⏰ Turno: ${turno}
+⏰ Turno: ${turnoSelect.disabled ? '—' : turno}
 📂 Sección: ${seccion}`;
 
   window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`, '_blank');
